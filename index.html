@@ -10,10 +10,15 @@
       width:  100px;
       height: 100px;
       background: red;
+    }
+
+    #ex1 {
       position: relative;
       left: 200px;
-      top: 100px;
+      top: 50px;
     }
+
+    #ex2 {}
   </style>
 
 </head>
@@ -22,6 +27,7 @@
   <h1>Draggabilly</h1>
 
   <div id="ex1" class="box"></div>
+  <div id="ex2" class="box"></div>
 
 <script src="components/requestanimationframe/requestanimationframe.js"></script>
 <script src="draggabilly.js"></script>
@@ -31,8 +37,10 @@
 window.onload = function() {
 
   var ex1 = document.getElementById('ex1');
-
   var drag1 = new Draggabilly( ex1 );
+
+  var ex2 = document.getElementById('ex2');
+  var drag2 = new Draggabilly( ex2 );
 
 
 };
