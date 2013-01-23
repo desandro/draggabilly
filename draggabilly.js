@@ -133,6 +133,9 @@ var pointerEndEvent = isTouch ? 'touchend' : 'mouseup';
 function Draggabilly( element, options ) {
   this.element = element;
 
+  extend( this.options, options );
+
+  // properties
   var style = getStyle( this.element );
 
   this.position = {
@@ -140,7 +143,9 @@ function Draggabilly( element, options ) {
     y: style.top ? parseInt( style.top, 10 ) : 0
   };
 
-  extend( this.options, options );
+  this.startPoint = { x: 0, y: 0 };
+  this.startPosition = { x: 0, y: 0 };
+
 
   addEvent( this.element, pointerStartEvent, this );
 
@@ -186,10 +191,12 @@ Draggabilly.prototype.pointerStart = function( event, pointer ) {
 
   this.pointerIdentifier = pointer.identifier || 1;
 
-  this.startPoint = {
-    x: pointer.pageX,
-    y: pointer.pageY
-  };
+  // point where drag began
+  this.startPoint.x = pointer.pageX;
+  this.startPoint.y = pointer.pageY;
+  // position _when_ drag began
+  this.startPosition.x = this.position.x;
+  this.startPosition.y = this.position.y;
 
   this.dragX = 0;
   this.dragY = 0;
@@ -215,6 +222,9 @@ Draggabilly.prototype.onmousemove = function( event ) {
 Draggabilly.prototype.pointerMove = function( event, pointer ) {
   this.dragX = pointer.pageX - this.startPoint.x;
   this.dragY = pointer.pageY - this.startPoint.y;
+
+  this.position.x = this.startPosition.x + this.dragX;
+  this.position.y = this.startPosition.y + this.dragY;
 };
 
 
@@ -226,11 +236,6 @@ Draggabilly.prototype.onmouseup = function( event ) {
 
 Draggabilly.prototype.pointerEnd = function( event, pointer ) {
   this.isDragging = false;
-
-
-  // apply drag to final position
-  this.position.x += this.dragX;
-  this.position.y += this.dragY;
 
   // use top left position when complete
   this.element.style.webkitTransform = '';
