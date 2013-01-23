@@ -1,0 +1,7 @@
+{
+  "name": "draggabilly",
+  "dependencies": {
+    "eventEmitter": ">=3",
+    "requestanimationframe": "git://gist.github.com/1866474.git"
+  }
+}

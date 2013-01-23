@@ -1,0 +1,42 @@
+<!doctype html>
+<html>
+<head>
+  <meta charset="utf-8">
+
+  <title>Draggabilly</title>
+
+  <style>
+    .box {
+      width:  100px;
+      height: 100px;
+      background: red;
+      position: relative;
+      left: 200px;
+      top: 100px;
+    }
+  </style>
+
+</head>
+<body>
+
+  <h1>Draggabilly</h1>
+
+  <div id="ex1" class="box"></div>
+
+<script src="components/requestanimationframe/requestanimationframe.js"></script>
+<script src="draggabilly.js"></script>
+<script>
+
+
+window.onload = function() {
+
+  var ex1 = document.getElementById('ex1');
+
+  var drag1 = new Draggabilly( ex1 );
+
+
+};
+</script>
+
+</body>
+</html>
