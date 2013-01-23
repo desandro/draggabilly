@@ -227,8 +227,16 @@ Draggabilly.prototype.onmouseup = function( event ) {
 Draggabilly.prototype.pointerEnd = function( event, pointer ) {
   this.isDragging = false;
 
+
+  // apply drag to final position
   this.position.x += this.dragX;
   this.position.y += this.dragY;
+
+  // use top left position when complete
+  this.element.style.webkitTransform = '';
+  this.element.style.left = this.position.x + 'px';
+  this.element.style.top =  this.position.y + 'px';
+
 };
 
 // -------------------------- animation -------------------------- //
@@ -249,8 +257,7 @@ Draggabilly.prototype.animate = function() {
 };
 
 Draggabilly.prototype.positionDrag = function() {
-  this.element.style.left = ( this.position.x + this.dragX ) + 'px';
-  this.element.style.top  = ( this.position.y + this.dragY ) + 'px';
+  this.element.style.webkitTransform = 'translate(' + this.dragX + 'px, ' + this.dragY + 'px )';
 };
 
 // --------------------------  -------------------------- //
