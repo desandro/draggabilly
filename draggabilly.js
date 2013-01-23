@@ -128,6 +128,8 @@ var pointerStartEvent = isTouch ? 'touchstart' : 'mousedown';
 var pointerMoveEvent = isTouch ? 'touchmove' : 'mousemove';
 var pointerEndEvent = isTouch ? 'touchend' : 'mouseup';
 
+var transformProperty = getStyleProperty('transform');
+
 // --------------------------  -------------------------- //
 
 function Draggabilly( element, options ) {
@@ -265,9 +267,16 @@ Draggabilly.prototype.animate = function() {
 
 };
 
-Draggabilly.prototype.positionDrag = function() {
-  this.element.style.webkitTransform = 'translate(' + this.dragX + 'px, ' + this.dragY + 'px )';
-};
+Draggabilly.prototype.positionDrag = transformProperty ?
+  function() {
+    // position with transform
+    this.element.style[ transformProperty ] = 'translate(' + this.dragX +
+      'px, ' + this.dragY + 'px )';
+  } : function() {
+    // left/top positioning
+    this.element.style.left = this.position.x + 'px';
+    this.element.style.top  = this.position.y + 'px';
+  };
 
 // --------------------------  -------------------------- //
 
