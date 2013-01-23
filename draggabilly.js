@@ -237,6 +237,10 @@ Draggabilly.prototype.pointerEnd = function( event, pointer ) {
   this.element.style.left = this.position.x + 'px';
   this.element.style.top =  this.position.y + 'px';
 
+  // remove events
+  removeEvent( window, pointerMoveEvent, this );
+  removeEvent( window, pointerEndEvent, this );
+
 };
 
 // -------------------------- animation -------------------------- //
