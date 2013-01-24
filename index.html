@@ -10,6 +10,8 @@
       width:  100px;
       height: 100px;
       background: red;
+      /* hack for artifacts http://stackoverflow.com/a/12023155 */
+      -webkit-backface-visibility: hidden;
     }
 
     #ex1 {
@@ -18,7 +20,9 @@
       top: 50px;
     }
 
-    #ex2 {}
+    #ex2 {
+      background: blue;
+    }
   </style>
 
 </head>
@@ -30,6 +34,7 @@
   <div id="ex2" class="box"></div>
 
 <script src="components/eventEmitter/EventEmitter.js"></script>
+<script src="components/get-style-property/get-style-property.js"></script>
 <script src="draggabilly.js"></script>
 <script>
 

@@ -4,6 +4,7 @@
 
 // dependencies
 var EventEmitter = window.EventEmitter;
+var getStyleProperty = window.getStyleProperty;
 
 var document = window.document;
 
@@ -90,36 +91,6 @@ function removeEvent( obj, type, fn ) {
     obj.detachEvent( "on" + type, obj[ type + fn ] );
     delete obj[ type + fn ];
     delete obj[ 'e' + type + fn ];
-  }
-}
-
-// -------------------------- getStyleProperty by kangax -------------------------- //
-// http://perfectionkills.com/feature-testing-css-properties/
-
-function capitalize( str ) {
-  return str.charAt(0).toUpperCase() + str.slice(1);
-}
-
-prefixes = 'Moz Webkit Ms O'.split(' ');
-
-function getStyleProperty( propName ) {
-  var style = document.documentElement.style,
-      prefixed;
-
-  // test standard property first
-  if ( typeof style[propName] === 'string' ) {
-    return propName;
-  }
-
-  // capitalize
-  propName = capitalize( propName );
-
-  // test vendor specific properties
-  for ( var i=0, len = prefixes.length; i < len; i++ ) {
-    prefixed = prefixes[i] + propName;
-    if ( typeof style[ prefixed ] === 'string' ) {
-      return prefixed;
-    }
   }
 }
 
