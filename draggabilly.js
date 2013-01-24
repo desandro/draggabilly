@@ -213,9 +213,11 @@ Draggabilly.prototype.pointerStart = function( event, pointer ) {
 
   // reset isDragging flag
   this.isDragging = true;
+
+  this.emitEvent( 'start', [ event, pointer ] );
+
   // start animation
   this.animate();
-
 };
 
 
@@ -238,6 +240,8 @@ Draggabilly.prototype.pointerMove = function( event, pointer ) {
 
   this.position.x = this.startPosition.x + this.dragX;
   this.position.y = this.startPosition.y + this.dragY;
+
+  this.emitEvent( 'drag', [ event, pointer ] );
 };
 
 
@@ -269,6 +273,9 @@ Draggabilly.prototype.pointerEnd = function( event, pointer ) {
   removeEvent( window, pointerEndEvent, this );
 
   classie.remove( this.element, 'is-dragging' );
+
+  this.emitEvent( 'stop', [ event, pointer ] );
+
 };
 
 // -------------------------- animation -------------------------- //
