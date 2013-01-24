@@ -2,6 +2,9 @@
 
 'use strict';
 
+// dependencies
+var EventEmitter = window.EventEmitter;
+
 var document = window.document;
 
 // -------------------------- helpers -------------------------- //
@@ -140,6 +143,9 @@ function Draggabilly( element, options ) {
   this._create();
 
 }
+
+// inherit from EventEmitter
+Draggabilly.prototype = new EventEmitter();
 
 Draggabilly.prototype.options = {
 };
