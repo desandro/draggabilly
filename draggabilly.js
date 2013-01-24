@@ -125,21 +125,15 @@ Draggabilly.prototype.options = {
 Draggabilly.prototype._create = function() {
 
   // properties
-  var style = getStyle( this.element );
-
-  this.position = {
-    x: parseInt( style.left, 10 ),
-    y: parseInt( style.top, 10 )
-  };
-  // clean up 'auto' or other non-integer values
-  this.position.x = isNaN( this.position.x ) ? 0 : this.position.x;
-  this.position.y = isNaN( this.position.y ) ? 0 : this.position.y;
+  this.position = {};
+  this._getPosition();
 
   this.startPoint = { x: 0, y: 0 };
 
   this.startPosition = extend( {}, this.position );
 
   // set relative positioning
+  var style = getStyle( this.element );
   if ( style.position !== 'relative' && style.position !== 'absolute' ) {
     this.element.style.position = 'relative';
   }
@@ -147,6 +141,19 @@ Draggabilly.prototype._create = function() {
   // bind mousedown/touchstart event
   addEvent( this.element, pointerStartEvent, this );
 
+};
+
+// get left/top position from style
+Draggabilly.prototype._getPosition = function() {
+  // properties
+  var style = getStyle( this.element );
+
+  var x = parseInt( style.left, 10 );
+  var y = parseInt( style.top, 10 );
+
+  // clean up 'auto' or other non-integer values
+  this.position.x = isNaN( x ) ? 0 : x;
+  this.position.y = isNaN( y ) ? 0 : y;
 };
 
 // -------------------------- events -------------------------- //
@@ -194,6 +201,8 @@ Draggabilly.prototype.pointerStart = function( event, pointer ) {
   event.preventDefault();
 
   this.pointerIdentifier = pointer.identifier || 1;
+
+  this._getPosition();
 
   // point where drag began
   this.startPoint.x = pointer.pageX;
