@@ -3,6 +3,7 @@
 'use strict';
 
 // dependencies
+var classie = window.classie;
 var EventEmitter = window.EventEmitter;
 var getStyleProperty = window.getStyleProperty;
 
@@ -208,6 +209,8 @@ Draggabilly.prototype.pointerStart = function( event, pointer ) {
   addEvent( window, pointerMoveEvent, this );
   addEvent( window, pointerEndEvent, this );
 
+  classie.add( this.element, 'is-dragging' );
+
   // reset isDragging flag
   this.isDragging = true;
   // start animation
@@ -265,6 +268,7 @@ Draggabilly.prototype.pointerEnd = function( event, pointer ) {
   removeEvent( window, pointerMoveEvent, this );
   removeEvent( window, pointerEndEvent, this );
 
+  classie.remove( this.element, 'is-dragging' );
 };
 
 // -------------------------- animation -------------------------- //

@@ -1,6 +1,7 @@
 {
   "name": "draggabilly",
   "dependencies": {
+    "classie": "https://gist.github.com/4624426.git",
     "eventEmitter": ">=3",
     "get-style-property": "https://gist.github.com/4623257.git"
   }
