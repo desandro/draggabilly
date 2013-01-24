@@ -264,7 +264,7 @@ Draggabilly.prototype.pointerEnd = function( event, pointer ) {
   delete this.pointerIdentifier;
 
   // use top left position when complete
-  this.element.style.webkitTransform = '';
+  this.element.style[ transformProperty ] = '';
   this.element.style.left = this.position.x + 'px';
   this.element.style.top =  this.position.y + 'px';
 
