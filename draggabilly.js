@@ -181,6 +181,15 @@ Draggabilly.prototype.handleEvent = function( event ) {
   }
 };
 
+// returns the touch that we're keeping track of
+Draggabilly.prototype.getTouch = function( touches ) {
+  for ( var i=0, len = touches.length; i < len; i++ ) {
+    var touch = touches[i];
+    if ( touch.identifier === this.pointerIdentifier ) {
+      return touch;
+    }
+  }
+};
 
 // ----- start event ----- //
 
@@ -194,7 +203,7 @@ Draggabilly.prototype.ontouchstart = function( event ) {
     return;
   }
 
-  this.cursorStart( event, event.changedTouches[0] );
+  this.pointerStart( event, event.changedTouches[0] );
 };
 
 var pointerGUID = 0;
@@ -236,6 +245,13 @@ Draggabilly.prototype.onmousemove = function( event ) {
   this.pointerMove( event, event );
 };
 
+Draggabilly.prototype.ontouchmove = function( event ) {
+  var touch = this.getTouch( event.changedTouches );
+  if ( touch ) {
+    this.pointerMove( event, touch );
+  }
+};
+
 Draggabilly.prototype.pointerMove = function( event, pointer ) {
   this.dragX = pointer.pageX - this.startPoint.x;
   this.dragY = pointer.pageY - this.startPoint.y;
@@ -251,8 +267,17 @@ Draggabilly.prototype.onmouseup = function( event ) {
   this.pointerEnd( event, event );
 };
 
+Draggabilly.prototype.ontouchend = function( event ) {
+  var touch = this.getTouch( event.changedTouches );
+  if ( touch ) {
+    this.pointerEnd( event, touch );
+  }
+};
+
 Draggabilly.prototype.pointerEnd = function( event, pointer ) {
   this.isDragging = false;
+
+  delete this.pointerIdentifier;
 
   // use top left position when complete
   this.element.style.webkitTransform = '';
