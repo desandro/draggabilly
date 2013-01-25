@@ -1,3 +1,7 @@
+/*!
+ * Draggabilly - Make that shiz draggable
+ */
+
 ( function( window ) {
 
 'use strict';
