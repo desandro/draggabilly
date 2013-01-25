@@ -1,8 +1,9 @@
 {
   "name": "draggabilly",
+  "main": "./draggabilly.js",
   "dependencies": {
-    "classie": "https://gist.github.com/4624426.git",
+    "classie": "desandro/classie",
     "eventEmitter": ">=3",
-    "get-style-property": "https://gist.github.com/4623257.git"
+    "get-style-property": "desandro/get-style-property"
   }
 }
