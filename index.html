@@ -30,6 +30,30 @@
       -webkit-backface-visibility: hidden;
     }
 
+    .container {
+      border: 1px solid;
+      position: relative;
+    }
+
+    .container:after {
+      content: '';
+      display: block;
+      clear: both;
+    }
+
+    #container1 {
+      width: 150px;
+    }
+
+    #container1 .box {
+      float: left;
+      margin: 5px;
+      width: 38px;
+      height: 38px;
+      border: 1px solid;
+      background: orange;
+    }
+
   </style>
 
 </head>
@@ -39,6 +63,18 @@
 
   <div id="ex1" class="box"></div>
   <div id="ex2" class="box"></div>
+
+  <div id="container1" class="container">
+    <div class="box"></div>
+    <div class="box"></div>
+    <div class="box"></div>
+    <div class="box"></div>
+    <div class="box"></div>
+    <div class="box"></div>
+    <div class="box"></div>
+    <div class="box"></div>
+    <div class="box"></div>
+  </div>
 
 <script src="components/eventEmitter/EventEmitter.js"></script>
 <script src="components/get-style-property/get-style-property.js"></script>
@@ -67,6 +103,21 @@ window.onload = function() {
   drag2.on( 'stop', function( event, pointer, instance ) {
     console.log( 'stop', instance.position.x, instance.position.y, event.type, pointer.pageX, pointer.pageY );
   });
+
+
+  var container1Draggers = [];
+  var dragger;
+
+  var elems = document.querySelectorAll('#container1 .box');
+
+  function handleDraggerEvent( event, pointer, instance ) {
+    console.log( event.type, instance.position.x, instance.position.y );
+  }
+  for ( var i=0, len = elems.length; i < len; i++ ) {
+    dragger = new Draggabilly( elems[i] );
+    dragger.on( 'start', handleDraggerEvent );
+    dragger.on( 'drag', handleDraggerEvent );
+  }
 
 };
 </script>
