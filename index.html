@@ -56,16 +56,16 @@ window.onload = function() {
   var drag2 = new Draggabilly( ex2 );
 
 
-  drag2.on( 'start', function( event, pointer ) {
-    console.log('dragStart', event.type, pointer.pageX, pointer.pageY );
+  drag2.on( 'start', function( event, pointer, instance ) {
+    console.log('dragStart', instance.position.x, instance.position.y, event.type, pointer.pageX, pointer.pageY );
   });
 
-  drag2.on( 'drag', function( event, pointer ) {
-    console.log('drag', event.type, pointer.pageX, pointer.pageY );
+  drag2.on( 'drag', function( event, pointer, instance ) {
+    console.log('drag', instance.position.x, instance.position.y, event.type, pointer.pageX, pointer.pageY );
   });
 
-  drag2.on( 'stop', function( event, pointer ) {
-    console.log( 'stop', event.type, pointer.pageX, pointer.pageY );
+  drag2.on( 'stop', function( event, pointer, instance ) {
+    console.log( 'stop', instance.position.x, instance.position.y, event.type, pointer.pageX, pointer.pageY );
   });
 
 };
