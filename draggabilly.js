@@ -108,6 +108,8 @@ var pointerMoveEvent = isTouch ? 'touchmove' : 'mousemove';
 var pointerEndEvent = isTouch ? 'touchend' : 'mouseup';
 
 var transformProperty = getStyleProperty('transform');
+// TODO fix quick & dirty check for 3D support
+var is3d = !!getStyleProperty('perspective');
 
 // --------------------------  -------------------------- //
 
@@ -277,9 +279,11 @@ Draggabilly.prototype.pointerEnd = function( event, pointer ) {
   delete this.pointerIdentifier;
 
   // use top left position when complete
-  this.element.style[ transformProperty ] = '';
-  this.element.style.left = this.position.x + 'px';
-  this.element.style.top =  this.position.y + 'px';
+  if ( transformProperty ) {
+    this.element.style[ transformProperty ] = '';
+    this.element.style.left = this.position.x + 'px';
+    this.element.style.top =  this.position.y + 'px';
+  }
 
   // remove events
   removeEvent( window, pointerMoveEvent, this );
@@ -308,11 +312,19 @@ Draggabilly.prototype.animate = function() {
 
 };
 
+// transform translate function
+var translate = is3d ?
+  function( x, y ) {
+    return 'translate3d( ' + x + 'px, ' + y + 'px, 0)';
+  } :
+  function( x, y ) {
+    return 'translate( ' + x + 'px, ' + y + 'px)';
+  };
+
 Draggabilly.prototype.positionDrag = transformProperty ?
   function() {
     // position with transform
-    this.element.style[ transformProperty ] = 'translate(' + this.dragX +
-      'px, ' + this.dragY + 'px )';
+    this.element.style[ transformProperty ] = translate( this.dragX, this.dragY );
   } : function() {
     // left/top positioning
     this.element.style.left = this.position.x + 'px';
