@@ -10,6 +10,7 @@
 var classie = window.classie;
 var EventEmitter = window.EventEmitter;
 var getStyleProperty = window.getStyleProperty;
+var getSize = window.getSize;
 
 var document = window.document;
 
@@ -34,6 +35,15 @@ var getStyle = defView && defView.getComputedStyle ?
   function( elem ) {
     return elem.currentStyle;
   };
+
+
+// http://stackoverflow.com/a/384380/182183
+function isElement(o){
+  return (
+    typeof HTMLElement === "object" ? o instanceof HTMLElement : //DOM2
+    o && typeof o === "object" && o.nodeType === 1 && typeof o.nodeName==="string"
+  );
+}
 
 // -------------------------- requestAnimationFrame -------------------------- //
 
@@ -122,8 +132,8 @@ function Draggabilly( element, options ) {
 
 }
 
-// inherit from EventEmitter
-Draggabilly.prototype = new EventEmitter();
+// inherit EventEmitter methods
+extend( Draggabilly.prototype, EventEmitter.prototype );
 
 Draggabilly.prototype.options = {
 };
@@ -210,6 +220,8 @@ Draggabilly.prototype.pointerStart = function( event, pointer ) {
 
   this._getPosition();
 
+  this.measureContainment();
+
   // point where drag began
   this.startPoint.x = pointer.pageX;
   this.startPoint.y = pointer.pageY;
@@ -236,6 +248,32 @@ Draggabilly.prototype.pointerStart = function( event, pointer ) {
 };
 
 
+Draggabilly.prototype.measureContainment = function() {
+  var containment = this.options.containment;
+  if ( !containment ) {
+    return;
+  }
+
+  this.size = getSize( this.element );
+  var elemRect = this.element.getBoundingClientRect();
+
+  // use element if element
+  var container = isElement( containment ) ? containment :
+    // fallback to querySelector if string
+    typeof containment === 'string' ? document.querySelector( containment ) :
+    // otherwise it's the parent
+    this.element.parentNode;
+
+  this.containerSize = getSize( container );
+  var containerRect = container.getBoundingClientRect();
+
+  this.relativeStartPosition = {
+    x: elemRect.left - containerRect.left,
+    y: elemRect.top  - containerRect.top
+  };
+  // console.log( this.relativeStartPosition.x, this.relativeStartPosition.y );
+};
+
 // ----- move event ----- //
 
 Draggabilly.prototype.onmousemove = function( event ) {
@@ -252,6 +290,15 @@ Draggabilly.prototype.ontouchmove = function( event ) {
 Draggabilly.prototype.pointerMove = function( event, pointer ) {
   this.dragX = pointer.pageX - this.startPoint.x;
   this.dragY = pointer.pageY - this.startPoint.y;
+
+  if ( this.options.containment ) {
+    var relX = this.relativeStartPosition.x;
+    var relY = this.relativeStartPosition.y;
+    this.dragX = Math.max( this.dragX, -relX );
+    this.dragY = Math.max( this.dragY, -relY );
+    this.dragX = Math.min( this.dragX, this.containerSize.width - relX - this.size.width );
+    this.dragY = Math.min( this.dragY, this.containerSize.height - relY - this.size.height );
+  }
 
   this.position.x = this.startPosition.x + this.dragX;
   this.position.y = this.startPosition.y + this.dragY;

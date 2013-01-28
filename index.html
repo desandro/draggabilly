@@ -79,6 +79,7 @@
 <script src="components/eventEmitter/EventEmitter.js"></script>
 <script src="components/get-style-property/get-style-property.js"></script>
 <script src="components/classie/classie.js"></script>
+<script src="components/get-size/get-size.js"></script>
 <script src="draggabilly.js"></script>
 <script>
 
@@ -114,7 +115,9 @@ window.onload = function() {
     console.log( event.type, instance.position.x, instance.position.y );
   }
   for ( var i=0, len = elems.length; i < len; i++ ) {
-    dragger = new Draggabilly( elems[i] );
+    dragger = new Draggabilly( elems[i], {
+      containment: true
+    });
     dragger.on( 'start', handleDraggerEvent );
     dragger.on( 'drag', handleDraggerEvent );
   }
