@@ -4,6 +4,7 @@
   "dependencies": {
     "classie": "desandro/classie",
     "eventEmitter": ">=3",
+    "eventie": "desandro/eventie",
     "get-size": "desandro/get-size",
     "get-style-property": "desandro/get-style-property"
   }

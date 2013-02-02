@@ -9,6 +9,7 @@
 // dependencies
 var classie = window.classie;
 var EventEmitter = window.EventEmitter;
+var eventie = window.eventie;
 var getStyleProperty = window.getStyleProperty;
 var getSize = window.getSize;
 
@@ -83,32 +84,6 @@ if ( !requestAnimationFrame || !cancelAnimationFrame ) {
   };
 }
 
-// -------------------------- addEvent / removeEvent -------------------------- //
-
-// by John Resig - http://ejohn.org/projects/flexible-javascript-events/
-
-function addEvent( obj, type, fn ) {
-  if ( obj.addEventListener ) {
-    obj.addEventListener( type, fn, false );
-  } else if ( obj.attachEvent ) {
-    obj[ 'e' + type + fn ] = fn;
-    obj[ type + fn ] = function() {
-      obj[ 'e' + type + fn ]( window.event );
-    };
-    obj.attachEvent( "on" + type, obj[ type + fn ] );
-  }
-}
-
-function removeEvent( obj, type, fn ) {
-  if ( obj.removeEventListener ) {
-    obj.removeEventListener( type, fn, false );
-  } else if ( obj.detachEvent ) {
-    obj.detachEvent( "on" + type, obj[ type + fn ] );
-    delete obj[ type + fn ];
-    delete obj[ 'e' + type + fn ];
-  }
-}
-
 // -------------------------- support -------------------------- //
 
 var isTouch = 'createTouch' in document;
@@ -155,7 +130,7 @@ Draggabilly.prototype._create = function() {
   }
 
   // bind mousedown/touchstart event
-  addEvent( this.element, pointerStartEvent, this );
+  eventie.bind( this.element, pointerStartEvent, this );
 
 };
 
@@ -233,8 +208,8 @@ Draggabilly.prototype.pointerStart = function( event, pointer ) {
   this.dragY = 0;
 
   // add events
-  addEvent( window, pointerMoveEvent, this );
-  addEvent( window, pointerEndEvent, this );
+  eventie.bind( window, pointerMoveEvent, this );
+  eventie.bind( window, pointerEndEvent, this );
 
   classie.add( this.element, 'is-dragging' );
 
@@ -333,8 +308,8 @@ Draggabilly.prototype.pointerEnd = function( event, pointer ) {
   }
 
   // remove events
-  removeEvent( window, pointerMoveEvent, this );
-  removeEvent( window, pointerEndEvent, this );
+  eventie.unbind( window, pointerMoveEvent, this );
+  eventie.unbind( window, pointerEndEvent, this );
 
   classie.remove( this.element, 'is-dragging' );
 
