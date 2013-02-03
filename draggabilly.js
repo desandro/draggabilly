@@ -1,5 +1,6 @@
 /*!
- * Draggabilly - Make that shiz draggable
+ * Draggabilly v0.0.1
+ * Make that shiz draggable
  */
 
 ( function( window ) {
@@ -68,8 +69,8 @@ for( var i = 0; i < prefixes.length; i++ ) {
 }
 
 // fallback to setTimeout and clearTimeout if either request/cancel is not supported
-if ( !requestAnimationFrame || !cancelAnimationFrame ) {
-  requestAnimationFrame = function( callback, element ) {
+if ( !requestAnimationFrame || !cancelAnimationFrame )  {
+  requestAnimationFrame = function( callback ) {
     var currTime = new Date().getTime();
     var timeToCall = Math.max( 0, 16 - ( currTime - lastTime ) );
     var id = window.setTimeout( function() {
@@ -181,8 +182,6 @@ Draggabilly.prototype.ontouchstart = function( event ) {
 
   this.pointerStart( event, event.changedTouches[0] );
 };
-
-var pointerGUID = 0;
 
 /**
  * @param {Event} event

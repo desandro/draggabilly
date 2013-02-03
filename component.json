@@ -1,6 +1,7 @@
 {
   "name": "draggabilly",
   "main": "./draggabilly.js",
+  "version": "0.0.1",
   "dependencies": {
     "classie": "desandro/classie",
     "eventEmitter": ">=3",
