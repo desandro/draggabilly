@@ -1,5 +1,5 @@
 /*!
- * Draggabilly v0.0.1
+ * Draggabilly v0.0.2
  * Make that shiz draggable
  */
 
@@ -146,6 +146,25 @@ Draggabilly.prototype._getPosition = function() {
   // clean up 'auto' or other non-integer values
   this.position.x = isNaN( x ) ? 0 : x;
   this.position.y = isNaN( y ) ? 0 : y;
+
+  // add translate position
+  if ( !transformProperty ) {
+    return;
+  }
+  var transform = style[ transformProperty ];
+
+  if ( transform.indexOf('matrix') !== 0 ) {
+    return;
+  }
+  // split matrix(1, 0, 0, 1, x, y)
+  var matrixValues = transform.split(',');
+  // translate X value is in 12th or 4th position
+  var xIndex = transform.indexOf('matrix3d') === 0 ? 12 : 4;
+  var translateX = parseInt( matrixValues[ xIndex ], 10 );
+  // translate Y value is in 13th or 5th position
+  var translateY = parseInt( matrixValues[ xIndex + 1 ], 10 );
+  this.position.x += translateX;
+  this.position.y += translateY;
 };
 
 // -------------------------- events -------------------------- //
@@ -202,6 +221,9 @@ Draggabilly.prototype.pointerStart = function( event, pointer ) {
   // position _when_ drag began
   this.startPosition.x = this.position.x;
   this.startPosition.y = this.position.y;
+
+  // reset left/top style
+  this.setLeftTop();
 
   this.dragX = 0;
   this.dragY = 0;
@@ -342,15 +364,17 @@ var translate = is3d ?
     return 'translate( ' + x + 'px, ' + y + 'px)';
   };
 
+// left/top positioning
+Draggabilly.prototype.setLeftTop = function() {
+  this.element.style.left = this.position.x + 'px';
+  this.element.style.top  = this.position.y + 'px';
+};
+
 Draggabilly.prototype.positionDrag = transformProperty ?
   function() {
     // position with transform
     this.element.style[ transformProperty ] = translate( this.dragX, this.dragY );
-  } : function() {
-    // left/top positioning
-    this.element.style.left = this.position.x + 'px';
-    this.element.style.top  = this.position.y + 'px';
-  };
+  } : Draggabilly.prototype.setLeftTop;
 
 // --------------------------  -------------------------- //
 
