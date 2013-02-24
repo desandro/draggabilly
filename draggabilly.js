@@ -1,5 +1,5 @@
 /*!
- * Draggabilly v0.0.2
+ * Draggabilly v0.0.3
  * Make that shiz draggable
  */
 
@@ -121,6 +121,7 @@ Draggabilly.prototype._create = function() {
   this._getPosition();
 
   this.startPoint = { x: 0, y: 0 };
+  this.dragPoint = { x: 0, y: 0 };
 
   this.startPosition = extend( {}, this.position );
 
@@ -202,12 +203,21 @@ Draggabilly.prototype.ontouchstart = function( event ) {
   this.pointerStart( event, event.changedTouches[0] );
 };
 
+function setPointerPoint( point, pointer ) {
+  point.x = pointer.pageX !== undefined ? pointer.pageX : pointer.clientX;
+  point.y = pointer.pageY !== undefined ? pointer.pageY : pointer.clientY;
+}
+
 /**
  * @param {Event} event
  * @param {Event or Touch} pointer
  */
 Draggabilly.prototype.pointerStart = function( event, pointer ) {
-  event.preventDefault();
+  if ( event.preventDefault ) {
+    event.preventDefault();
+  } else {
+    event.returnValue = false;
+  }
 
   this.pointerIdentifier = pointer.identifier || 1;
 
@@ -216,8 +226,7 @@ Draggabilly.prototype.pointerStart = function( event, pointer ) {
   this.measureContainment();
 
   // point where drag began
-  this.startPoint.x = pointer.pageX;
-  this.startPoint.y = pointer.pageY;
+  setPointerPoint( this.startPoint, pointer );
   // position _when_ drag began
   this.startPosition.x = this.position.x;
   this.startPosition.y = this.position.y;
@@ -225,12 +234,13 @@ Draggabilly.prototype.pointerStart = function( event, pointer ) {
   // reset left/top style
   this.setLeftTop();
 
-  this.dragX = 0;
-  this.dragY = 0;
+  this.dragPoint.x = 0;
+  this.dragPoint.y = 0;
 
   // add events
-  eventie.bind( window, pointerMoveEvent, this );
-  eventie.bind( window, pointerEndEvent, this );
+  var binder = event.preventDefault ? window : document;
+  eventie.bind( binder, pointerMoveEvent, this );
+  eventie.bind( binder, pointerEndEvent, this );
 
   classie.add( this.element, 'is-dragging' );
 
@@ -284,20 +294,22 @@ Draggabilly.prototype.ontouchmove = function( event ) {
 };
 
 Draggabilly.prototype.pointerMove = function( event, pointer ) {
-  this.dragX = pointer.pageX - this.startPoint.x;
-  this.dragY = pointer.pageY - this.startPoint.y;
+
+  setPointerPoint( this.dragPoint, pointer );
+  this.dragPoint.x -= this.startPoint.x;
+  this.dragPoint.y -= this.startPoint.y;
 
   if ( this.options.containment ) {
     var relX = this.relativeStartPosition.x;
     var relY = this.relativeStartPosition.y;
-    this.dragX = Math.max( this.dragX, -relX );
-    this.dragY = Math.max( this.dragY, -relY );
-    this.dragX = Math.min( this.dragX, this.containerSize.width - relX - this.size.width );
-    this.dragY = Math.min( this.dragY, this.containerSize.height - relY - this.size.height );
+    this.dragPoint.x = Math.max( this.dragPoint.x, -relX );
+    this.dragPoint.y = Math.max( this.dragPoint.y, -relY );
+    this.dragPoint.x = Math.min( this.dragPoint.x, this.containerSize.width - relX - this.size.width );
+    this.dragPoint.y = Math.min( this.dragPoint.y, this.containerSize.height - relY - this.size.height );
   }
 
-  this.position.x = this.startPosition.x + this.dragX;
-  this.position.y = this.startPosition.y + this.dragY;
+  this.position.x = this.startPosition.x + this.dragPoint.x;
+  this.position.y = this.startPosition.y + this.dragPoint.y;
 
   this.emitEvent( 'drag', [ event, pointer, this ] );
 };
@@ -329,8 +341,9 @@ Draggabilly.prototype.pointerEnd = function( event, pointer ) {
   }
 
   // remove events
-  eventie.unbind( window, pointerMoveEvent, this );
-  eventie.unbind( window, pointerEndEvent, this );
+  var binder = event.preventDefault ? window : document;
+  eventie.unbind( binder, pointerMoveEvent, this );
+  eventie.unbind( binder, pointerEndEvent, this );
 
   classie.remove( this.element, 'is-dragging' );
 
@@ -373,7 +386,7 @@ Draggabilly.prototype.setLeftTop = function() {
 Draggabilly.prototype.positionDrag = transformProperty ?
   function() {
     // position with transform
-    this.element.style[ transformProperty ] = translate( this.dragX, this.dragY );
+    this.element.style[ transformProperty ] = translate( this.dragPoint.x, this.dragPoint.y );
   } : Draggabilly.prototype.setLeftTop;
 
 // --------------------------  -------------------------- //

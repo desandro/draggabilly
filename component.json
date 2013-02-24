@@ -1,12 +1,12 @@
 {
   "name": "draggabilly",
   "main": "./draggabilly.js",
-  "version": "0.0.2",
+  "version": "0.0.3",
   "dependencies": {
     "classie": "desandro/classie",
     "eventEmitter": ">=3",
     "eventie": "desandro/eventie",
-    "get-size": "desandro/get-size",
+    "get-size": "desandro/get-size#>=0.0.5",
     "get-style-property": "desandro/get-style-property"
   }
 }
