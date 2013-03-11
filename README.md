@@ -8,14 +8,16 @@
 bower install draggabilly
 ```
 
-## Initialize
+## Setup
 
 ``` js
 var elem = document.querySelector('#draggable');
 var draggie = new Draggabilly( elem, {
   // options...
-})
+});
 ```
+
+When dragging, Draggabillly will add the class `.is-dragging` to the element.
 
 ## Options
 
@@ -91,4 +93,3 @@ draggie.on( 'dragMove', function() {
 + `event` - **Type:** _Event_ - the original `mouseup` or `touchend` event
 + `pointer` - **Type:** _MouseEvent_ or _Touch_ - the event object that has `.pageX` and `.pageY`
 + `draggieInstance` - **Type:** _Draggabilly_ - the Draggabilly instance
-
