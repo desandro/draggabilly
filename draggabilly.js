@@ -87,12 +87,6 @@ if ( !requestAnimationFrame || !cancelAnimationFrame )  {
 
 // -------------------------- support -------------------------- //
 
-var isTouch = 'createTouch' in document;
-// events
-var pointerStartEvent = isTouch ? 'touchstart' : 'mousedown';
-var pointerMoveEvent = isTouch ? 'touchmove' : 'mousemove';
-var pointerEndEvent = isTouch ? 'touchend' : 'mouseup';
-
 var transformProperty = getStyleProperty('transform');
 // TODO fix quick & dirty check for 3D support
 var is3d = !!getStyleProperty('perspective');
@@ -132,9 +126,11 @@ Draggabilly.prototype._create = function() {
     this.element.style.position = 'relative';
   }
 
-  // bind mousedown/touchstart event
-  eventie.bind( this.element, pointerStartEvent, this );
-
+  // bind pointer start event
+  // listen for both, for devices like Chrome Pixel
+  //   which has touch and mouse events
+  eventie.bind( this.element, 'mousedown', this );
+  eventie.bind( this.element, 'touchstart', this );
 };
 
 // get left/top position from style
@@ -241,8 +237,14 @@ Draggabilly.prototype.dragStart = function( event, pointer ) {
 
   // add events
   var binder = event.preventDefault ? window : document;
-  eventie.bind( binder, pointerMoveEvent, this );
-  eventie.bind( binder, pointerEndEvent, this );
+
+  var isTouch = event.type === 'touchdown';
+  this.pointerMoveEvent = isTouch ? 'touchmove' : 'mousemove';
+  this.pointerEndEvent = isTouch ? 'touchend' : 'mouseup';
+
+  // bind move and and events
+  eventie.bind( binder, this.pointerMoveEvent, this );
+  eventie.bind( binder, this.pointerEndEvent, this );
 
   classie.add( this.element, 'is-dragging' );
 
@@ -354,8 +356,11 @@ Draggabilly.prototype.dragEnd = function( event, pointer ) {
 
   // remove events
   var binder = event.preventDefault ? window : document;
-  eventie.unbind( binder, pointerMoveEvent, this );
-  eventie.unbind( binder, pointerEndEvent, this );
+
+  eventie.unbind( binder, this.pointerMoveEvent, this );
+  eventie.unbind( binder, this.pointerEndEvent, this );
+  delete this.pointerMoveEvent;
+  delete this.pointerEndEvent;
 
   classie.remove( this.element, 'is-dragging' );
 
