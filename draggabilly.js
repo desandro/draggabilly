@@ -192,7 +192,7 @@ Draggabilly.prototype.getTouch = function( touches ) {
 // ----- start event ----- //
 
 Draggabilly.prototype.onmousedown = function( event ) {
-  this.pointerStart( event, event );
+  this.dragStart( event, event );
 };
 
 Draggabilly.prototype.ontouchstart = function( event ) {
@@ -201,7 +201,7 @@ Draggabilly.prototype.ontouchstart = function( event ) {
     return;
   }
 
-  this.pointerStart( event, event.changedTouches[0] );
+  this.dragStart( event, event.changedTouches[0] );
 };
 
 function setPointerPoint( point, pointer ) {
@@ -210,10 +210,11 @@ function setPointerPoint( point, pointer ) {
 }
 
 /**
+ * drag start
  * @param {Event} event
  * @param {Event or Touch} pointer
  */
-Draggabilly.prototype.pointerStart = function( event, pointer ) {
+Draggabilly.prototype.dragStart = function( event, pointer ) {
   if ( event.preventDefault ) {
     event.preventDefault();
   } else {
@@ -268,7 +269,7 @@ Draggabilly.prototype.measureContainment = function() {
   var container = isElement( containment ) ? containment :
     // fallback to querySelector if string
     typeof containment === 'string' ? document.querySelector( containment ) :
-    // otherwise it's the parent
+    // otherwise just `true`, use the parent
     this.element.parentNode;
 
   this.containerSize = getSize( container );
@@ -284,17 +285,22 @@ Draggabilly.prototype.measureContainment = function() {
 // ----- move event ----- //
 
 Draggabilly.prototype.onmousemove = function( event ) {
-  this.pointerMove( event, event );
+  this.dragMove( event, event );
 };
 
 Draggabilly.prototype.ontouchmove = function( event ) {
   var touch = this.getTouch( event.changedTouches );
   if ( touch ) {
-    this.pointerMove( event, touch );
+    this.dragMove( event, touch );
   }
 };
 
-Draggabilly.prototype.pointerMove = function( event, pointer ) {
+/**
+ * drag move
+ * @param {Event} event
+ * @param {Event or Touch} pointer
+ */
+Draggabilly.prototype.dragMove = function( event, pointer ) {
 
   setPointerPoint( this.dragPoint, pointer );
   this.dragPoint.x -= this.startPoint.x;
@@ -319,17 +325,22 @@ Draggabilly.prototype.pointerMove = function( event, pointer ) {
 // ----- end event ----- //
 
 Draggabilly.prototype.onmouseup = function( event ) {
-  this.pointerEnd( event, event );
+  this.dragEnd( event, event );
 };
 
 Draggabilly.prototype.ontouchend = function( event ) {
   var touch = this.getTouch( event.changedTouches );
   if ( touch ) {
-    this.pointerEnd( event, touch );
+    this.dragEnd( event, touch );
   }
 };
 
-Draggabilly.prototype.pointerEnd = function( event, pointer ) {
+/**
+ * drag end
+ * @param {Event} event
+ * @param {Event or Touch} pointer
+ */
+Draggabilly.prototype.dragEnd = function( event, pointer ) {
   this.isDragging = false;
 
   delete this.pointerIdentifier;
