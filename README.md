@@ -5,3 +5,13 @@
 ## Options
 
 containment
+
+handle
+
+## Events
+
+start
+
+move
+
+end

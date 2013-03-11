@@ -126,12 +126,27 @@ Draggabilly.prototype._create = function() {
     this.element.style.position = 'relative';
   }
 
-  // bind pointer start event
-  // listen for both, for devices like Chrome Pixel
-  //   which has touch and mouse events
-  eventie.bind( this.element, 'mousedown', this );
-  eventie.bind( this.element, 'touchstart', this );
+  this.setHandles();
+
 };
+
+/**
+ * set this.handles and bind start events to 'em
+ */
+Draggabilly.prototype.setHandles = function() {
+  this.handles = this.options.handle ?
+    this.element.querySelectorAll( this.options.handle ) : [ this.element ];
+
+  for ( var i=0, len = this.handles.length; i < len; i++ ) {
+    var handle = this.handles[i];
+    // bind pointer start event
+    // listen for both, for devices like Chrome Pixel
+    //   which has touch and mouse events
+    eventie.bind( handle, 'mousedown', this );
+    eventie.bind( handle, 'touchstart', this );
+  }
+};
+
 
 // get left/top position from style
 Draggabilly.prototype._getPosition = function() {
@@ -354,8 +369,7 @@ Draggabilly.prototype.dragEnd = function( event, pointer ) {
   // use top left position when complete
   if ( transformProperty ) {
     this.element.style[ transformProperty ] = '';
-    this.element.style.left = this.position.x + 'px';
-    this.element.style.top =  this.position.y + 'px';
+    this.setLeftTop();
   }
 
   // remove events

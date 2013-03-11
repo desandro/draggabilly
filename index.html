@@ -24,6 +24,25 @@
       background: blue;
     }
 
+    #has-handles {
+      position: relative;
+      left: 240px;
+      top: 100px;
+      background: orange;
+    }
+
+    #has-handles .handle {
+      background: #666;
+      position: absolute;
+      width: 40px;
+      height: 40px;
+    }
+
+    #has-handles .handle2 {
+      right: 10px;
+      bottom: 10px;
+    }
+
     .is-dragging {
       opacity: 0.5;
       /* hack for artifacts http://stackoverflow.com/a/12023155 */
@@ -63,6 +82,11 @@
 
   <div id="ex1" class="box"></div>
   <div id="ex2" class="box"></div>
+
+  <div id="has-handles" class="box">
+    <div class="handle handle1"></div>
+    <div class="handle handle2"></div>
+  </div>
 
   <div id="container1" class="container">
     <div class="box"></div>
@@ -106,6 +130,9 @@ window.onload = function() {
     console.log( 'stop', instance.position.x, instance.position.y, event.type, pointer.pageX, pointer.pageY );
   });
 
+  var handleDraggie = new Draggabilly( document.querySelector('#has-handles'), {
+    handle: '.handle'
+  });
 
   var container1Draggers = [];
   var dragger;
