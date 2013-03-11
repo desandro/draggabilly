@@ -102,6 +102,7 @@ var is3d = !!getStyleProperty('perspective');
 function Draggabilly( element, options ) {
   this.element = element;
 
+  this.options = extend( {}, this.options );
   extend( this.options, options );
 
   this._create();
