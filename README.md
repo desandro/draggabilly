@@ -10,8 +10,8 @@ handle
 
 ## Events
 
-start
+dragStart
 
-move
+dragMove
 
-end
+dragEnd
