@@ -1,1 +1,4 @@
 components/
+node_modules/
+build/
+
