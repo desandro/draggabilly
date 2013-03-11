@@ -145,12 +145,16 @@ Draggabilly.prototype._getPosition = function() {
   this.position.x = isNaN( x ) ? 0 : x;
   this.position.y = isNaN( y ) ? 0 : y;
 
-  // add translate position
+  this._addTransformPosition( style );
+};
+
+// add transform: translate( x, y ) to position
+Draggabilly.prototype._addTransformPosition = function( style ) {
   if ( !transformProperty ) {
     return;
   }
   var transform = style[ transformProperty ];
-
+  // bail out if value is 'none'
   if ( transform.indexOf('matrix') !== 0 ) {
     return;
   }
