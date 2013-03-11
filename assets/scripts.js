@@ -5,11 +5,28 @@
 
 window.onload = function() {
 
+  'use strict';
+
+  var Draggabilly = window.Draggabilly;
+
   // ----- basic ----- //
 
   ( function() {
     var elem = document.querySelector('#basic');
-    var draggie = new Draggabilly( elem );
+    new Draggabilly( elem );
+  })();
+
+  // ----- containment ----- //
+
+  ( function() {
+    var container = document.querySelector('#container');
+    var elems = container.querySelectorAll('.draggie');
+    for ( var i=0, len = elems.length; i < len; i++ ) {
+      var elem = elems[i];
+      new Draggabilly( elem, {
+        containment: true
+      });
+    }
   })();
 
 };
