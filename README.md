@@ -36,6 +36,17 @@ When dragging, Draggabillly will add the class `.is-dragging` to the element.
 
 ### containment
 
+<div class="example-frame">
+  <div id="container" class="example">
+    <div class="draggie"></div>
+    <div class="draggie"></div>
+    <div class="draggie"></div>
+    <div class="draggie"></div>
+    <div class="draggie"></div>
+    <div class="draggie"></div>
+  </div>
+</div>
+
 **Type:** _Element_, Selector _String_, or _Boolean_
 
 ``` js
