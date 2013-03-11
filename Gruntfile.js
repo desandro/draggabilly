@@ -3,6 +3,8 @@
 
 module.exports = function( grunt ) {
 
+  var componentJSON = grunt.file.readJSON('component.json');
+
   grunt.initConfig({
 
     concat: {
@@ -14,10 +16,11 @@ module.exports = function( grunt ) {
       //   src: [ 'js/controller.js', 'js/pages/*.js' ],
       //   dest: 'build/js/packery-site.js'
       // },
-      // pkgd: {
-      //   // src will be set in package-sources task
-      //   dest: 'build/packery.pkgd.js'
-      // },
+      pkgd: {
+        // src will be set in package-sources task
+        src: [ componentJSON.main ],
+        dest: 'build/draggabilly.pkgd.js'
+      },
       css: {
         src: [ 'components/normalize-css/normalize.css', 'assets/*.css' ],
         dest: 'build/styles.css'
@@ -27,25 +30,7 @@ module.exports = function( grunt ) {
     uglify: {
       pkgd: {
         files: {
-          'build/packery.pkgd.min.js': [ 'build/packery.pkgd.js' ]
-        }
-      },
-      js: {
-        files: {
-          // 'build/js/packery-site.min.js' will be set in bower-list-map
-        }
-      }
-    },
-
-    // ----- handlebars templating ----- //
-    hbarz: {
-      docs: {
-        files: {
-          'build/': 'content/*'
-        },
-        options: {
-          templates: 'templates/*.mustache',
-          defaultTemplate: 'page'
+          // 'build/draggabilly.pkgd.min.js' will be set in bower-list-sources
         }
       }
     },
@@ -66,7 +51,7 @@ module.exports = function( grunt ) {
   // load all tasks in tasks/
   grunt.loadTasks('tasks/');
 
-  grunt.registerTask( 'default', 'concat page'.split(' ') );
+  grunt.registerTask( 'default', 'bower-list-sources concat uglify page'.split(' ') );
 
   
 
