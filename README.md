@@ -4,11 +4,24 @@
 
 ## Install
 
+Grab a packaged source file:
+
++ [draggabilly.pkgd.min.js](draggabilly.pkgd.min.js) for production
++ [draggabilly.pkgd.js](draggabilly.pkgd.js) for development
+
+Or if you're cool with the command line, install with [Bower](http://twitter.github.com/bower).
+
 ``` bash
 bower install draggabilly
 ```
 
-## Setup
+## Usage
+
+<div class="example-frame">
+  <div class="example">
+    <div id="basic" class="draggie"></div>
+  </div>
+</div>
 
 ``` js
 var elem = document.querySelector('#draggable');
