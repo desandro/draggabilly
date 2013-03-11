@@ -37,8 +37,8 @@ module.exports = function( grunt ) {
 
     watch: {
       content: {
-        files: [ 'content/*', 'templates/*.mustache' ],
-        tasks: [ 'bower-map', 'hbarz' ]
+        files: [ 'assets/*', 'README.md' ],
+        tasks: [ 'concat', 'page' ]
       }
     }
 

@@ -6,3 +6,30 @@ body {
   padding: 20px;
   line-height: 1.5;
 }
+
+/* examples
+------------------------- */
+
+.example-frame {
+  position: relative;
+}
+
+.example {
+  position: absolute;
+  left: 50%;
+}
+
+
+/* draggabillies
+------------------------- */
+
+.draggie {
+  width: 160px;
+  height: 160px;
+  background: red;
+}
+
+.draggie.is-dragging {
+  opacity: 0.5;
+  z-index: 2;
+}
