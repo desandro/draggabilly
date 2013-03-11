@@ -1,5 +1,6 @@
 /*!
- * Draggabilly - Make that shiz draggable
+ * Draggabilly v0.0.3
+ * Make that shiz draggable
  */
 
 ( function( window ) {
@@ -68,8 +69,8 @@ for( var i = 0; i < prefixes.length; i++ ) {
 }
 
 // fallback to setTimeout and clearTimeout if either request/cancel is not supported
-if ( !requestAnimationFrame || !cancelAnimationFrame ) {
-  requestAnimationFrame = function( callback, element ) {
+if ( !requestAnimationFrame || !cancelAnimationFrame )  {
+  requestAnimationFrame = function( callback ) {
     var currTime = new Date().getTime();
     var timeToCall = Math.max( 0, 16 - ( currTime - lastTime ) );
     var id = window.setTimeout( function() {
@@ -120,6 +121,7 @@ Draggabilly.prototype._create = function() {
   this._getPosition();
 
   this.startPoint = { x: 0, y: 0 };
+  this.dragPoint = { x: 0, y: 0 };
 
   this.startPosition = extend( {}, this.position );
 
@@ -145,6 +147,25 @@ Draggabilly.prototype._getPosition = function() {
   // clean up 'auto' or other non-integer values
   this.position.x = isNaN( x ) ? 0 : x;
   this.position.y = isNaN( y ) ? 0 : y;
+
+  // add translate position
+  if ( !transformProperty ) {
+    return;
+  }
+  var transform = style[ transformProperty ];
+
+  if ( transform.indexOf('matrix') !== 0 ) {
+    return;
+  }
+  // split matrix(1, 0, 0, 1, x, y)
+  var matrixValues = transform.split(',');
+  // translate X value is in 12th or 4th position
+  var xIndex = transform.indexOf('matrix3d') === 0 ? 12 : 4;
+  var translateX = parseInt( matrixValues[ xIndex ], 10 );
+  // translate Y value is in 13th or 5th position
+  var translateY = parseInt( matrixValues[ xIndex + 1 ], 10 );
+  this.position.x += translateX;
+  this.position.y += translateY;
 };
 
 // -------------------------- events -------------------------- //
@@ -182,14 +203,21 @@ Draggabilly.prototype.ontouchstart = function( event ) {
   this.pointerStart( event, event.changedTouches[0] );
 };
 
-var pointerGUID = 0;
+function setPointerPoint( point, pointer ) {
+  point.x = pointer.pageX !== undefined ? pointer.pageX : pointer.clientX;
+  point.y = pointer.pageY !== undefined ? pointer.pageY : pointer.clientY;
+}
 
 /**
  * @param {Event} event
  * @param {Event or Touch} pointer
  */
 Draggabilly.prototype.pointerStart = function( event, pointer ) {
-  event.preventDefault();
+  if ( event.preventDefault ) {
+    event.preventDefault();
+  } else {
+    event.returnValue = false;
+  }
 
   this.pointerIdentifier = pointer.identifier || 1;
 
@@ -198,18 +226,21 @@ Draggabilly.prototype.pointerStart = function( event, pointer ) {
   this.measureContainment();
 
   // point where drag began
-  this.startPoint.x = pointer.pageX;
-  this.startPoint.y = pointer.pageY;
+  setPointerPoint( this.startPoint, pointer );
   // position _when_ drag began
   this.startPosition.x = this.position.x;
   this.startPosition.y = this.position.y;
 
-  this.dragX = 0;
-  this.dragY = 0;
+  // reset left/top style
+  this.setLeftTop();
+
+  this.dragPoint.x = 0;
+  this.dragPoint.y = 0;
 
   // add events
-  eventie.bind( window, pointerMoveEvent, this );
-  eventie.bind( window, pointerEndEvent, this );
+  var binder = event.preventDefault ? window : document;
+  eventie.bind( binder, pointerMoveEvent, this );
+  eventie.bind( binder, pointerEndEvent, this );
 
   classie.add( this.element, 'is-dragging' );
 
@@ -263,20 +294,22 @@ Draggabilly.prototype.ontouchmove = function( event ) {
 };
 
 Draggabilly.prototype.pointerMove = function( event, pointer ) {
-  this.dragX = pointer.pageX - this.startPoint.x;
-  this.dragY = pointer.pageY - this.startPoint.y;
+
+  setPointerPoint( this.dragPoint, pointer );
+  this.dragPoint.x -= this.startPoint.x;
+  this.dragPoint.y -= this.startPoint.y;
 
   if ( this.options.containment ) {
     var relX = this.relativeStartPosition.x;
     var relY = this.relativeStartPosition.y;
-    this.dragX = Math.max( this.dragX, -relX );
-    this.dragY = Math.max( this.dragY, -relY );
-    this.dragX = Math.min( this.dragX, this.containerSize.width - relX - this.size.width );
-    this.dragY = Math.min( this.dragY, this.containerSize.height - relY - this.size.height );
+    this.dragPoint.x = Math.max( this.dragPoint.x, -relX );
+    this.dragPoint.y = Math.max( this.dragPoint.y, -relY );
+    this.dragPoint.x = Math.min( this.dragPoint.x, this.containerSize.width - relX - this.size.width );
+    this.dragPoint.y = Math.min( this.dragPoint.y, this.containerSize.height - relY - this.size.height );
   }
 
-  this.position.x = this.startPosition.x + this.dragX;
-  this.position.y = this.startPosition.y + this.dragY;
+  this.position.x = this.startPosition.x + this.dragPoint.x;
+  this.position.y = this.startPosition.y + this.dragPoint.y;
 
   this.emitEvent( 'drag', [ event, pointer, this ] );
 };
@@ -308,8 +341,9 @@ Draggabilly.prototype.pointerEnd = function( event, pointer ) {
   }
 
   // remove events
-  eventie.unbind( window, pointerMoveEvent, this );
-  eventie.unbind( window, pointerEndEvent, this );
+  var binder = event.preventDefault ? window : document;
+  eventie.unbind( binder, pointerMoveEvent, this );
+  eventie.unbind( binder, pointerEndEvent, this );
 
   classie.remove( this.element, 'is-dragging' );
 
@@ -343,15 +377,17 @@ var translate = is3d ?
     return 'translate( ' + x + 'px, ' + y + 'px)';
   };
 
+// left/top positioning
+Draggabilly.prototype.setLeftTop = function() {
+  this.element.style.left = this.position.x + 'px';
+  this.element.style.top  = this.position.y + 'px';
+};
+
 Draggabilly.prototype.positionDrag = transformProperty ?
   function() {
     // position with transform
-    this.element.style[ transformProperty ] = translate( this.dragX, this.dragY );
-  } : function() {
-    // left/top positioning
-    this.element.style.left = this.position.x + 'px';
-    this.element.style.top  = this.position.y + 'px';
-  };
+    this.element.style[ transformProperty ] = translate( this.dragPoint.x, this.dragPoint.y );
+  } : Draggabilly.prototype.setLeftTop;
 
 // --------------------------  -------------------------- //
 
