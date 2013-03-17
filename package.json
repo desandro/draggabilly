@@ -3,8 +3,7 @@
   "version": "0.0.3",
   "description": "make that shiz draggable",
   "main": "draggabilly.js",
-  "dependencies": {
-  },
+  "dependencies": {},
   "devDependencies": {
     "grunt": "~0.4.0",
     "grunt-contrib-concat": "~0.1.3",
@@ -13,7 +12,7 @@
     "grunt-contrib-watch": "~0.3.1",
     "handlebars": "~1.0.10",
     "highlight.js": "~7.3.0",
-    "marked": "https://github.com/vladikoff/marked/tarball/master#~0.2.8"
+    "marked": "~0.2.8"
   },
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1"
