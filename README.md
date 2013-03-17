@@ -4,6 +4,8 @@
 
 [draggabilly.desandro.com](http://draggabilly.desandro.com)
 
+Rad because it supports IE8+ and multi-touch.
+
 ## Install
 
 Grab a packaged source file:
