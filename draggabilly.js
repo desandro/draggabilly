@@ -1,6 +1,7 @@
 /*!
  * Draggabilly v0.0.3
  * Make that shiz draggable
+ * http://draggabilly.desandro.com
  */
 
 ( function( window ) {
