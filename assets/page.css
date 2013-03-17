@@ -17,7 +17,8 @@ body {
 /* type
 ------------------------- */
 
-h1, h2, h3, h4, h5 {
+h1, h2, h3, h4, h5,
+.tagline {
   font-family: 'Montserrat', Gotham, 'Proxima Nova', 'Lucida Sans', 'Lucida Sans Regular', 'Lucida Grande', 'Lucida Sans Unicode', Arial, sans-serif;
 }
 
@@ -26,6 +27,7 @@ h1, h2, h3, h4, h5 {
 ------------------------- */
 
 h1, h2, h3, h4, h5,
+p,
 ul, ol, pre {
   margin-top: 0;
   margin-bottom: 0.8em;
@@ -43,6 +45,15 @@ h2 {
 }
 
 h3, h4, h5 { font-weight: normal; }
+
+a {
+  color: #80D;
+  text-decoration: none;
+}
+
+a:hover {
+  text-decoration: underline;
+}
 
 ul, ol {
   padding-left: 1.8em;
@@ -67,6 +78,10 @@ pre {
 pre code {
   border-radius: 0;
   padding: 0;
+}
+
+.tagline {
+  font-size: 20px;
 }
 
 /* layout
@@ -181,12 +196,13 @@ code .hexcolor { color: #F63; }
 code .at_rule { color: #088; }
 
 
+/* tablet and desktop */
 @media screen and (min-width: 720px) {
 
   h1 {
     font-size: 70px;
     line-height: 1.2;
-    margin: 0;
+    margin-bottom: 0.3em;
   }
 
   #content {

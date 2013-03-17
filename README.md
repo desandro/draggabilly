@@ -1,6 +1,14 @@
 # Draggabilly
 
-**Make that shiz draggable**
+<div class="example-frame">
+  <div class="example">
+    <div id="basic" class="draggie"></div>
+  </div>
+</div>
+
+<p class="tagline">Make that shiz draggable</p>
+
+[github.com/desandro/draggabilly](http://github.com/desandro/draggabilly)
 
 ## Install
 
@@ -16,12 +24,6 @@ bower install draggabilly
 ```
 
 ## Usage
-
-<div class="example-frame">
-  <div class="example">
-    <div id="basic" class="draggie"></div>
-  </div>
-</div>
 
 ``` js
 var elem = document.querySelector('#draggable');
