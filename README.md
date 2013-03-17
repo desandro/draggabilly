@@ -10,6 +10,8 @@
 
 [github.com/desandro/draggabilly](http://github.com/desandro/draggabilly)
 
+Rad because it supports IE8+ and multi-touch.
+
 ## Install
 
 Grab a packaged source file:
