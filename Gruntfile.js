@@ -35,10 +35,18 @@ module.exports = function( grunt ) {
       }
     },
 
+    copy: {
+      scripts: {
+        files: {
+          'build/scripts.js': 'assets/scripts.js'
+        }
+      }
+    },
+
     watch: {
       content: {
         files: [ 'assets/*', 'README.md' ],
-        tasks: [ 'concat', 'page' ]
+        tasks: [ 'concat', 'page', 'copy' ]
       },
       js: {
         files: [ 'draggabilly.js' ],
@@ -48,15 +56,20 @@ module.exports = function( grunt ) {
 
   });
 
-
   grunt.loadNpmTasks('grunt-contrib-concat');
+  grunt.loadNpmTasks('grunt-contrib-copy');
   grunt.loadNpmTasks('grunt-contrib-uglify');
   grunt.loadNpmTasks('grunt-contrib-watch');
+
   // load all tasks in tasks/
   grunt.loadTasks('tasks/');
 
-  grunt.registerTask( 'default', 'bower-list-sources concat uglify page'.split(' ') );
-
-  
+  grunt.registerTask( 'default', [
+    'bower-list-sources',
+    'concat',
+    'uglify',
+    'page',
+    'copy'
+  ]);
 
 };
