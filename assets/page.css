@@ -25,6 +25,12 @@ h1, h2, h3, h4, h5 {
 /* base
 ------------------------- */
 
+h1, h2, h3, h4, h5,
+ul, ol, pre {
+  margin-top: 0;
+  margin-bottom: 0.8em;
+}
+
 h1 {
   font-size: 70px;
   line-height: 1.2;
@@ -53,6 +59,7 @@ pre, code {
 
 code {
   padding: 0.1em 0.2em;
+  border-radius: 2px;
 }
 
 pre {
@@ -61,7 +68,8 @@ pre {
 }
 
 pre code {
-  border-radius: 2px;
+  border-radius: 0;
+  padding: 0;
 }
 
 /* layout
@@ -143,4 +151,14 @@ pre code {
   width:  60px;
   height: 60px;
   border-radius: 5px;
+}
+
+#evented pre {
+  background: #555;
+  color: white;
+}
+
+#evented pre code {
+  color: white;
+  background: none;
 }

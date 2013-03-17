@@ -74,12 +74,22 @@ Specifies on what element the drag interaction starts.
 
 Draggabilly is an Event Emitter. You can bind event listeners to events.
 
+<div class="example-frame">
+  <div id="evented" class="example">
+    <pre><code>
+
+
+</code></pre>
+    <div class="draggie"></div>
+  </div>
+</div>
+
 ``` js
-var draggie = new Packery( document.querySelector('#draggable') );
+var draggie = new Packery( elem );
 
 function onDragMove( event, pointer, instance ) {
-  console.log( 'dragMove on ' + event.type + ' with  ' +
-    pointer.pageX + ', ' + pointer.pageY + '; ' +
+  console.log( 'dragMove on ' + event.type +
+    pointer.pageX + ', ' + pointer.pageY +
     ' position at ' + instance.position.x + ', ' + instance.position.y );
 }
 // bind event listener
