@@ -29,5 +29,14 @@ window.onload = function() {
     }
   })();
 
+  // ----- handle ----- //
+
+  ( function() {
+    var elem = document.querySelector('#has-handle');
+    new Draggabilly( elem, {
+      handle: '.handle'
+    });
+  })();
+
 };
 

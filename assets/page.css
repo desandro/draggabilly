@@ -1,11 +1,78 @@
 /* Draggabilly lil page styles
 ------------------------- */
 
-body {
-  font-family: sans-serif;
-  padding: 20px;
-  line-height: 1.5;
+* {
+  -webkit-box-sizing: border-box;
+  -moz-box-sizing: border-box;
+  box-sizing: border-box;
 }
+
+body {
+  font-family: 'Lucida Sans', 'Lucida Sans Regular', 'Lucida Grande', 'Lucida Sans Unicode', Arial, sans-serif;
+  font-size: 15px;
+  line-height: 1.5;
+  color: #444;
+}
+
+/* type
+------------------------- */
+
+h1, h2, h3, h4, h5 {
+  font-family: 'Montserrat', Gotham, 'Proxima Nova', 'Lucida Sans', 'Lucida Sans Regular', 'Lucida Grande', 'Lucida Sans Unicode', Arial, sans-serif;
+}
+
+
+/* base
+------------------------- */
+
+h1 {
+  font-size: 70px;
+  line-height: 1.2;
+  margin: 0;
+/*  color: #F90; */
+  letter-spacing: -0.03em;
+}
+
+h2 {
+  border-top: 2px solid #DDD;
+  padding-top: 0.5em;
+  margin-top: 2.0em;
+}
+
+h3, h4, h5 { font-weight: normal; }
+
+ul, ol {
+  padding-left: 1.8em;
+}
+
+pre, code {
+  font-family: Consolas, Menlo, monospace;
+  background: #FAFAFA;
+  color: #111;
+}
+
+code {
+  padding: 0.1em 0.2em;
+}
+
+pre {
+  padding: 0.5em;
+  border-radius: 7px;
+}
+
+pre code {
+  border-radius: 2px;
+}
+
+/* layout
+------------------------- */
+
+#content {
+  width: 60%;
+  padding: 1.0em 2%;
+  background: #E5E5E5;
+}
+
 
 /* examples
 ------------------------- */
@@ -14,9 +81,10 @@ body {
   position: relative;
 }
 
-.example {
+.example-frame .example {
   position: absolute;
-  left: 50%;
+  left: 107.5%;
+  width: 64%;
 }
 
 
@@ -24,9 +92,10 @@ body {
 ------------------------- */
 
 .draggie {
-  width: 160px;
-  height: 160px;
-  background: red;
+  width:  150px;
+  height: 150px;
+  background: #FA0;
+  border-radius: 10px;
 }
 
 .draggie.is-dragging {
@@ -34,18 +103,44 @@ body {
   z-index: 2;
 }
 
+.draggie.is-dragging,
+.draggie:hover,
+#has-handle .handle:hover {
+  cursor: move;
+  background: #0AF;
+}
+
 /* specific examples
 ------------------------- */
 
 #container {
-  width: 300px;
-  height: 200px;
-  border: 2px solid;
+  top: -2.4em;
+  height: 150px;
+  padding: 15px 2.5%;
+  border-radius: 10px;
+  border: 6px solid #FA0;
 }
 
 #container .draggie {
-  width: 80px;
+  width: 23.3%;
   height: 80px;
   float: left;
-  margin: 10px;
+  margin: 15px 5%;
+}
+
+#has-handle {
+  padding: 20px;
+}
+
+#has-handle:hover {
+  cursor: default;
+  background: #FA0;
+}
+
+#has-handle .handle {
+  background: #555;
+  background: hsla(0, 0%, 0%, 0.4);
+  width:  60px;
+  height: 60px;
+  border-radius: 5px;
 }

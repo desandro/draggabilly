@@ -39,6 +39,10 @@ module.exports = function( grunt ) {
       content: {
         files: [ 'assets/*', 'README.md' ],
         tasks: [ 'concat', 'page' ]
+      },
+      js: {
+        files: [ 'draggabilly.js' ],
+        tasks: [ 'concat', 'uglify' ]
       }
     }
 

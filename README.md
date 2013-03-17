@@ -41,9 +41,6 @@ When dragging, Draggabillly will add the class `.is-dragging` to the element.
     <div class="draggie"></div>
     <div class="draggie"></div>
     <div class="draggie"></div>
-    <div class="draggie"></div>
-    <div class="draggie"></div>
-    <div class="draggie"></div>
   </div>
 </div>
 
@@ -56,6 +53,14 @@ containment: '#container'
 Contains movement to the bounds of the element. If `true`, the container will be the parent element.
 
 ### handle
+
+<div class="example-frame">
+  <div class="example">
+    <div id="has-handle" class="draggie">
+      <div class="handle"></div>
+    </div>
+  </div>
+</div>
 
 **Type:** Selector _String_
 
