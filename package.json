@@ -12,10 +12,8 @@
     "grunt-contrib-watch": "~0.3.1",
     "handlebars": "~1.0.10",
     "highlight.js": "~7.3.0",
-    "marked": "~0.2.8"
-  },
-  "scripts": {
-    "test": "echo \"Error: no test specified\" && exit 1"
+    "marked": "~0.2.8",
+    "grunt-contrib-copy": "~0.4.0"
   },
   "repository": {
     "type": "git",
