@@ -5,21 +5,24 @@ module.exports = function( grunt ) {
 
   var componentJSON = grunt.file.readJSON('component.json');
 
+  // get banner comment from draggabilly.js
+  var banner = ( function() {
+    var src = grunt.file.read('draggabilly.js');
+    var re = new RegExp('^\\s*(?:\\/\\*[\\s\\S]*?\\*\\/)\\s*');
+    var matches = src.match( re );
+    return matches[0].replace( 'Draggabilly', 'Draggabilly PACKAGED' );
+  })();
+
   grunt.initConfig({
 
     concat: {
-      // options: {
-      //   // stripBanners: true,
-      //   // banner: '/* <%= grunt.template.today("yyyy-mm-dd") %> */\n'
-      // },
-      // js: {
-      //   src: [ 'js/controller.js', 'js/pages/*.js' ],
-      //   dest: 'build/js/packery-site.js'
-      // },
       pkgd: {
         // src will be set in package-sources task
         src: [ componentJSON.main ],
-        dest: 'build/draggabilly.pkgd.js'
+        dest: 'build/draggabilly.pkgd.js',
+        options: {
+          banner: banner
+        }
       },
       css: {
         src: [ 'components/normalize-css/normalize.css', 'assets/*.css' ],
@@ -31,6 +34,9 @@ module.exports = function( grunt ) {
       pkgd: {
         files: {
           // 'build/draggabilly.pkgd.min.js' will be set in bower-list-sources
+        },
+        options: {
+          banner: banner
         }
       }
     },
