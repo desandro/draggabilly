@@ -1,14 +1,23 @@
 # Draggabilly
 
-**Make that shiz draggable**
+<p class="tagline">Make that shiz draggable</p>
+
+[draggabilly.desandro.com](http://draggabilly.desandro.com)
 
 ## Install
+
+Grab a packaged source file:
+
++ [http://draggabilly.desandro.com/draggabilly.pkgd.min.js](draggabilly.pkgd.min.js) for production
++ [http://draggabilly.desandro.com/draggabilly.pkgd.js](draggabilly.pkgd.js) for development
+
+Or if you're cool with the command line, install with [Bower](http://twitter.github.com/bower).
 
 ``` bash
 bower install draggabilly
 ```
 
-## Setup
+## Usage
 
 ``` js
 var elem = document.querySelector('#draggable');
@@ -46,11 +55,11 @@ Specifies on what element the drag interaction starts.
 Draggabilly is an Event Emitter. You can bind event listeners to events.
 
 ``` js
-var draggie = new Packery( document.querySelector('#draggable') );
+var draggie = new Packery( elem );
 
 function onDragMove( event, pointer, instance ) {
-  console.log( 'dragMove on ' + event.type + ' with  ' +
-    pointer.pageX + ', ' + pointer.pageY + '; ' +
+  console.log( 'dragMove on ' + event.type +
+    pointer.pageX + ', ' + pointer.pageY +
     ' position at ' + instance.position.x + ', ' + instance.position.y );
 }
 // bind event listener
@@ -93,3 +102,7 @@ draggie.on( 'dragMove', function() {
 + `event` - **Type:** _Event_ - the original `mouseup` or `touchend` event
 + `pointer` - **Type:** _MouseEvent_ or _Touch_ - the event object that has `.pageX` and `.pageY`
 + `draggieInstance` - **Type:** _Draggabilly_ - the Draggabilly instance
+
+## License
+
+Draggabilly is released under the [MIT License](http://desandro.mit-license.org/). Have at it.
