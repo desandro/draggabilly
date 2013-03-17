@@ -1,5 +1,5 @@
 /*!
- * Draggabilly v0.1.0
+ * Draggabilly v0.1.1
  * Make that shiz draggable
  * http://draggabilly.desandro.com
  */
@@ -258,7 +258,7 @@ Draggabilly.prototype.dragStart = function( event, pointer ) {
   // add events
   var binder = event.preventDefault ? window : document;
 
-  var isTouch = event.type === 'touchdown';
+  var isTouch = event.type === 'touchstart';
   this.pointerMoveEvent = isTouch ? 'touchmove' : 'mousemove';
   this.pointerEndEvent = isTouch ? 'touchend' : 'mouseup';
 
