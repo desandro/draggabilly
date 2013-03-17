@@ -8,5 +8,9 @@
     "eventie": "desandro/eventie",
     "get-size": "desandro/get-size#>=0.0.5",
     "get-style-property": "desandro/get-style-property"
+  },
+  "devDependencies": {
+    "doc-ready": "desandro/doc-ready",
+    "normalize-css": "~2.1"
   }
 }

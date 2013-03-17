@@ -3,7 +3,7 @@
  */
 
 
-window.onload = function() {
+docReady( function() {
 
   'use strict';
 
@@ -68,5 +68,5 @@ window.onload = function() {
 
   })();
 
-};
+});
 
