@@ -99,6 +99,10 @@ pre code {
   position: relative;
 }
 
+.example-frame .example {
+  margin-bottom: 0.8em;
+}
+
 
 /* draggabillies
 ------------------------- */
