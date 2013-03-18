@@ -16,8 +16,8 @@ Rad because it supports IE8+ and multi-touch.
 
 Grab a packaged source file:
 
-+ [http://draggabilly.desandro.com/draggabilly.pkgd.min.js](draggabilly.pkgd.min.js) for production
-+ [http://draggabilly.desandro.com/draggabilly.pkgd.js](draggabilly.pkgd.js) for development
++ [draggabilly.pkgd.min.js](http://draggabilly.desandro.com/draggabilly.pkgd.min.js) for production
++ [draggabilly.pkgd.js](http://draggabilly.desandro.com/draggabilly.pkgd.js) for development
 
 Or if you're cool with the command line, install with [Bower](http://twitter.github.com/bower).
 
