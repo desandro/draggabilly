@@ -213,7 +213,7 @@ Draggabilly.prototype.onmousedown = function( event ) {
 
 Draggabilly.prototype.ontouchstart = function( event ) {
   // disregard additional touches
-  if ( this.pointerIdentifier ) {
+  if ( this.isDragging ) {
     return;
   }
 
@@ -237,7 +237,10 @@ Draggabilly.prototype.dragStart = function( event, pointer ) {
     event.returnValue = false;
   }
 
-  this.pointerIdentifier = pointer.identifier || 1;
+  var isTouch = event.type === 'touchstart';
+
+  // save pointer identifier to match up touch events
+  this.pointerIdentifier = pointer.identifier;
 
   this._getPosition();
 
@@ -255,14 +258,11 @@ Draggabilly.prototype.dragStart = function( event, pointer ) {
   this.dragPoint.x = 0;
   this.dragPoint.y = 0;
 
-  // add events
-  var binder = event.preventDefault ? window : document;
-
-  var isTouch = event.type === 'touchstart';
+  // bind move and and events
   this.pointerMoveEvent = isTouch ? 'touchmove' : 'mousemove';
   this.pointerEndEvent = isTouch ? 'touchend' : 'mouseup';
-
-  // bind move and and events
+  // IE8 needs to be bound to document
+  var binder = event.preventDefault ? window : document;
   eventie.bind( binder, this.pointerMoveEvent, this );
   eventie.bind( binder, this.pointerEndEvent, this );
 
