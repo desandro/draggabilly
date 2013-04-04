@@ -122,15 +122,15 @@ window.onload = function() {
   var drag2 = new Draggabilly( ex2 );
 
 
-  drag2.on( 'dragStart', function( event, pointer, instance ) {
+  drag2.on( 'dragStart', function( instance, event, pointer ) {
     console.log('dragStart', instance.position.x, instance.position.y, event.type, pointer.pageX, pointer.pageY );
   });
 
-  drag2.on( 'dragMove', function( event, pointer, instance ) {
+  drag2.on( 'dragMove', function( instance, event, pointer ) {
     console.log('dragMove', instance.position.x, instance.position.y, event.type, pointer.pageX, pointer.pageY );
   });
 
-  drag2.on( 'dragEnd', function( event, pointer, instance ) {
+  drag2.on( 'dragEnd', function( instance, event, pointer ) {
     console.log( 'dragEnd', instance.position.x, instance.position.y, event && event.type, pointer && pointer.pageX, pointer && pointer.pageY );
   });
 
@@ -143,15 +143,15 @@ window.onload = function() {
 
   var elems = document.querySelectorAll('#container1 .box');
 
-  function handleDraggerEvent( event, pointer, instance ) {
+  function handleDraggerEvent( instance, event, pointer ) {
     console.log( event.type, instance.position.x, instance.position.y );
   }
   for ( var i=0, len = elems.length; i < len; i++ ) {
     dragger = new Draggabilly( elems[i], {
       containment: true
     });
-    dragger.on( 'start', handleDraggerEvent );
-    dragger.on( 'drag', handleDraggerEvent );
+    dragger.on( 'dragStart', handleDraggerEvent );
+    dragger.on( 'dragEnd', handleDraggerEvent );
   }
 
   // toggle drag2 enable/disable on [B] keypress
