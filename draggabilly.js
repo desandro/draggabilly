@@ -1,5 +1,5 @@
 /*!
- * Draggabilly v1.0.0
+ * Draggabilly v1.0.1
  * Make that shiz draggable
  * http://draggabilly.desandro.com
  */
@@ -41,12 +41,14 @@ var getStyle = defView && defView.getComputedStyle ?
 
 
 // http://stackoverflow.com/a/384380/182183
-function isElement(o){
-  return (
-    typeof HTMLElement === "object" ? o instanceof HTMLElement : //DOM2
-    o && typeof o === "object" && o.nodeType === 1 && typeof o.nodeName==="string"
-  );
-}
+var isElement = ( typeof HTMLElement === 'object' ) ?
+  function isElementDOM2( obj ) {
+    return obj instanceof HTMLElement;
+  } :
+  function isElementQuirky( obj ) {
+    return obj && typeof obj === 'object' &&
+      obj.nodeType === 1 && typeof obj.nodeName === 'string';
+  };
 
 // -------------------------- requestAnimationFrame -------------------------- //
 
