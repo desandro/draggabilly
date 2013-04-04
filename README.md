@@ -105,6 +105,20 @@ draggie.on( 'dragMove', function() {
 + `pointer` - **Type:** _MouseEvent_ or _Touch_ - the event object that has `.pageX` and `.pageY`
 + `draggieInstance` - **Type:** _Draggabilly_ - the Draggabilly instance
 
+## Methods
+
+### disable
+
+``` js
+draggie.disable()
+```
+
+### enable
+
+``` js
+draggie.enable()
+```
+
 ## License
 
 Draggabilly is released under the [MIT License](http://desandro.mit-license.org/). Have at it.
