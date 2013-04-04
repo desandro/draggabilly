@@ -127,6 +127,7 @@ Draggabilly.prototype._create = function() {
     this.element.style.position = 'relative';
   }
 
+  this.enable();
   this.setHandles();
 
 };
@@ -231,6 +232,10 @@ function setPointerPoint( point, pointer ) {
  * @param {Event or Touch} pointer
  */
 Draggabilly.prototype.dragStart = function( event, pointer ) {
+  if ( !this.isEnabled ) {
+    return;
+  }
+
   if ( event.preventDefault ) {
     event.preventDefault();
   } else {
@@ -262,9 +267,9 @@ Draggabilly.prototype.dragStart = function( event, pointer ) {
   this.pointerMoveEvent = isTouch ? 'touchmove' : 'mousemove';
   this.pointerEndEvent = isTouch ? 'touchend' : 'mouseup';
   // IE8 needs to be bound to document
-  var binder = event.preventDefault ? window : document;
-  eventie.bind( binder, this.pointerMoveEvent, this );
-  eventie.bind( binder, this.pointerEndEvent, this );
+  this.boundNode = event.preventDefault ? window : document;
+  eventie.bind( this.boundNode, this.pointerMoveEvent, this );
+  eventie.bind( this.boundNode, this.pointerEndEvent, this );
 
   classie.add( this.element, 'is-dragging' );
 
@@ -374,10 +379,8 @@ Draggabilly.prototype.dragEnd = function( event, pointer ) {
   }
 
   // remove events
-  var binder = event.preventDefault ? window : document;
-
-  eventie.unbind( binder, this.pointerMoveEvent, this );
-  eventie.unbind( binder, this.pointerEndEvent, this );
+  eventie.unbind( this.boundNode, this.pointerMoveEvent, this );
+  eventie.unbind( this.boundNode, this.pointerEndEvent, this );
   delete this.pointerMoveEvent;
   delete this.pointerEndEvent;
 
@@ -424,6 +427,17 @@ Draggabilly.prototype.positionDrag = transformProperty ?
     // position with transform
     this.element.style[ transformProperty ] = translate( this.dragPoint.x, this.dragPoint.y );
   } : Draggabilly.prototype.setLeftTop;
+
+Draggabilly.prototype.enable = function() {
+  this.isEnabled = true;
+};
+
+Draggabilly.prototype.disable = function() {
+  this.isEnabled = false;
+  if ( this.isDragging ) {
+    this.dragEnd();
+  }
+};
 
 // --------------------------  -------------------------- //
 
