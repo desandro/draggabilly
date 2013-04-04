@@ -1,5 +1,5 @@
 /*!
- * Draggabilly v0.1.2
+ * Draggabilly v1.0.0
  * Make that shiz draggable
  * http://draggabilly.desandro.com
  */
@@ -276,7 +276,7 @@ Draggabilly.prototype.dragStart = function( event, pointer ) {
   // reset isDragging flag
   this.isDragging = true;
 
-  this.emitEvent( 'dragStart', [ event, pointer, this ] );
+  this.emitEvent( 'dragStart', [ this, event, pointer ] );
 
   // start animation
   this.animate();
@@ -345,7 +345,7 @@ Draggabilly.prototype.dragMove = function( event, pointer ) {
   this.position.x = this.startPosition.x + this.dragPoint.x;
   this.position.y = this.startPosition.y + this.dragPoint.y;
 
-  this.emitEvent( 'dragMove', [ event, pointer, this ] );
+  this.emitEvent( 'dragMove', [ this, event, pointer ] );
 };
 
 
@@ -386,7 +386,7 @@ Draggabilly.prototype.dragEnd = function( event, pointer ) {
 
   classie.remove( this.element, 'is-dragging' );
 
-  this.emitEvent( 'dragEnd', [ event, pointer, this ] );
+  this.emitEvent( 'dragEnd', [ this, event, pointer ] );
 
 };
 
