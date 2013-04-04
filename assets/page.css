@@ -112,6 +112,7 @@ pre code {
   height: 150px;
   background: #FA0;
   border-radius: 10px;
+  z-index: 1;
 }
 
 .draggie.is-dragging {
