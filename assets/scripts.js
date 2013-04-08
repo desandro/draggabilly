@@ -2,7 +2,6 @@
  * Draggabilly demo page
  */
 
-
 docReady( function() {
 
   'use strict';
@@ -46,7 +45,7 @@ docReady( function() {
     var draggie = new Draggabilly( elem );
     var output = demo.querySelector('code');
 
-    function notify( dragEvent, event, pointer, draggieInstance ) {
+    function notify( dragEvent, draggieInstance, event, pointer ) {
       var position = draggieInstance.position;
       var message = dragEvent + '\n' +
         event.type + ' at ' + pointer.pageX + ', ' + pointer.pageY + '\n' +
@@ -54,16 +53,16 @@ docReady( function() {
       output.innerText = message;
     }
 
-    draggie.on( 'dragStart', function( event, pointer, draggieInstance ) {
-      notify( 'DRAG START', event, pointer, draggieInstance );
+    draggie.on( 'dragStart', function( draggieInstance, event, pointer ) {
+      notify( 'DRAG START', draggieInstance, event, pointer );
     });
 
-    draggie.on( 'dragMove', function( event, pointer, draggieInstance ) {
-      notify( 'DRAG MOVE', event, pointer, draggieInstance );
+    draggie.on( 'dragMove', function( draggieInstance, event, pointer ) {
+      notify( 'DRAG MOVE', draggieInstance, event, pointer );
     });
 
-    draggie.on( 'dragEnd', function( event, pointer, draggieInstance ) {
-      notify( 'DRAG END', event, pointer, draggieInstance );
+    draggie.on( 'dragEnd', function( draggieInstance, event, pointer ) {
+      notify( 'DRAG END', draggieInstance, event, pointer  );
     });
 
   })();
