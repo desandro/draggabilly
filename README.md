@@ -91,7 +91,7 @@ Draggabilly is an Event Emitter. You can bind event listeners to events.
 ``` js
 var draggie = new Draggabilly( elem );
 
-function onDragMove( event, pointer, instance ) {
+function onDragMove( instance, event, pointer ) {
   console.log( 'dragMove on ' + event.type +
     pointer.pageX + ', ' + pointer.pageY +
     ' position at ' + instance.position.x + ', ' + instance.position.y );
