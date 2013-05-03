@@ -390,6 +390,13 @@ Draggabilly.prototype.dragEnd = function( event, pointer ) {
 
 };
 
+// ----- cancel event ----- //
+
+// coerce to end event
+Draggabilly.prototype.ontouchcancel = function( event ) {
+  this.dragEnd( event );
+};
+
 // -------------------------- animation -------------------------- //
 
 Draggabilly.prototype.animate = function() {
