@@ -3,7 +3,7 @@
 
 module.exports = function( grunt ) {
 
-  var componentJSON = grunt.file.readJSON('component.json');
+  var componentJSON = grunt.file.readJSON('bower.json');
 
   // get banner comment from draggabilly.js
   var banner = ( function() {
