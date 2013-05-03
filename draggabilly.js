@@ -1,5 +1,5 @@
 /*!
- * Draggabilly v1.0.1
+ * Draggabilly v1.0.2
  * Make that shiz draggable
  * http://draggabilly.desandro.com
  */
@@ -8,13 +8,7 @@
 
 'use strict';
 
-// dependencies
-var classie = window.classie;
-var EventEmitter = window.EventEmitter;
-var eventie = window.eventie;
-var getStyleProperty = window.getStyleProperty;
-var getSize = window.getSize;
-
+// vars
 var document = window.document;
 
 // -------------------------- helpers -------------------------- //
@@ -87,6 +81,10 @@ if ( !requestAnimationFrame || !cancelAnimationFrame )  {
     window.clearTimeout( id );
   };
 }
+
+// -------------------------- definition -------------------------- //
+
+function draggabillyDefinition( classie, EventEmitter, eventie, getStyleProperty, getSize ) {
 
 // -------------------------- support -------------------------- //
 
@@ -441,10 +439,31 @@ Draggabilly.prototype.disable = function() {
   }
 };
 
-// --------------------------  -------------------------- //
+return Draggabilly;
 
+} // end definition
 
-// publicize
-window.Draggabilly = Draggabilly;
+// -------------------------- transport -------------------------- //
+
+if ( typeof define === 'function' && define.amd ) {
+  // AMD
+  define( [
+      'classie',
+      'eventEmitter',
+      'eventie',
+      'get-style-property',
+      'get-size'
+    ],
+    draggabillyDefinition );
+} else {
+  // browser global
+  window.Draggabilly = draggabillyDefinition(
+    window.classie,
+    window.EventEmitter,
+    window.eventie,
+    window.getStyleProperty,
+    window.getSize
+  );
+}
 
 })( window );
