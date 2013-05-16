@@ -146,6 +146,31 @@ Draggabilly.prototype.setHandles = function() {
     //   which has touch and mouse events
     eventie.bind( handle, 'mousedown', this );
     eventie.bind( handle, 'touchstart', this );
+    this._disableImgOndragstart( handle );
+  }
+};
+
+// remove default dragging interaction on all images in IE8
+// IE8 does its own drag thing on images, which messes stuff up
+
+function noDragStart() {
+  return false;
+}
+
+Draggabilly.prototype._disableImgOndragstart = function( handle ) {
+  // IE8 only
+  if ( !document.documentElement.attachEvent ) {
+    return;
+  }
+
+  if ( handle.nodeName === 'IMG' ) {
+    handle.ondragstart = noDragStart;
+  }
+
+  var images = handle.querySelectorAll('img');
+  for ( var i=0, len = images.length; i < len; i++ ) {
+    var img = images[i];
+    img.ondragstart = noDragStart;
   }
 };
 
