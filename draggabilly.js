@@ -1,5 +1,5 @@
 /*!
- * Draggabilly v1.0.3
+ * Draggabilly v1.0.4
  * Make that shiz draggable
  * http://draggabilly.desandro.com
  */
@@ -290,13 +290,13 @@ Draggabilly.prototype.dragStart = function( event, pointer ) {
   this.dragPoint.x = 0;
   this.dragPoint.y = 0;
 
-  // bind move and and events
-  this.pointerMoveEvent = isTouch ? 'touchmove' : 'mousemove';
-  this.pointerEndEvent = isTouch ? 'touchend' : 'mouseup';
-  // IE8 needs to be bound to document
-  this.boundNode = event.preventDefault ? window : document;
-  eventie.bind( this.boundNode, this.pointerMoveEvent, this );
-  eventie.bind( this.boundNode, this.pointerEndEvent, this );
+  // bind move and end events
+  this._bindEvents({
+    events: isTouch ? [ 'touchmove', 'touchend', 'touchcancel' ] :
+      [ 'mousemove', 'mouseup' ],
+    // IE8 needs to be bound to document
+    node: event.preventDefault ? window : document
+  });
 
   classie.add( this.element, 'is-dragging' );
 
@@ -309,6 +309,23 @@ Draggabilly.prototype.dragStart = function( event, pointer ) {
   this.animate();
 };
 
+Draggabilly.prototype._bindEvents = function( args ) {
+  for ( var i=0, len = args.events.length; i < len; i++ ) {
+    var event = args.events[i];
+    eventie.bind( args.node, event, this );
+  }
+  // save these arguments
+  this._boundEvents = args;
+};
+
+Draggabilly.prototype._unbindEvents = function() {
+  var args = this._boundEvents;
+  for ( var i=0, len = args.events.length; i < len; i++ ) {
+    var event = args.events[i];
+    eventie.unbind( args.node, event, this );
+  }
+  delete this._boundEvents;
+};
 
 Draggabilly.prototype.measureContainment = function() {
   var containment = this.options.containment;
@@ -333,7 +350,6 @@ Draggabilly.prototype.measureContainment = function() {
     x: elemRect.left - containerRect.left,
     y: elemRect.top  - containerRect.top
   };
-  // console.log( this.relativeStartPosition.x, this.relativeStartPosition.y );
 };
 
 // ----- move event ----- //
@@ -406,10 +422,7 @@ Draggabilly.prototype.dragEnd = function( event, pointer ) {
   }
 
   // remove events
-  eventie.unbind( this.boundNode, this.pointerMoveEvent, this );
-  eventie.unbind( this.boundNode, this.pointerEndEvent, this );
-  delete this.pointerMoveEvent;
-  delete this.pointerEndEvent;
+  this._unbindEvents();
 
   classie.remove( this.element, 'is-dragging' );
 
@@ -421,7 +434,8 @@ Draggabilly.prototype.dragEnd = function( event, pointer ) {
 
 // coerce to end event
 Draggabilly.prototype.ontouchcancel = function( event ) {
-  this.dragEnd( event );
+  var touch = this.getTouch( event.changedTouches );
+  this.dragEnd( event, touch );
 };
 
 // -------------------------- animation -------------------------- //
