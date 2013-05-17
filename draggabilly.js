@@ -1,5 +1,5 @@
 /*!
- * Draggabilly v1.0.2
+ * Draggabilly v1.0.3
  * Make that shiz draggable
  * http://draggabilly.desandro.com
  */
@@ -20,6 +20,8 @@ function extend( a, b ) {
   }
   return a;
 }
+
+function noop() {}
 
 // ----- get style ----- //
 
@@ -146,7 +148,7 @@ Draggabilly.prototype.setHandles = function() {
     //   which has touch and mouse events
     eventie.bind( handle, 'mousedown', this );
     eventie.bind( handle, 'touchstart', this );
-    this._disableImgOndragstart( handle );
+    disableImgOndragstart( handle );
   }
 };
 
@@ -157,11 +159,11 @@ function noDragStart() {
   return false;
 }
 
-Draggabilly.prototype._disableImgOndragstart = function( handle ) {
-  // IE8 only
-  if ( !document.documentElement.attachEvent ) {
-    return;
-  }
+// TODO replace this with a IE8 test
+var isIE8 = 'attachEvent' in document.documentElement;
+
+// IE8 only
+var disableImgOndragstart = !isIE8 ? noop : function( handle ) {
 
   if ( handle.nodeName === 'IMG' ) {
     handle.ondragstart = noDragStart;
