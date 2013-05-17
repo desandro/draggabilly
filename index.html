@@ -73,12 +73,20 @@
       background: orange;
     }
 
+    #kitties {
+      background: #CCC;
+      width: 140px;
+      padding: 10px;
+    }
+
   </style>
 
 </head>
 <body>
 
   <h1>Draggabilly</h1>
+
+  <p>Press [B] to enable/disable the blue draggabilly</p>
 
   <div id="ex1" class="box">
     <div class="handle"></div>
@@ -102,7 +110,14 @@
     <div class="box"></div>
   </div>
 
-  <p>Press [B] to enable/disable the blue draggabilly</p>
+
+  <img id="kitten" src="http://placekitten.com/100/100" />
+
+  <div id="kitties">
+    <img src="http://placekitten.com/40/60" />
+    <img src="http://placekitten.com/60/40" />
+  </div>
+
 
 <script src="components/eventEmitter/EventEmitter.js"></script>
 <script src="components/eventie/eventie.js"></script>
@@ -164,6 +179,16 @@ window.onload = function() {
         break;
     }
   });
+
+  ( function() {
+    var elem = document.querySelector('#kitten');
+    new Draggabilly( elem );
+  })();
+
+  ( function() {
+    var elem = document.querySelector('#kitties');
+    new Draggabilly( elem );
+  })();
 
 };
 </script>
