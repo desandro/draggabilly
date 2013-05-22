@@ -294,7 +294,7 @@ Draggabilly.prototype.dragStart = function( event, pointer ) {
   var isPointer = event.type === 'pointerdown';
 
   // save pointer identifier to match up touch events
-  this.pointerIdentifier = pointer.identifier;
+  this.pointerIdentifier = pointer.identifier || event.pointerId;
 
   this._getPosition();
 
@@ -384,10 +384,15 @@ Draggabilly.prototype.measureContainment = function() {
 
 // ----- move event ----- //
 
-Draggabilly.prototype.onmousemove =
+Draggabilly.prototype.onmousemove = function( event ) {
+  this.dragMove( event, event );
+};
+
 Draggabilly.prototype.onMSPointerMove =
 Draggabilly.prototype.onpointermove = function( event ) {
-  this.dragMove( event, event );
+  if ( event.pointerId === this.pointerIdentifier ) {
+    this.dragMove( event, event );
+  }
 };
 
 Draggabilly.prototype.ontouchmove = function( event ) {
@@ -426,10 +431,15 @@ Draggabilly.prototype.dragMove = function( event, pointer ) {
 
 // ----- end event ----- //
 
-Draggabilly.prototype.onmouseup =
+Draggabilly.prototype.onmouseup = function( event ) {
+  this.dragEnd( event, event );
+}
+
 Draggabilly.prototype.onMSPointerUp =
 Draggabilly.prototype.onpointerup = function( event ) {
-  this.dragEnd( event, event );
+  if ( event.pointerId === this.pointerIdentifier ) {
+    this.dragEnd( event, event );
+  }
 };
 
 Draggabilly.prototype.ontouchend = function( event ) {
@@ -470,7 +480,9 @@ Draggabilly.prototype.dragEnd = function( event, pointer ) {
 
 Draggabilly.prototype.onMSPointerCancel =
 Draggabilly.prototype.onpointercancel = function( event ) {
-  this.dragEnd( event, event );
+  if ( event.pointerId === this.pointerIdentifier ) {
+    this.dragEnd( event, event );
+  }
 };
 
 Draggabilly.prototype.ontouchcancel = function( event ) {
