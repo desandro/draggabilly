@@ -1,3 +1,3 @@
 # @desandro only
 deploy:
-	rsync -avz build/ ${BERNA}:~/subdomains/draggabilly.desandro.com/
+	s3cmd sync build/. s3://draggabilly.desandro.com
