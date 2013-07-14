@@ -25,7 +25,7 @@ module.exports = function( grunt ) {
         }
       },
       css: {
-        src: [ 'components/normalize-css/normalize.css', 'assets/*.css' ],
+        src: [ 'bower_components/normalize-css/normalize.css', 'assets/*.css' ],
         dest: 'build/styles.css'
       }
     },
