@@ -1,5 +1,5 @@
 /*!
- * Draggabilly v1.0.4
+ * Draggabilly v1.0.5
  * Make that shiz draggable
  * http://draggabilly.desandro.com
  */
@@ -496,11 +496,11 @@ return Draggabilly;
 if ( typeof define === 'function' && define.amd ) {
   // AMD
   define( [
-      'classie',
-      'eventEmitter',
-      'eventie',
-      'get-style-property',
-      'get-size'
+      'classie/classie',
+      'eventEmitter/EventEmitter',
+      'eventie/eventie',
+      'get-style-property/get-style-property',
+      'get-size/get-size'
     ],
     draggabillyDefinition );
 } else {
