@@ -52,6 +52,16 @@ handle: '.handle'
 
 Specifies on what element the drag interaction starts.
 
+### axis
+
+**Type:** _String_ (`'x'` or `'y'`)
+
+``` js
+axis: 'x'
+```
+
+Constrain dragging to one axis.
+
 ## Events
 
 Draggabilly is an Event Emitter. You can bind event listeners to events.
