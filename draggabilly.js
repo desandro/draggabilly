@@ -1,5 +1,5 @@
 /*!
- * Draggabilly v1.0.5
+ * Draggabilly v1.0.6
  * Make that shiz draggable
  * http://draggabilly.desandro.com
  */

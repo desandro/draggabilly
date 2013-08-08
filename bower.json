@@ -1,13 +1,13 @@
 {
   "name": "draggabilly",
   "main": "draggabilly.js",
-  "version": "1.0.5",
+  "version": "1.0.6",
   "description": "make that shiz draggable",
   "dependencies": {
     "classie": "desandro/classie",
-    "eventEmitter": ">=3",
+    "eventEmitter": ">=3 <5",
     "eventie": "desandro/eventie",
-    "get-size": "desandro/get-size#>=1.0.0",
+    "get-size": "desandro/get-size#>=1.1.4 <2",
     "get-style-property": "desandro/get-style-property"
   }
 }
