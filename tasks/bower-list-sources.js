@@ -4,6 +4,22 @@
 
 var spawn = require('child_process').spawn;
 
+var organizeSources = require('organize-bower-sources');
+
+function cli( command, callback ) {
+  var args = command.split(' ');
+  var arg1 = args.splice( 0, 1 );
+  var process = spawn( arg1[0], args );
+  var output = '';
+  process.stdout.setEncoding('utf8');
+  process.stdout.on( 'data',  function( data ) {
+    output += data;
+  });
+  process.on( 'close', function() {
+    callback( output );
+  });
+}
+
 module.exports = function( grunt ) {
 
   'use strict';
@@ -11,18 +27,9 @@ module.exports = function( grunt ) {
   grunt.registerTask( 'bower-list-sources', function() {
     var done = this.async();
 
-    // get map JSON from bower list --map
-    var childProc = spawn('bower', 'list --sources'.split(' ') );
-    var sourcesSrc = '';
-    childProc.stdout.setEncoding('utf8');
-    childProc.stdout.on('data',  function( data ) {
-      sourcesSrc += data;
-    });
-
-    childProc.on('close', function() {
-      var bowerSources = JSON.parse( sourcesSrc );
-      // set bowerMap
-      // grunt.config.set( 'bowerSources', bowerSources );
+    cli( 'bower list --json', function( mapSrc ) {
+      var bowerMap = JSON.parse( mapSrc );
+      var bowerSources = organizeSources( bowerMap );
 
       // remove EventEmitter.min.js
       var bowerJsSources = bowerSources['.js'].filter( function( src ) {
