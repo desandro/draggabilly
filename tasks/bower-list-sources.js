@@ -29,6 +29,7 @@ module.exports = function( grunt ) {
 
     cli( 'bower list --json', function( mapSrc ) {
       var bowerMap = JSON.parse( mapSrc );
+      var bowerSources = organizeSources( bowerMap );
 
       var bowerSources = organizeSources( bowerMap );
       var bowerJsSources = bowerSources['.js'].filter( function( src ) {
