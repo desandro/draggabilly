@@ -13,7 +13,8 @@
     "handlebars": "~1.0.10",
     "highlight.js": "~7.3.0",
     "marked": "~0.2.8",
-    "grunt-contrib-copy": "~0.4.0"
+    "grunt-contrib-copy": "~0.4.0",
+    "organize-bower-sources": "git://github.com/desandro/organize-bower-sources"
   },
   "repository": {
     "type": "git",

@@ -18,7 +18,7 @@ module.exports = function( grunt ) {
     concat: {
       pkgd: {
         // src will be set in package-sources task
-        src: [ componentJSON.main ],
+        // src: [ componentJSON.main ],
         dest: 'build/draggabilly.pkgd.js',
         options: {
           banner: banner
@@ -44,7 +44,8 @@ module.exports = function( grunt ) {
     copy: {
       scripts: {
         files: {
-          'build/scripts.js': 'assets/scripts.js'
+          'build/scripts.js': 'assets/scripts.js',
+          'build/doc-ready.js': 'bower_components/doc-ready/doc-ready.js'
         }
       }
     },
