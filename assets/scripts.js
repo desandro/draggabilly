@@ -6,6 +6,17 @@ docReady( function() {
 
   'use strict';
 
+  // ----- setText helper ----- //
+
+  var docElem = document.documentElement;
+  var textSetter = docElem.textContent !== undefined ? 'textContent' : 'innerText';
+
+  function setText( elem, value ) {
+    elem[ textSetter ] = value;
+  }
+
+  // -----  ----- //
+
   var Draggabilly = window.Draggabilly;
 
   // ----- basic ----- //
@@ -50,7 +61,7 @@ docReady( function() {
       var message = dragEvent + '\n' +
         event.type + ' at ' + pointer.pageX + ', ' + pointer.pageY + '\n' +
         'draggie position at ' + position.x + ', ' + position.y;
-      output.innerText = message;
+      setText( output, message );
     }
 
     draggie.on( 'dragStart', function( draggieInstance, event, pointer ) {
