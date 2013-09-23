@@ -52,6 +52,8 @@ handle: '.handle'
 
 Specifies on what element the drag interaction starts.
 
+`handle` is useful for when you want not all inner elements to be used for dragging, like inputs and forms. See [back handle example on CodePen](http://codepen.io/desandro/pen/znAuH).
+
 ## Events
 
 Draggabilly is an Event Emitter. You can bind event listeners to events.
