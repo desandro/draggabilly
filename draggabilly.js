@@ -1,5 +1,5 @@
 /*!
- * Draggabilly v1.0.5
+ * Draggabilly v1.0.6
  * Make that shiz draggable
  * http://draggabilly.desandro.com
  */
@@ -320,6 +320,11 @@ Draggabilly.prototype._bindEvents = function( args ) {
 
 Draggabilly.prototype._unbindEvents = function() {
   var args = this._boundEvents;
+  // IE8 can trigger dragEnd twice, check for _boundEvents
+  if ( !args || !args.events ) {
+    return;
+  }
+
   for ( var i=0, len = args.events.length; i < len; i++ ) {
     var event = args.events[i];
     eventie.unbind( args.node, event, this );
