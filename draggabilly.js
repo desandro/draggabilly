@@ -1,5 +1,5 @@
 /*!
- * Draggabilly v1.0.6
+ * Draggabilly v1.0.7
  * Make that shiz draggable
  * http://draggabilly.desandro.com
  */
@@ -236,6 +236,11 @@ Draggabilly.prototype.getTouch = function( touches ) {
 // ----- start event ----- //
 
 Draggabilly.prototype.onmousedown = function( event ) {
+  // dismiss clicks from right or middle buttons
+  var button = event.button;
+  if ( button && ( button !== 0 && button !== 1 ) ) {
+    return;
+  }
   this.dragStart( event, event );
 };
 
