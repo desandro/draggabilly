@@ -121,6 +121,38 @@ draggie.disable()
 draggie.enable()
 ```
 
+## RequireJS
+
+imagesLoaded works with [RequireJS](http://require.org).
+
+You can require [draggabilly.pkgd.js](http://draggabilly.desandro.io/draggabilly.pkgd.js).
+
+``` js
+requirejs( [
+  'path/to/draggabilly.pkgd.js',
+], function( Draggabilly ) {
+  new Draggabilly( ... );
+});
+```
+
+Or, you can manage dependencies with [Bower](http://bower.io). Set `baseUrl` to `bower_components` and set a path config for all your application code.
+
+``` js
+requirejs.config({
+  baseUrl: 'bower_components/',
+  paths: { // path your your app
+    app: '../'
+  }
+});
+
+requirejs( [
+  'draggabilly/draggabilly',
+  'app/my-component.js'
+], function( Draggabilly, myComp ) {
+  new Draggabilly( ... );
+});
+```
+
 ## License
 
 Draggabilly is released under the [MIT License](http://desandro.mit-license.org/). Have at it.
