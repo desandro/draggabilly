@@ -3,8 +3,6 @@
 
 module.exports = function( grunt ) {
 
-  var componentJSON = grunt.file.readJSON('bower.json');
-
   // get banner comment from draggabilly.js
   var banner = ( function() {
     var src = grunt.file.read('draggabilly.js');
@@ -15,15 +13,23 @@ module.exports = function( grunt ) {
 
   grunt.initConfig({
 
-    concat: {
+    requirejs: {
       pkgd: {
-        // src will be set in package-sources task
-        // src: [ componentJSON.main ],
-        dest: 'build/draggabilly.pkgd.js',
         options: {
-          banner: banner
+          baseUrl: 'bower_components',
+          include: [
+            '../draggabilly'
+          ],
+          out: 'build/draggabilly.pkgd.js',
+          optimize: 'none',
+          wrap: {
+            start: banner
+          }
         }
-      },
+      }
+    },
+
+    concat: {
       css: {
         src: [ 'bower_components/normalize-css/normalize.css', 'assets/*.css' ],
         dest: 'build/styles.css'
@@ -33,7 +39,7 @@ module.exports = function( grunt ) {
     uglify: {
       pkgd: {
         files: {
-          // 'build/draggabilly.pkgd.min.js' will be set in bower-list-sources
+          'build/draggabilly.pkgd.min.js': [ 'build/draggabilly.pkgd.js' ]
         },
         options: {
           banner: banner
@@ -63,6 +69,7 @@ module.exports = function( grunt ) {
 
   });
 
+  grunt.loadNpmTasks('grunt-requirejs');
   grunt.loadNpmTasks('grunt-contrib-concat');
   grunt.loadNpmTasks('grunt-contrib-copy');
   grunt.loadNpmTasks('grunt-contrib-uglify');
@@ -71,8 +78,16 @@ module.exports = function( grunt ) {
   // load all tasks in tasks/
   grunt.loadTasks('tasks/');
 
+  grunt.registerTask( 'remove-pkgd-module-name', function() {
+    var contents = grunt.file.read('build/draggabilly.pkgd.js');
+    contents = contents.replace( "'../draggabilly',", '' );
+    grunt.file.write( 'build/draggabilly.pkgd.js', contents );
+    grunt.log.writeln('Removed pkgd module name on draggabilly.pkgd.js');
+  });
+
   grunt.registerTask( 'default', [
-    'bower-list-sources',
+    'requirejs',
+    'remove-pkgd-module-name',
     'concat',
     'uglify',
     'page',
