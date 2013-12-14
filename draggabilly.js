@@ -1,5 +1,5 @@
 /*!
- * Draggabilly v1.0.7
+ * Draggabilly v1.0.8
  * Make that shiz draggable
  * http://draggabilly.desandro.com
  */
@@ -105,7 +105,6 @@ function Draggabilly( element, options ) {
   extend( this.options, options );
 
   this._create();
-
 }
 
 // inherit EventEmitter methods
@@ -385,23 +384,42 @@ Draggabilly.prototype.ontouchmove = function( event ) {
 Draggabilly.prototype.dragMove = function( event, pointer ) {
 
   setPointerPoint( this.dragPoint, pointer );
-  this.dragPoint.x -= this.startPoint.x;
-  this.dragPoint.y -= this.startPoint.y;
+  var dragX = this.dragPoint.x - this.startPoint.x;
+  var dragY = this.dragPoint.y - this.startPoint.y;
+
+  var grid = this.options.grid;
+  var gridX = grid && grid[0];
+  var gridY = grid && grid[1];
+
+  dragX = applyGrid( dragX, gridX );
+  dragY = applyGrid( dragY, gridY );
 
   if ( this.options.containment ) {
     var relX = this.relativeStartPosition.x;
     var relY = this.relativeStartPosition.y;
-    this.dragPoint.x = Math.max( this.dragPoint.x, -relX );
-    this.dragPoint.y = Math.max( this.dragPoint.y, -relY );
-    this.dragPoint.x = Math.min( this.dragPoint.x, this.containerSize.width - relX - this.size.width );
-    this.dragPoint.y = Math.min( this.dragPoint.y, this.containerSize.height - relY - this.size.height );
+    var minX = applyGrid( -relX, gridX, 'ceil' );
+    var minY = applyGrid( -relY, gridY, 'ceil' );
+    var maxX = this.containerSize.width - relX - this.size.width;
+    var maxY = this.containerSize.height - relY - this.size.height;
+    maxX = applyGrid( maxX, gridX, 'floor' );
+    maxY = applyGrid( maxY, gridY, 'floor' );
+    dragX = Math.min( maxX, Math.max( minX, dragX ) );
+    dragY = Math.min( maxY, Math.max( minY, dragY ) );
   }
 
-  this.position.x = this.startPosition.x + this.dragPoint.x;
-  this.position.y = this.startPosition.y + this.dragPoint.y;
+  this.position.x = this.startPosition.x + dragX;
+  this.position.y = this.startPosition.y + dragY;
+  // set dragPoint properties
+  this.dragPoint.x = dragX;
+  this.dragPoint.y = dragY;
 
   this.emitEvent( 'dragMove', [ this, event, pointer ] );
 };
+
+function applyGrid( value, grid, method ) {
+  method = method || 'round';
+  return grid ? Math[ method ]( value / grid ) * grid : value;
+}
 
 
 // ----- end event ----- //

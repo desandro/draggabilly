@@ -79,6 +79,24 @@
       padding: 10px;
     }
 
+    #grid-container {
+      width: 340px;
+      height: 210px;
+      position: absolute;
+      left: 400px;
+      top: 300px;
+      border: 1px solid;
+    }
+
+    #grid-container .draggie {
+      position: relative;
+      left: 30px;
+      top: 30px;
+      width: 80px;
+      height: 80px;
+      background: #CCC;
+    }
+
   </style>
 
 </head>
@@ -118,6 +136,9 @@
     <img src="http://placekitten.com/60/40" />
   </div>
 
+  <div id="grid-container">
+    <div class="draggie"></div>
+  </div>
 
 <script src="bower_components/eventEmitter/EventEmitter.js"></script>
 <script src="bower_components/eventie/eventie.js"></script>
@@ -188,6 +209,13 @@ window.onload = function() {
   ( function() {
     var elem = document.querySelector('#kitties');
     new Draggabilly( elem );
+  })();
+
+  ( function() {
+    new Draggabilly( '#grid-container .draggie', {
+      containment: true,
+      grid: [ 50, 50 ]
+    });
   })();
 
 };
