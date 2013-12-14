@@ -70,7 +70,7 @@ Contains movement to the bounds of the element. If `true`, the container will be
 grid: [ 20, 20 ]
 ```
 
-Snaps the element to a grid, every x and y pixels. The array must be of the form `[ x, y ]`.
+Snaps the element to a grid, every x and y pixels `[ x, y ]`.
 
 ### handle
 
