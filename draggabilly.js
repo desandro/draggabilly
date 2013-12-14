@@ -97,7 +97,9 @@ var is3d = !!getStyleProperty('perspective');
 // --------------------------  -------------------------- //
 
 function Draggabilly( element, options ) {
-  this.element = element;
+  // querySelector if string
+  this.element = typeof element === 'string' ?
+    document.querySelector( element ) : element;
 
   this.options = extend( {}, this.options );
   extend( this.options, options );
