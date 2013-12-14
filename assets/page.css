@@ -145,6 +145,10 @@ pre code {
   margin: 15px 5%;
 }
 
+#gridded {
+  height: 100px;
+}
+
 #has-handle {
   padding: 20px;
 }

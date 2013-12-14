@@ -58,6 +58,12 @@ Contains movement to the bounds of the element. If `true`, the container will be
 
 ### grid
 
+<div class="example-frame">
+  <div class="example">
+    <div id="gridded" class="draggie"></div>
+  </div>
+</div>
+
 **Type:** _Array_
 
 ``` js

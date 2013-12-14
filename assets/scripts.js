@@ -39,6 +39,14 @@ docReady( function() {
     }
   })();
 
+  // ----- grid ----- //
+
+  ( function() {
+    new Draggabilly( '#gridded', {
+      grid: [ 20, 20 ]
+    });
+  })();
+
   // ----- handle ----- //
 
   ( function() {
