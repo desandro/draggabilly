@@ -56,6 +56,16 @@ containment: '#container'
 
 Contains movement to the bounds of the element. If `true`, the container will be the parent element.
 
+### grid
+
+**Type:** _Array_
+
+``` js
+grid: [ 20, 20 ]
+```
+
+Snaps the element to a grid, every x and y pixels. The array must be of the form `[ x, y ]`.
+
 ### handle
 
 <div class="example-frame">
