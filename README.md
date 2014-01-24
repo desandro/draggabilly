@@ -58,11 +58,13 @@ Contains movement to the bounds of the element. If `true`, the container will be
 
 **Type:** _Array_
 
+**Values:** `[ x, y ]`
+
 ``` js
 grid: [ 20, 20 ]
 ```
 
-Snaps the element to a grid, every x and y pixels `[ x, y ]`.
+Snaps the element to a grid, every x and y pixels.
 
 ### handle
 
@@ -74,7 +76,7 @@ handle: '.handle'
 
 Specifies on what element the drag interaction starts.
 
-`handle` is useful for when you want not all inner elements to be used for dragging, like inputs and forms. See [back handle example on CodePen](http://codepen.io/desandro/pen/znAuH).
+`handle` is useful for when you do not want all inner elements to be used for dragging, like inputs and forms. See [back handle example on CodePen](http://codepen.io/desandro/pen/znAuH).
 
 ## Events
 
@@ -93,9 +95,8 @@ draggie.on( 'dragMove', onDragMove );
 // un-bind event listener
 draggie.off( 'dragMove', onDragMove );
 // return true to trigger an event listener just once
-draggie.on( 'dragMove', function() {
+draggie.once( 'dragMove', function() {
   console.log('Draggabilly did move, just once');
-  return true;
 });
 ```
 
