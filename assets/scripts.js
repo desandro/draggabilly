@@ -15,6 +15,13 @@ docReady( function() {
     elem[ textSetter ] = value;
   }
 
+  // ----- getRandom ----- //
+
+  function getRandom( ary ) {
+    var index = Math.floor( Math.random() * ary.length );
+    return ary[ index ];
+  }
+
   // -----  ----- //
 
   var Draggabilly = window.Draggabilly;
@@ -22,9 +29,30 @@ docReady( function() {
   // ----- basic ----- //
 
   ( function() {
+
     var elem = document.querySelector('#basic');
-    new Draggabilly( elem );
+    var draggie = new Draggabilly( '#basic' );
+    var textElem = elem.querySelector('.total-centered');
+    // set cute phrase on drag
+    var movePhrases = [
+      'Weeeeee!',
+      'Yay!',
+      'You’re doing it!',
+      'Oh wow!'
+    ];
+    draggie.on( 'dragStart', function() {
+      setText( textElem, getRandom( movePhrases ) );
+    });
+    draggie.on( 'dragEnd', function() {
+      setText( textElem, 'Drag me' );
+    });
   })();
+
+  // ----- axised ----- //
+
+  new Draggabilly( '#axised .draggie', {
+    axis: 'x'
+  });
 
   // ----- containment ----- //
 
@@ -41,11 +69,9 @@ docReady( function() {
 
   // ----- grid ----- //
 
-  ( function() {
-    new Draggabilly( '#gridded', {
-      grid: [ 20, 20 ]
-    });
-  })();
+  new Draggabilly( '#gridded .draggie', {
+    grid: [ 20, 20 ]
+  });
 
   // ----- handle ----- //
 

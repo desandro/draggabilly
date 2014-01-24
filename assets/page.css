@@ -18,7 +18,8 @@ body {
 ------------------------- */
 
 h1, h2, h3, h4, h5,
-.tagline {
+.tagline,
+.draggie {
   font-family: 'Montserrat', Gotham, 'Proxima Nova', 'Lucida Sans', 'Lucida Sans Regular', 'Lucida Grande', 'Lucida Sans Unicode', Arial, sans-serif;
 }
 
@@ -91,6 +92,17 @@ pre code {
   padding: 1.0em;
 }
 
+.total-centered {
+  position: absolute;
+  width: 100%;
+  top: 50%;
+  text-align: center;
+  -webkit-transform: translateY(-50%);
+     -moz-transform: translateY(-50%);
+      -ms-transform: translateY(-50%);
+       -o-transform: translateY(-50%);
+          transform: translateY(-50%);
+}
 
 /* examples
 ------------------------- */
@@ -145,9 +157,7 @@ pre code {
   margin: 15px 5%;
 }
 
-#gridded {
-  height: 100px;
-}
+.draggie--squat { height: 100px; }
 
 #has-handle {
   padding: 20px;

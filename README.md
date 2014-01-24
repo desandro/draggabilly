@@ -2,7 +2,9 @@
 
 <div class="example-frame">
   <div class="example">
-    <div id="basic" class="draggie"></div>
+    <div id="basic" class="draggie">
+      <div class="total-centered">Drag me</div>
+    </div>
   </div>
 </div>
 
@@ -40,6 +42,14 @@ When dragging, Draggabillly will add the class `.is-dragging` to the element.
 
 ### axis
 
+<div class="example-frame">
+  <div id="axised" class="example">
+    <div class="draggie draggie--squat">
+      <div class="total-centered">axis: 'x'</div>
+    </div>
+  </div>
+</div>
+
 **Type:** _String_
 
 **Values:** `'x'` or `'y'`
@@ -71,8 +81,10 @@ Contains movement to the bounds of the element. If `true`, the container will be
 ### grid
 
 <div class="example-frame">
-  <div class="example">
-    <div id="gridded" class="draggie"></div>
+  <div id="gridded" class="example">
+    <div class="draggie draggie--squat">
+      <div class="total-centered">grid: [ 20, 20 ]</div>
+    </div>
   </div>
 </div>
 
