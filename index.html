@@ -97,6 +97,18 @@
       background: #CCC;
     }
 
+    .axised {
+      position: absolute;
+      width: 80px;
+      height: 60px;
+      background: #F09;
+      left: 400px;
+    }
+
+    #axis-x { top: 160px; }
+
+    #axis-y { top: 230px; }
+
   </style>
 
 </head>
@@ -139,6 +151,9 @@
   <div id="grid-container">
     <div class="draggie"></div>
   </div>
+
+  <div id="axis-x" class="axised">axis: x</div>
+  <div id="axis-y" class="axised">axis: y</div>
 
 <script src="bower_components/eventEmitter/EventEmitter.js"></script>
 <script src="bower_components/eventie/eventie.js"></script>
@@ -215,8 +230,12 @@ window.onload = function() {
     new Draggabilly( '#grid-container .draggie', {
       containment: true,
       grid: [ 50, 50 ]
+      // axis: 'y'
     });
   })();
+
+  new Draggabilly( '#axis-x', { axis: 'x' });
+  new Draggabilly( '#axis-y', { axis: 'y' });
 
 };
 </script>

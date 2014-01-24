@@ -1,5 +1,5 @@
 /*!
- * Draggabilly v1.0.8
+ * Draggabilly v1.0.9
  * Make that shiz draggable
  * http://draggabilly.desandro.com
  */
@@ -406,6 +406,10 @@ Draggabilly.prototype.dragMove = function( event, pointer ) {
     dragX = Math.min( maxX, Math.max( minX, dragX ) );
     dragY = Math.min( maxY, Math.max( minY, dragY ) );
   }
+
+  // constrain to axis
+  dragX = this.options.axis === 'y' ? 0 : dragX;
+  dragY = this.options.axis === 'x' ? 0 : dragY;
 
   this.position.x = this.startPosition.x + dragX;
   this.position.y = this.startPosition.y + dragY;

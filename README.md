@@ -32,6 +32,18 @@ When dragging, Draggabillly will add the class `.is-dragging` to the element.
 
 ## Options
 
+### axis
+
+**Type:** _String_
+
+**Values:** `'x'` or `'y'`
+
+``` js
+axis: 'x'
+```
+
+Constrains movement to horizontal or vertical axis.
+
 ### containment
 
 **Type:** _Element_, Selector _String_, or _Boolean_
