@@ -146,11 +146,21 @@ Draggabilly.prototype.setHandles = function() {
   for ( var i=0, len = this.handles.length; i < len; i++ ) {
     var handle = this.handles[i];
     // bind pointer start event
-    // listen for both, for devices like Chrome Pixel
-    //   which has touch and mouse events
-    eventie.bind( handle, 'mousedown', this );
-    eventie.bind( handle, 'touchstart', this );
-    disableImgOndragstart( handle );
+    if ( window.navigator.msPointerEnabled ) {
+      // IE10 Pointer Events
+      eventie.bind( handle, 'MSPointerDown', this );
+      // disable scrolling on the element
+      handle.style.msTouchAction = 'none';
+    } else if ( window.navigator.pointerEnabled ) {
+      // W3C Pointer Events
+      eventie.bind( handle, 'pointerdown', this );
+    } else {
+      // listen for both, for devices like Chrome Pixel
+      //   which has touch and mouse events
+      eventie.bind( handle, 'mousedown', this );
+      eventie.bind( handle, 'touchstart', this );
+      disableImgOndragstart( handle );
+    }
   }
 };
 
@@ -255,6 +265,16 @@ Draggabilly.prototype.ontouchstart = function( event ) {
   this.dragStart( event, event.changedTouches[0] );
 };
 
+Draggabilly.prototype.onMSPointerDown =
+Draggabilly.prototype.onpointerdown = function( event ) {
+  // disregard additional touches
+  if ( this.isDragging ) {
+    return;
+  }
+
+  this.dragStart( event, event );
+};
+
 function setPointerPoint( point, pointer ) {
   point.x = pointer.pageX !== undefined ? pointer.pageX : pointer.clientX;
   point.y = pointer.pageY !== undefined ? pointer.pageY : pointer.clientY;
@@ -277,9 +297,11 @@ Draggabilly.prototype.dragStart = function( event, pointer ) {
   }
 
   var isTouch = event.type === 'touchstart';
+  var isMSPointer = event.type === 'MSPointerDown';
+  var isPointer = event.type === 'pointerdown';
 
   // save pointer identifier to match up touch events
-  this.pointerIdentifier = pointer.identifier;
+  this.pointerIdentifier = pointer.identifier || event.pointerId;
 
   this._getPosition();
 
@@ -299,8 +321,16 @@ Draggabilly.prototype.dragStart = function( event, pointer ) {
 
   // bind move and end events
   this._bindEvents({
-    events: isTouch ? [ 'touchmove', 'touchend', 'touchcancel' ] :
-      [ 'mousemove', 'mouseup' ],
+    events: (function() {
+      if ( isTouch ) 
+        return [ 'touchmove', 'touchend', 'touchcancel' ];
+      else if ( isMSPointer )
+        return [ 'MSPointerMove', 'MSPointerUp', 'MSPointerCancel' ];
+      else if ( isPointer )
+        return [ 'pointermove', 'pointerup', 'pointercancel' ];
+      else
+        return [ 'mousemove', 'mouseup' ];
+    })(),
     // IE8 needs to be bound to document
     node: event.preventDefault ? window : document
   });
@@ -370,6 +400,13 @@ Draggabilly.prototype.onmousemove = function( event ) {
   this.dragMove( event, event );
 };
 
+Draggabilly.prototype.onMSPointerMove =
+Draggabilly.prototype.onpointermove = function( event ) {
+  if ( event.pointerId === this.pointerIdentifier ) {
+    this.dragMove( event, event );
+  }
+};
+
 Draggabilly.prototype.ontouchmove = function( event ) {
   var touch = this.getTouch( event.changedTouches );
   if ( touch ) {
@@ -431,6 +468,13 @@ function applyGrid( value, grid, method ) {
 
 Draggabilly.prototype.onmouseup = function( event ) {
   this.dragEnd( event, event );
+}
+
+Draggabilly.prototype.onMSPointerUp =
+Draggabilly.prototype.onpointerup = function( event ) {
+  if ( event.pointerId === this.pointerIdentifier ) {
+    this.dragEnd( event, event );
+  }
 };
 
 Draggabilly.prototype.ontouchend = function( event ) {
@@ -468,6 +512,14 @@ Draggabilly.prototype.dragEnd = function( event, pointer ) {
 // ----- cancel event ----- //
 
 // coerce to end event
+
+Draggabilly.prototype.onMSPointerCancel =
+Draggabilly.prototype.onpointercancel = function( event ) {
+  if ( event.pointerId === this.pointerIdentifier ) {
+    this.dragEnd( event, event );
+  }
+};
+
 Draggabilly.prototype.ontouchcancel = function( event ) {
   var touch = this.getTouch( event.changedTouches );
   this.dragEnd( event, touch );
