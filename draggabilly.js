@@ -1,5 +1,5 @@
 /*!
- * Draggabilly v1.0.9
+ * Draggabilly v1.1.0
  * Make that shiz draggable
  * http://draggabilly.desandro.com
  * MIT license
@@ -146,14 +146,16 @@ Draggabilly.prototype.setHandles = function() {
   for ( var i=0, len = this.handles.length; i < len; i++ ) {
     var handle = this.handles[i];
     // bind pointer start event
-    if ( window.navigator.msPointerEnabled ) {
+    if ( window.navigator.pointerEnabled ) {
+      // W3C Pointer Events, IE11. See https://coderwall.com/p/mfreca
+      eventie.bind( handle, 'pointerdown', this );
+      // disable scrolling on the element
+      handle.style.touchAction = 'none';
+    } else if ( window.navigator.msPointerEnabled ) {
       // IE10 Pointer Events
       eventie.bind( handle, 'MSPointerDown', this );
       // disable scrolling on the element
       handle.style.msTouchAction = 'none';
-    } else if ( window.navigator.pointerEnabled ) {
-      // W3C Pointer Events
-      eventie.bind( handle, 'pointerdown', this );
     } else {
       // listen for both, for devices like Chrome Pixel
       //   which has touch and mouse events
@@ -280,6 +282,14 @@ function setPointerPoint( point, pointer ) {
   point.y = pointer.pageY !== undefined ? pointer.pageY : pointer.clientY;
 }
 
+// hash of events to be bound after start event
+var postStartEvents = {
+  mousedown: [ 'mousemove', 'mouseup' ],
+  touchstart: [ 'touchmove', 'touchend', 'touchcancel' ],
+  pointerdown: [ 'pointermove', 'pointerup', 'pointercancel' ],
+  MSPointerDown: [ 'MSPointerMove', 'MSPointerUp', 'MSPointerCancel' ]
+};
+
 /**
  * drag start
  * @param {Event} event
@@ -296,12 +306,10 @@ Draggabilly.prototype.dragStart = function( event, pointer ) {
     event.returnValue = false;
   }
 
-  var isTouch = event.type === 'touchstart';
-  var isMSPointer = event.type === 'MSPointerDown';
-  var isPointer = event.type === 'pointerdown';
-
   // save pointer identifier to match up touch events
-  this.pointerIdentifier = pointer.identifier || event.pointerId;
+  this.pointerIdentifier = pointer.pointerId !== undefined ?
+    // pointerId for pointer events, touch.indentifier for touch events
+    pointer.pointerId : pointer.identifier;
 
   this._getPosition();
 
@@ -321,16 +329,8 @@ Draggabilly.prototype.dragStart = function( event, pointer ) {
 
   // bind move and end events
   this._bindEvents({
-    events: (function() {
-      if ( isTouch ) 
-        return [ 'touchmove', 'touchend', 'touchcancel' ];
-      else if ( isMSPointer )
-        return [ 'MSPointerMove', 'MSPointerUp', 'MSPointerCancel' ];
-      else if ( isPointer )
-        return [ 'pointermove', 'pointerup', 'pointercancel' ];
-      else
-        return [ 'mousemove', 'mouseup' ];
-    })(),
+    // get proper events to match start event
+    events: postStartEvents[ event.type ],
     // IE8 needs to be bound to document
     node: event.preventDefault ? window : document
   });
@@ -468,7 +468,7 @@ function applyGrid( value, grid, method ) {
 
 Draggabilly.prototype.onmouseup = function( event ) {
   this.dragEnd( event, event );
-}
+};
 
 Draggabilly.prototype.onMSPointerUp =
 Draggabilly.prototype.onpointerup = function( event ) {
