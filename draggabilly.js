@@ -432,18 +432,8 @@ Draggabilly.prototype.dragMove = function( event, pointer ) {
   dragX = applyGrid( dragX, gridX );
   dragY = applyGrid( dragY, gridY );
 
-  if ( this.options.containment ) {
-    var relX = this.relativeStartPosition.x;
-    var relY = this.relativeStartPosition.y;
-    var minX = applyGrid( -relX, gridX, 'ceil' );
-    var minY = applyGrid( -relY, gridY, 'ceil' );
-    var maxX = this.containerSize.width - relX - this.size.width;
-    var maxY = this.containerSize.height - relY - this.size.height;
-    maxX = applyGrid( maxX, gridX, 'floor' );
-    maxY = applyGrid( maxY, gridY, 'floor' );
-    dragX = Math.min( maxX, Math.max( minX, dragX ) );
-    dragY = Math.min( maxY, Math.max( minY, dragY ) );
-  }
+  dragX = this.containDrag( 'x', dragX, gridX );
+  dragY = this.containDrag( 'y', dragY, gridY );
 
   // constrain to axis
   dragX = this.options.axis === 'y' ? 0 : dragX;
@@ -463,6 +453,18 @@ function applyGrid( value, grid, method ) {
   return grid ? Math[ method ]( value / grid ) * grid : value;
 }
 
+Draggabilly.prototype.containDrag = function( axis, drag, grid ) {
+  if ( !this.options.containment ) {
+    return drag;
+  }
+  var measure = axis === 'x' ? 'width' : 'height';
+
+  var rel = this.relativeStartPosition[ axis ];
+  var min = applyGrid( -rel, grid, 'ceil' );
+  var max = this.containerSize[ measure ] - rel - this.size[ measure ];
+  max = applyGrid( max, grid, 'floor' );
+  return  Math.min( max, Math.max( min, drag ) );
+};
 
 // ----- end event ----- //
 
