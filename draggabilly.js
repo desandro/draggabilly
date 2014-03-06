@@ -1,5 +1,5 @@
 /*!
- * Draggabilly v1.0.9
+ * Draggabilly v1.1.0
  * Make that shiz draggable
  * http://draggabilly.desandro.com
  * MIT license
@@ -146,11 +146,23 @@ Draggabilly.prototype.setHandles = function() {
   for ( var i=0, len = this.handles.length; i < len; i++ ) {
     var handle = this.handles[i];
     // bind pointer start event
-    // listen for both, for devices like Chrome Pixel
-    //   which has touch and mouse events
-    eventie.bind( handle, 'mousedown', this );
-    eventie.bind( handle, 'touchstart', this );
-    disableImgOndragstart( handle );
+    if ( window.navigator.pointerEnabled ) {
+      // W3C Pointer Events, IE11. See https://coderwall.com/p/mfreca
+      eventie.bind( handle, 'pointerdown', this );
+      // disable scrolling on the element
+      handle.style.touchAction = 'none';
+    } else if ( window.navigator.msPointerEnabled ) {
+      // IE10 Pointer Events
+      eventie.bind( handle, 'MSPointerDown', this );
+      // disable scrolling on the element
+      handle.style.msTouchAction = 'none';
+    } else {
+      // listen for both, for devices like Chrome Pixel
+      //   which has touch and mouse events
+      eventie.bind( handle, 'mousedown', this );
+      eventie.bind( handle, 'touchstart', this );
+      disableImgOndragstart( handle );
+    }
   }
 };
 
@@ -255,10 +267,28 @@ Draggabilly.prototype.ontouchstart = function( event ) {
   this.dragStart( event, event.changedTouches[0] );
 };
 
+Draggabilly.prototype.onMSPointerDown =
+Draggabilly.prototype.onpointerdown = function( event ) {
+  // disregard additional touches
+  if ( this.isDragging ) {
+    return;
+  }
+
+  this.dragStart( event, event );
+};
+
 function setPointerPoint( point, pointer ) {
   point.x = pointer.pageX !== undefined ? pointer.pageX : pointer.clientX;
   point.y = pointer.pageY !== undefined ? pointer.pageY : pointer.clientY;
 }
+
+// hash of events to be bound after start event
+var postStartEvents = {
+  mousedown: [ 'mousemove', 'mouseup' ],
+  touchstart: [ 'touchmove', 'touchend', 'touchcancel' ],
+  pointerdown: [ 'pointermove', 'pointerup', 'pointercancel' ],
+  MSPointerDown: [ 'MSPointerMove', 'MSPointerUp', 'MSPointerCancel' ]
+};
 
 /**
  * drag start
@@ -276,10 +306,10 @@ Draggabilly.prototype.dragStart = function( event, pointer ) {
     event.returnValue = false;
   }
 
-  var isTouch = event.type === 'touchstart';
-
   // save pointer identifier to match up touch events
-  this.pointerIdentifier = pointer.identifier;
+  this.pointerIdentifier = pointer.pointerId !== undefined ?
+    // pointerId for pointer events, touch.indentifier for touch events
+    pointer.pointerId : pointer.identifier;
 
   this._getPosition();
 
@@ -299,8 +329,8 @@ Draggabilly.prototype.dragStart = function( event, pointer ) {
 
   // bind move and end events
   this._bindEvents({
-    events: isTouch ? [ 'touchmove', 'touchend', 'touchcancel' ] :
-      [ 'mousemove', 'mouseup' ],
+    // get proper events to match start event
+    events: postStartEvents[ event.type ],
     // IE8 needs to be bound to document
     node: event.preventDefault ? window : document
   });
@@ -370,6 +400,13 @@ Draggabilly.prototype.onmousemove = function( event ) {
   this.dragMove( event, event );
 };
 
+Draggabilly.prototype.onMSPointerMove =
+Draggabilly.prototype.onpointermove = function( event ) {
+  if ( event.pointerId === this.pointerIdentifier ) {
+    this.dragMove( event, event );
+  }
+};
+
 Draggabilly.prototype.ontouchmove = function( event ) {
   var touch = this.getTouch( event.changedTouches );
   if ( touch ) {
@@ -395,18 +432,8 @@ Draggabilly.prototype.dragMove = function( event, pointer ) {
   dragX = applyGrid( dragX, gridX );
   dragY = applyGrid( dragY, gridY );
 
-  if ( this.options.containment ) {
-    var relX = this.relativeStartPosition.x;
-    var relY = this.relativeStartPosition.y;
-    var minX = applyGrid( -relX, gridX, 'ceil' );
-    var minY = applyGrid( -relY, gridY, 'ceil' );
-    var maxX = this.containerSize.width - relX - this.size.width;
-    var maxY = this.containerSize.height - relY - this.size.height;
-    maxX = applyGrid( maxX, gridX, 'floor' );
-    maxY = applyGrid( maxY, gridY, 'floor' );
-    dragX = Math.min( maxX, Math.max( minX, dragX ) );
-    dragY = Math.min( maxY, Math.max( minY, dragY ) );
-  }
+  dragX = this.containDrag( 'x', dragX, gridX );
+  dragY = this.containDrag( 'y', dragY, gridY );
 
   // constrain to axis
   dragX = this.options.axis === 'y' ? 0 : dragX;
@@ -426,11 +453,30 @@ function applyGrid( value, grid, method ) {
   return grid ? Math[ method ]( value / grid ) * grid : value;
 }
 
+Draggabilly.prototype.containDrag = function( axis, drag, grid ) {
+  if ( !this.options.containment ) {
+    return drag;
+  }
+  var measure = axis === 'x' ? 'width' : 'height';
+
+  var rel = this.relativeStartPosition[ axis ];
+  var min = applyGrid( -rel, grid, 'ceil' );
+  var max = this.containerSize[ measure ] - rel - this.size[ measure ];
+  max = applyGrid( max, grid, 'floor' );
+  return  Math.min( max, Math.max( min, drag ) );
+};
 
 // ----- end event ----- //
 
 Draggabilly.prototype.onmouseup = function( event ) {
   this.dragEnd( event, event );
+};
+
+Draggabilly.prototype.onMSPointerUp =
+Draggabilly.prototype.onpointerup = function( event ) {
+  if ( event.pointerId === this.pointerIdentifier ) {
+    this.dragEnd( event, event );
+  }
 };
 
 Draggabilly.prototype.ontouchend = function( event ) {
@@ -468,6 +514,14 @@ Draggabilly.prototype.dragEnd = function( event, pointer ) {
 // ----- cancel event ----- //
 
 // coerce to end event
+
+Draggabilly.prototype.onMSPointerCancel =
+Draggabilly.prototype.onpointercancel = function( event ) {
+  if ( event.pointerId === this.pointerIdentifier ) {
+    this.dragEnd( event, event );
+  }
+};
+
 Draggabilly.prototype.ontouchcancel = function( event ) {
   var touch = this.getTouch( event.changedTouches );
   this.dragEnd( event, touch );
