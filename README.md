@@ -28,7 +28,7 @@ var draggie = new Draggabilly( elem, {
 });
 ```
 
-When dragging, Draggabillly will add the class `.is-dragging` to the element. If you add the class `.is-disabled` to the element, Draggabilly will disable dragging.
+When dragging, Draggabilly will add the class `.is-dragging` to the element. If you add the class `.is-disabled` to the element, Draggabilly will disable dragging.
 
 ## Options
 
