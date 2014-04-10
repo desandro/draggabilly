@@ -24,6 +24,10 @@
       background: blue;
     }
 
+    #ex2b {
+      background: green;
+    }
+
     #has-handles {
       position: relative;
       left: 240px;
@@ -117,11 +121,13 @@
   <h1>Draggabilly</h1>
 
   <p>Press [B] to enable/disable the blue draggabilly</p>
+  <p>Press [G] to enable/disable the green draggabilly</p>
 
   <div id="ex1" class="box">
     <div class="handle"></div>
   </div>
   <div id="ex2" class="box"></div>
+  <div id="ex2b" class="box"></div>
 
   <div id="has-handles" class="box">
     <div class="handle handle1"></div>
@@ -172,6 +178,8 @@ window.onload = function() {
   var ex2 = document.getElementById('ex2');
   var drag2 = new Draggabilly( ex2 );
 
+  var ex2b = document.getElementById('ex2b');
+  var drag2b = new Draggabilly( ex2b );
 
   drag2.on( 'dragStart', function( instance, event, pointer ) {
     console.log('dragStart', instance.position.x, instance.position.y, event.type, pointer.pageX, pointer.pageY );
@@ -206,12 +214,16 @@ window.onload = function() {
   }
 
   // toggle drag2 enable/disable on [B] keypress
+  // toggle drag2b enable/disable on [G] keypress
   eventie.bind( document, 'keyup', function( event ) {
     var code = event.keyCode || event.which;
     // console.log( code );
     switch ( code ) {
       case 66 : // B
         drag2[ drag2.isEnabled ? 'disable' : 'enable' ]();
+        break;
+      case 71 : // G
+        classie.toggle( ex2b, 'is-disabled' );
         break;
     }
   });
