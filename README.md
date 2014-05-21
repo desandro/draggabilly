@@ -32,6 +32,21 @@ When dragging, Draggabillly will add the class `.is-dragging` to the element.
 
 ## Options
 
+### distance
+
+**Type:** _Number_
+
+**Values:** `>= 0`
+
+**Default:** `1`
+``` js
+distance: 10
+```
+
+Dragging will not start until the cursor is held down and dragged a specifed number of pixels.
+
+**Note:** If `distance: 0` is specified, then the element is marked as **only draggable**. All underlying elements (inputs, images) will not react to `mousedown` and `click`/`touch` events!
+
 ### axis
 
 **Type:** _String_
@@ -75,8 +90,6 @@ handle: '.handle'
 ```
 
 Specifies on what element the drag interaction starts.
-
-`handle` is useful for when you do not want all inner elements to be used for dragging, like inputs and forms. See [back handle example on CodePen](http://codepen.io/desandro/pen/znAuH).
 
 ## Events
 
