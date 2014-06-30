@@ -13,6 +13,11 @@ module.exports = function( grunt ) {
 
   grunt.initConfig({
 
+    jshint: {
+      src: [ 'draggabilly.js' ],
+      options: grunt.file.readJSON('.jshintrc')
+    },
+
     requirejs: {
       pkgd: {
         options: {
@@ -20,7 +25,7 @@ module.exports = function( grunt ) {
           include: [
             '../draggabilly'
           ],
-          out: 'build/draggabilly.pkgd.js',
+          out: 'dist/draggabilly.pkgd.js',
           optimize: 'none',
           wrap: {
             start: banner
@@ -39,7 +44,7 @@ module.exports = function( grunt ) {
     uglify: {
       pkgd: {
         files: {
-          'build/draggabilly.pkgd.min.js': [ 'build/draggabilly.pkgd.js' ]
+          'dist/draggabilly.pkgd.min.js': [ 'dist/draggabilly.pkgd.js' ]
         },
         options: {
           banner: banner
@@ -50,6 +55,8 @@ module.exports = function( grunt ) {
     copy: {
       scripts: {
         files: {
+          'build/draggabilly.pkgd.js': 'dist/draggabilly.pkgd.js',
+          'build/draggabilly.pkgd.min.js': 'dist/draggabilly.pkgd.min.js',
           'build/scripts.js': 'assets/scripts.js',
           'build/doc-ready.js': 'bower_components/doc-ready/doc-ready.js'
         }
@@ -69,6 +76,7 @@ module.exports = function( grunt ) {
 
   });
 
+  grunt.loadNpmTasks('grunt-contrib-jshint');
   grunt.loadNpmTasks('grunt-requirejs');
   grunt.loadNpmTasks('grunt-contrib-concat');
   grunt.loadNpmTasks('grunt-contrib-copy');
@@ -79,13 +87,14 @@ module.exports = function( grunt ) {
   grunt.loadTasks('tasks/');
 
   grunt.registerTask( 'remove-pkgd-module-name', function() {
-    var contents = grunt.file.read('build/draggabilly.pkgd.js');
+    var contents = grunt.file.read('dist/draggabilly.pkgd.js');
     contents = contents.replace( "'../draggabilly',", '' );
-    grunt.file.write( 'build/draggabilly.pkgd.js', contents );
+    grunt.file.write( 'dist/draggabilly.pkgd.js', contents );
     grunt.log.writeln('Removed pkgd module name on draggabilly.pkgd.js');
   });
 
   grunt.registerTask( 'default', [
+    'jshint',
     'requirejs',
     'remove-pkgd-module-name',
     'concat',
