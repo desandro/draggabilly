@@ -140,8 +140,7 @@ Draggabilly.prototype._create = function() {
  * set this.handles and bind start events to 'em
  */
 Draggabilly.prototype.setHandles = function() {
-  this.handles = this.options.handle ?
-    this.element.querySelectorAll( this.options.handle ) : [ this.element ];
+  this.handles = (typeof this.options.handle !== 'string' ? [this.options.handle] : (this.options.handle ? this.element.querySelectorAll(this.options.handle) : [this.element]));
 
   for ( var i=0, len = this.handles.length; i < len; i++ ) {
     var handle = this.handles[i];
