@@ -1,3 +1,9 @@
+# Changes to the original draggabilly
+
+1. `distance` option added to have a motion threshold before triggering drag
+2. `is-dragging` class is removed **asynchronously** to let angular `ng-click` handler to check the class existence
+3. dependencies (classie, eventie, ...) are moved to `devDependencies`, because the library is packaged.
+
 # Draggabilly
 
 <p class="tagline">Make that shiz draggable</p>

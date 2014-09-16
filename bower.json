@@ -1,9 +1,9 @@
 {
   "name": "draggabilly",
   "main": "draggabilly.js",
-  "version": "1.1.2",
+  "version": "1.2.0",
   "description": "make that shiz draggable",
-  "dependencies": {
+  "devDependencies": {
     "classie": "desandro/classie",
     "eventEmitter": ">=3 <5",
     "eventie": "desandro/eventie",
