@@ -3,6 +3,7 @@
 1. `distance` option added to have a motion threshold before triggering drag
 2. `dragged` class added. `dragged` class is removed **asynchronously** to let external click handlers, e.g. angular `ng-click` handler, to check the class existence
 3. dependencies (classie, eventie, ...) are moved to `devDependencies`, because the library is packaged.
+4. `forceTranslatePositioning` option added. Set it to `true` to force positioning based on `translate` property.
 
 # Draggabilly
 
