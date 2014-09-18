@@ -109,6 +109,11 @@
 
     #axis-y { top: 230px; }
 
+    #clickdrag {
+        position: absolute;
+        top: 160px;
+        left: 600px;}
+
   </style>
 
 </head>
@@ -154,6 +159,15 @@
 
   <div id="axis-x" class="axised">axis: x</div>
   <div id="axis-y" class="axised">axis: y</div>
+
+  <div id="clickdrag" class="box">
+      <button>click me</button>
+      <select>
+          <option value="1">1</option>
+          <option value="2">2</option>
+          <option value="3">3</option>
+      </select>
+  </div>
 
 <script src="bower_components/eventEmitter/EventEmitter.js"></script>
 <script src="bower_components/eventie/eventie.js"></script>
@@ -218,12 +232,12 @@ window.onload = function() {
 
   ( function() {
     var elem = document.querySelector('#kitten');
-    new Draggabilly( elem );
+    new Draggabilly( elem , {distance: 0});
   })();
 
   ( function() {
     var elem = document.querySelector('#kitties');
-    new Draggabilly( elem );
+    new Draggabilly( elem , {distance: 0});
   })();
 
   ( function() {
@@ -236,6 +250,7 @@ window.onload = function() {
 
   new Draggabilly( '#axis-x', { axis: 'x' });
   new Draggabilly( '#axis-y', { axis: 'y' });
+  new Draggabilly( '#clickdrag');
 
 };
 </script>

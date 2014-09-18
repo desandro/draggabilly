@@ -1,3 +1,10 @@
+# Changes to the original draggabilly
+
+1. `distance` option added to have a motion threshold before triggering drag
+2. `dragged` class added. `dragged` class is removed **asynchronously** to let external click handlers, e.g. angular `ng-click` handler, to check the class existence
+3. dependencies (classie, eventie, ...) are moved to `devDependencies`, because the library is packaged.
+4. `forceTranslatePositioning` option added. Set it to `true` to force positioning based on `translate` property.
+
 # Draggabilly
 
 <p class="tagline">Make that shiz draggable</p>
@@ -31,6 +38,21 @@ var draggie = new Draggabilly( elem, {
 When dragging, Draggabillly will add the class `.is-dragging` to the element.
 
 ## Options
+
+### distance
+
+**Type:** _Number_
+
+**Values:** `>= 0`
+
+**Default:** `1`
+``` js
+distance: 10
+```
+
+Dragging will not start until the cursor is held down and dragged a specifed number of pixels.
+
+**Note:** If `distance: 0` is specified, then the element is marked as **only draggable**. All underlying elements (inputs, images) will not react to `mousedown` and `click`/`touch` events!
 
 ### axis
 
@@ -75,8 +97,6 @@ handle: '.handle'
 ```
 
 Specifies on what element the drag interaction starts.
-
-`handle` is useful for when you do not want all inner elements to be used for dragging, like inputs and forms. See [back handle example on CodePen](http://codepen.io/desandro/pen/znAuH).
 
 ## Events
 

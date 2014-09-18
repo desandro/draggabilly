@@ -102,7 +102,7 @@ function Draggabilly( element, options ) {
   this.element = typeof element === 'string' ?
     document.querySelector( element ) : element;
 
-  this.options = extend( {}, this.options );
+  this.options = extend( {distance: 1, forceTranslatePositioning: false}, this.options );
   extend( this.options, options );
 
   this._create();
@@ -255,7 +255,7 @@ Draggabilly.prototype.onmousedown = function( event ) {
   if ( button && ( button !== 0 && button !== 1 ) ) {
     return;
   }
-  this.dragStart( event, event );
+  this.beforeDragStart( event, event );
 };
 
 Draggabilly.prototype.ontouchstart = function( event ) {
@@ -264,7 +264,7 @@ Draggabilly.prototype.ontouchstart = function( event ) {
     return;
   }
 
-  this.dragStart( event, event.changedTouches[0] );
+  this.beforeDragStart( event, event.changedTouches[0] );
 };
 
 Draggabilly.prototype.onMSPointerDown =
@@ -274,7 +274,7 @@ Draggabilly.prototype.onpointerdown = function( event ) {
     return;
   }
 
-  this.dragStart( event, event );
+  this.beforeDragStart( event, event );
 };
 
 function setPointerPoint( point, pointer ) {
@@ -291,19 +291,23 @@ var postStartEvents = {
 };
 
 /**
- * drag start
+ * before drag start
  * @param {Event} event
  * @param {Event or Touch} pointer
  */
-Draggabilly.prototype.dragStart = function( event, pointer ) {
+Draggabilly.prototype.beforeDragStart = function( event, pointer ) {
   if ( !this.isEnabled ) {
     return;
   }
 
-  if ( event.preventDefault ) {
-    event.preventDefault();
-  } else {
-    event.returnValue = false;
+  // prevent default behaviour only if distance is set to 0
+  // this denotes that the element is only draggable without side effects
+  if (this.options.distance === 0){
+    if ( event.preventDefault ) {
+      event.preventDefault();
+    } else {
+      event.returnValue = false;
+    }
   }
 
   // save pointer identifier to match up touch events
@@ -317,6 +321,20 @@ Draggabilly.prototype.dragStart = function( event, pointer ) {
 
   // point where drag began
   setPointerPoint( this.startPoint, pointer );
+
+  // bind move and end events
+  this._bindEvents({
+    // get proper events to match start event
+    events: postStartEvents[ event.type ],
+    // IE8 needs to be bound to document
+    node: event.preventDefault ? window : document
+  });
+};
+
+Draggabilly.prototype.dragStart = function(event, pointer){
+  if (this.isDragging){
+    return;
+  }
   // position _when_ drag began
   this.startPosition.x = this.position.x;
   this.startPosition.y = this.position.y;
@@ -327,15 +345,8 @@ Draggabilly.prototype.dragStart = function( event, pointer ) {
   this.dragPoint.x = 0;
   this.dragPoint.y = 0;
 
-  // bind move and end events
-  this._bindEvents({
-    // get proper events to match start event
-    events: postStartEvents[ event.type ],
-    // IE8 needs to be bound to document
-    node: event.preventDefault ? window : document
-  });
-
   classie.add( this.element, 'is-dragging' );
+	classie.add( this.element, 'dragged' );
 
   // reset isDragging flag
   this.isDragging = true;
@@ -394,6 +405,14 @@ Draggabilly.prototype.measureContainment = function() {
   };
 };
 
+Draggabilly.prototype.elementHasMoved = function(){
+  var start = this.startPoint,
+    pointer = this.dragPoint,
+    dx = pointer.x - start.x,
+    dy =  pointer.y - start.y;
+  return dx * dx + dy * dy  > this.options.distance * this.options.distance;
+};
+
 // ----- move event ----- //
 
 Draggabilly.prototype.onmousemove = function( event ) {
@@ -422,30 +441,36 @@ Draggabilly.prototype.ontouchmove = function( event ) {
 Draggabilly.prototype.dragMove = function( event, pointer ) {
 
   setPointerPoint( this.dragPoint, pointer );
-  var dragX = this.dragPoint.x - this.startPoint.x;
-  var dragY = this.dragPoint.y - this.startPoint.y;
+  if (!this.isDragging){
+    if (this.elementHasMoved()){
+      this.dragStart(event, pointer);
+    }
+  } else {
+    var dragX = this.dragPoint.x - this.startPoint.x;
+    var dragY = this.dragPoint.y - this.startPoint.y;
 
-  var grid = this.options.grid;
-  var gridX = grid && grid[0];
-  var gridY = grid && grid[1];
+    var grid = this.options.grid;
+    var gridX = grid && grid[0];
+    var gridY = grid && grid[1];
 
-  dragX = applyGrid( dragX, gridX );
-  dragY = applyGrid( dragY, gridY );
+    dragX = applyGrid( dragX, gridX );
+    dragY = applyGrid( dragY, gridY );
 
-  dragX = this.containDrag( 'x', dragX, gridX );
-  dragY = this.containDrag( 'y', dragY, gridY );
+    dragX = this.containDrag( 'x', dragX, gridX );
+    dragY = this.containDrag( 'y', dragY, gridY );
 
-  // constrain to axis
-  dragX = this.options.axis === 'y' ? 0 : dragX;
-  dragY = this.options.axis === 'x' ? 0 : dragY;
+    // constrain to axis
+    dragX = this.options.axis === 'y' ? 0 : dragX;
+    dragY = this.options.axis === 'x' ? 0 : dragY;
 
-  this.position.x = this.startPosition.x + dragX;
-  this.position.y = this.startPosition.y + dragY;
-  // set dragPoint properties
-  this.dragPoint.x = dragX;
-  this.dragPoint.y = dragY;
+    this.position.x = this.startPosition.x + dragX;
+    this.position.y = this.startPosition.y + dragY;
+    // set dragPoint properties
+    this.dragPoint.x = dragX;
+    this.dragPoint.y = dragY;
 
-  this.emitEvent( 'dragMove', [ this, event, pointer ] );
+    this.emitEvent( 'dragMove', [ this, event, pointer ] );
+  }
 };
 
 function applyGrid( value, grid, method ) {
@@ -492,6 +517,13 @@ Draggabilly.prototype.ontouchend = function( event ) {
  * @param {Event or Touch} pointer
  */
 Draggabilly.prototype.dragEnd = function( event, pointer ) {
+  // remove events even if drag is not started
+  // they were binded in beforeDragStart
+  this._unbindEvents();
+
+  if (!this.isDragging){
+    return false;
+  }
   this.isDragging = false;
 
   delete this.pointerIdentifier;
@@ -502,10 +534,18 @@ Draggabilly.prototype.dragEnd = function( event, pointer ) {
     this.setLeftTop();
   }
 
-  // remove events
-  this._unbindEvents();
+	// async class removal
+	// this is needed to hack, for example, angular's ng-click.
+	// ng-click fired anytime when element is dropped.
+	//
+	// this hack make it possible to check for
+	// 'dragged' class in another event handler in separate event loop tick
+	var self = this;
+	setTimeout(function(){
+		classie.remove( self.element, 'dragged' );
+	}, 0);
+	classie.remove( self.element, 'is-dragging' );
 
-  classie.remove( this.element, 'is-dragging' );
 
   this.emitEvent( 'dragEnd', [ this, event, pointer ] );
 
@@ -555,14 +595,22 @@ var translate = is3d ?
 
 // left/top positioning
 Draggabilly.prototype.setLeftTop = function() {
-  this.element.style.left = this.position.x + 'px';
-  this.element.style.top  = this.position.y + 'px';
+	if (this.options.forceTranslatePositioning){
+		this.element.style[ transformProperty ] = translate( this.position.x, this.position.y );
+	} else {
+		this.element.style.left = this.position.x + 'px';
+		this.element.style.top  = this.position.y + 'px';
+	}
 };
 
 Draggabilly.prototype.positionDrag = transformProperty ?
   function() {
     // position with transform
-    this.element.style[ transformProperty ] = translate( this.dragPoint.x, this.dragPoint.y );
+		if (this.options.forceTranslatePositioning){
+			this.element.style[ transformProperty ] = translate(this.position.x, this.position.y );
+		} else {
+			this.element.style[ transformProperty ] = translate(this.dragPoint.x, this.dragPoint.y);
+		}
   } : Draggabilly.prototype.setLeftTop;
 
 Draggabilly.prototype.enable = function() {
