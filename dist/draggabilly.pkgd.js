@@ -1021,7 +1021,7 @@ function Draggabilly( element, options ) {
   this.element = typeof element === 'string' ?
     document.querySelector( element ) : element;
 
-  this.options = extend( {distance: 1}, this.options );
+  this.options = extend( {distance: 1, forceTranslatePositioning: false}, this.options );
   extend( this.options, options );
 
   this._create();
@@ -1514,14 +1514,22 @@ var translate = is3d ?
 
 // left/top positioning
 Draggabilly.prototype.setLeftTop = function() {
-  this.element.style.left = this.position.x + 'px';
-  this.element.style.top  = this.position.y + 'px';
+	if (this.options.forceTranslatePositioning){
+		this.element.style[ transformProperty ] = translate( this.position.x, this.position.y );
+	} else {
+		this.element.style.left = this.position.x + 'px';
+		this.element.style.top  = this.position.y + 'px';
+	}
 };
 
 Draggabilly.prototype.positionDrag = transformProperty ?
   function() {
     // position with transform
-    this.element.style[ transformProperty ] = translate( this.dragPoint.x, this.dragPoint.y );
+		if (this.options.forceTranslatePositioning){
+			this.element.style[ transformProperty ] = translate(this.position.x, this.position.y );
+		} else {
+			this.element.style[ transformProperty ] = translate(this.dragPoint.x, this.dragPoint.y);
+		}
   } : Draggabilly.prototype.setLeftTop;
 
 Draggabilly.prototype.enable = function() {
