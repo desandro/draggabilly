@@ -1,7 +1,7 @@
 {
   "name": "draggabilly",
   "main": "draggabilly.js",
-  "version": "1.2.0",
+  "version": "1.2.1",
   "description": "make that shiz draggable",
   "devDependencies": {
     "classie": "desandro/classie",
