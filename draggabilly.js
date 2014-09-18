@@ -346,6 +346,7 @@ Draggabilly.prototype.dragStart = function(event, pointer){
   this.dragPoint.y = 0;
 
   classie.add( this.element, 'is-dragging' );
+	classie.add( this.element, 'dragged' );
 
   // reset isDragging flag
   this.isDragging = true;
@@ -534,15 +535,16 @@ Draggabilly.prototype.dragEnd = function( event, pointer ) {
   }
 
 	// async class removal
-	// this is needed to hack angular's ng-click.
+	// this is needed to hack, for example, angular's ng-click.
 	// ng-click fired anytime when element is dropped.
 	//
 	// this hack make it possible to check for
-	// 'is-dragging' class in angular handler
+	// 'dragged' class in another event handler in separate event loop tick
 	var self = this;
 	setTimeout(function(){
-		classie.remove( self.element, 'is-dragging' );
+		classie.remove( self.element, 'dragged' );
 	}, 0);
+	classie.remove( self.element, 'is-dragging' );
 
 
   this.emitEvent( 'dragEnd', [ this, event, pointer ] );
