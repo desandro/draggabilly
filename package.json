@@ -1,12 +1,19 @@
 {
   "name": "draggabilly",
-  "version": "1.1.0",
+  "version": "1.1.1",
   "description": "make that shiz draggable",
   "main": "draggabilly.js",
-  "dependencies": {},
+  "dependencies": {
+    "desandro-classie": "^1",
+    "wolfy87-eventemitter": ">=3 <5",
+    "eventie": "^1",
+    "get-size": ">=1.1.4 <2",
+    "desandro-get-style-property": "^1"
+  },
   "devDependencies": {
     "grunt": "^0.4.5",
     "grunt-contrib-concat": "~0.1.3",
+    "grunt-cli": "^0.1.13",
     "grunt-contrib-jshint": "^0.10.0",
     "grunt-contrib-uglify": "^0.5.0",
     "grunt-contrib-watch": "~0.3.1",
@@ -16,11 +23,16 @@
     "grunt-contrib-copy": "~0.4.0",
     "grunt-requirejs": "^0.4.2"
   },
+  "scripts": {
+    "test": "grunt travis"
+  },
   "repository": {
     "type": "git",
     "url": "git://github.com/desandro/draggabilly.git"
   },
   "keywords": [
+    "DOM",
+    "drag",
     "draggable",
     "touch",
     "multitouch"

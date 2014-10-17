@@ -1,5 +1,5 @@
 /*!
- * Draggabilly v1.1.0
+ * Draggabilly v1.1.1
  * Make that shiz draggable
  * http://draggabilly.desandro.com
  * MIT license
@@ -592,6 +592,15 @@ if ( typeof define === 'function' && define.amd ) {
       'get-size/get-size'
     ],
     draggabillyDefinition );
+} else if ( typeof exports === 'object' ) {
+  // CommonJS
+  module.exports = draggabillyDefinition(
+    require('desandro-classie'),
+    require('wolfy87-eventemitter'),
+    require('eventie'),
+    require('desandro-get-style-property'),
+    require('get-size')
+  );
 } else {
   // browser global
   window.Draggabilly = draggabillyDefinition(
