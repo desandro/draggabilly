@@ -1,7 +1,8 @@
 
 // -------------------------- grunt -------------------------- //
-
+/* global module */
 module.exports = function( grunt ) {
+  'use strict';
 
   // get banner comment from draggabilly.js
   var banner = ( function() {
@@ -14,7 +15,7 @@ module.exports = function( grunt ) {
   grunt.initConfig({
 
     jshint: {
-      src: [ 'draggabilly.js' ],
+      src: [ 'draggabilly.js', 'Gruntfile.js' ],
       options: grunt.file.readJSON('.jshintrc')
     },
 
@@ -57,6 +58,10 @@ module.exports = function( grunt ) {
     grunt.file.write( 'dist/draggabilly.pkgd.js', contents );
     grunt.log.writeln('Removed pkgd module name on draggabilly.pkgd.js');
   });
+
+  grunt.registerTask('travis', [
+    'jshint'
+  ]);
 
   grunt.registerTask( 'default', [
     'jshint',
