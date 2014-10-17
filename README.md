@@ -13,11 +13,9 @@ Grab a packaged source file:
 + [draggabilly.pkgd.min.js](http://draggabilly.desandro.com/draggabilly.pkgd.min.js) for production
 + [draggabilly.pkgd.js](http://draggabilly.desandro.com/draggabilly.pkgd.js) for development
 
-Or if you're cool with the command line, install with [Bower](http://bower.io).
+Install with [Bower](http://bower.io): `bower install draggabilly`
 
-``` bash
-bower install draggabilly
-```
+Install with npm: `npm install draggabilly`
 
 ## Usage
 
