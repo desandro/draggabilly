@@ -144,7 +144,7 @@ draggie.enable()
 
 ## RequireJS
 
-Draggabilly works with [RequireJS](http://require.org).
+Draggabilly works with [RequireJS](http://requirejs.org).
 
 You can require [draggabilly.pkgd.js](http://draggabilly.desandro.io/draggabilly.pkgd.js).
 
