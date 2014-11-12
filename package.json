@@ -7,7 +7,7 @@
     "desandro-classie": "^1",
     "wolfy87-eventemitter": ">=3 <5",
     "eventie": "^1",
-    "get-size": ">=1.1.4 <2",
+    "get-size": "^1.1.8",
     "desandro-get-style-property": "^1"
   },
   "devDependencies": {
