@@ -296,7 +296,7 @@ var postStartEvents = {
  * @param {Event or Touch} pointer
  */
 Draggabilly.prototype.dragStart = function( event, pointer ) {
-  if ( !this.isEnabled ) {
+  if ( !this.isEnabled || classie.has( this.element, 'is-disabled' ) ) {
     return;
   }
 
