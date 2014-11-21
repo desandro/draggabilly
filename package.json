@@ -32,5 +32,6 @@
     "multitouch"
   ],
   "author": "David DeSandro",
-  "license": "MIT"
+  "license": "MIT",
+  "homepage": "http://draggabilly.desandro.com/"
 }
