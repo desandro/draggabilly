@@ -131,6 +131,8 @@ Draggabilly.prototype._create = function() {
     this.element.style.position = 'relative';
   }
 
+  this._fixBottomPosition();
+  
   this.enable();
   this.setHandles();
 
@@ -164,6 +166,20 @@ Draggabilly.prototype.setHandles = function() {
       disableImgOndragstart( handle );
     }
   }
+};
+
+// bottom style fix, added for removing height expanding bug
+// of elements, which position is absolute
+Draggabilly.prototype._fixBottomPosition = function(){
+    var style = getStyle(this.element);
+    var bottom = parseInt(style.bottom, 10);
+    if( !isNaN(bottom) )
+    {
+        var element_height = this.element.offsetHeight;
+        var window_height = Math.max(document.documentElement.clientHeight, window.innerHeight || 0);
+        this.element.style.top = String(window_height - element_height + bottom) + 'px';
+        this.element.style.bottom = 'auto';
+    }
 };
 
 // remove default dragging interaction on all images in IE8
