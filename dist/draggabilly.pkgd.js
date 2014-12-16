@@ -1,5 +1,5 @@
 /*!
- * Draggabilly PACKAGED v1.1.1
+ * Draggabilly PACKAGED v1.1.2
  * Make that shiz draggable
  * http://draggabilly.desandro.com
  * MIT license
@@ -846,7 +846,7 @@ if ( typeof define === 'function' && define.amd ) {
 })( window );
 
 /*!
- * Draggabilly v1.1.1
+ * Draggabilly v1.1.2
  * Make that shiz draggable
  * http://draggabilly.desandro.com
  * MIT license
