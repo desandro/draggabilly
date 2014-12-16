@@ -180,6 +180,12 @@ draggie.once( 'dragMove', function() {
 
 ## Methods
 
+### destroy
+
+``` js
+draggie.destroy()
+```
+
 ### disable
 
 ``` js

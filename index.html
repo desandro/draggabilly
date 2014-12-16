@@ -170,7 +170,7 @@ window.onload = function() {
   var drag1 = new Draggabilly( ex1 );
 
   var ex2 = document.getElementById('ex2');
-  var drag2 = new Draggabilly( ex2 );
+  var drag2 = window.drag2 = new Draggabilly( ex2 );
 
 
   drag2.on( 'dragStart', function( instance, event, pointer ) {
