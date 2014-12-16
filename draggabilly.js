@@ -143,26 +143,56 @@ Draggabilly.prototype.setHandles = function() {
   this.handles = this.options.handle ?
     this.element.querySelectorAll( this.options.handle ) : [ this.element ];
 
+  this.bindHandles( true );
+};
+
+// -------------------------- bind -------------------------- //
+
+/**
+ * @param {Boolean} isBind - will unbind if falsey
+ */
+Draggabilly.prototype.bindHandles = function( isBind ) {
+  var binder;
+  if ( window.navigator.pointerEnabled ) {
+    binder = this.bindPointer;
+  } else if ( window.navigator.msPointerEnabled ) {
+    binder = this.bindMSPointer;
+  } else {
+    binder = this.bindMouseTouch;
+  }
+  // munge isBind, default to true
+  isBind = isBind === undefined ? true : !!isBind;
   for ( var i=0, len = this.handles.length; i < len; i++ ) {
     var handle = this.handles[i];
-    // bind pointer start event
-    if ( window.navigator.pointerEnabled ) {
-      // W3C Pointer Events, IE11. See https://coderwall.com/p/mfreca
-      eventie.bind( handle, 'pointerdown', this );
-      // disable scrolling on the element
-      handle.style.touchAction = 'none';
-    } else if ( window.navigator.msPointerEnabled ) {
-      // IE10 Pointer Events
-      eventie.bind( handle, 'MSPointerDown', this );
-      // disable scrolling on the element
-      handle.style.msTouchAction = 'none';
-    } else {
-      // listen for both, for devices like Chrome Pixel
-      //   which has touch and mouse events
-      eventie.bind( handle, 'mousedown', this );
-      eventie.bind( handle, 'touchstart', this );
-      disableImgOndragstart( handle );
-    }
+    binder.call( this, handle, isBind );
+  }
+};
+
+Draggabilly.prototype.bindPointer = function( handle, isBind ) {
+  // W3C Pointer Events, IE11. See https://coderwall.com/p/mfreca
+  var bindMethod = isBind ? 'bind' : 'unbind';
+  eventie[ bindMethod ]( handle, 'pointerdown', this );
+  // disable scrolling on the element
+  handle.style.touchAction = isBind ? 'none' : '';
+};
+
+Draggabilly.prototype.bindMSPointer = function( handle, isBind ) {
+  // IE10 Pointer Events
+  var bindMethod = isBind ? 'bind' : 'unbind';
+  eventie[ bindMethod ]( handle, 'MSPointerDown', this );
+  // disable scrolling on the element
+  handle.style.msTouchAction = isBind ? 'none' : '';
+};
+
+Draggabilly.prototype.bindMouseTouch = function( handle, isBind ) {
+  // listen for both, for devices like Chrome Pixel
+  //   which has touch and mouse events
+  var bindMethod = isBind ? 'bind' : 'unbind';
+  eventie[ bindMethod ]( handle, 'mousedown', this );
+  eventie[ bindMethod ]( handle, 'touchstart', this );
+  // TODO re-enable img.ondragstart when unbinding
+  if ( isBind ) {
+    disableImgOndragstart( handle );
   }
 };
 
@@ -190,6 +220,7 @@ var disableImgOndragstart = !isIE8 ? noop : function( handle ) {
   }
 };
 
+// -------------------------- position -------------------------- //
 
 // get left/top position from style
 Draggabilly.prototype._getPosition = function() {
@@ -565,6 +596,8 @@ Draggabilly.prototype.positionDrag = transformProperty ?
     this.element.style[ transformProperty ] = translate( this.dragPoint.x, this.dragPoint.y );
   } : Draggabilly.prototype.setLeftTop;
 
+// -----  ----- //
+
 Draggabilly.prototype.enable = function() {
   this.isEnabled = true;
 };
@@ -575,6 +608,21 @@ Draggabilly.prototype.disable = function() {
     this.dragEnd();
   }
 };
+
+Draggabilly.prototype.destroy = function() {
+  this.disable();
+  // reset styles
+  if ( transformProperty ) {
+    this.element.style[ transformProperty ] = '';
+  }
+  this.element.style.left = '';
+  this.element.style.top = '';
+  this.element.style.position = '';
+  // unbind handles
+  this.bindHandles( false );
+};
+
+// -----  ----- //
 
 return Draggabilly;
 
