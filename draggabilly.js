@@ -113,7 +113,6 @@ extend( Draggabilly.prototype, EventEmitter.prototype );
 
 Draggabilly.prototype.options = {
 };
-
 Draggabilly.prototype._create = function() {
 
   // properties
@@ -130,6 +129,8 @@ Draggabilly.prototype._create = function() {
   if ( style.position !== 'relative' && style.position !== 'absolute' ) {
     this.element.style.position = 'relative';
   }
+
+  this._fixBottomRightPosition();
 
   this.enable();
   this.setHandles();
@@ -195,6 +196,33 @@ Draggabilly.prototype.bindMouseTouch = function( handle, isBind ) {
     disableImgOndragstart( handle );
   }
 };
+
+// bottom style fix, added for removing height expanding bug
+// of elements, which position is absolute
+Draggabilly.prototype._fixBottomRightPosition = function(){
+	var style = getStyle(this.element);
+	var parent_node = this.element.parentNode;
+
+	var bottom = parseInt(style.bottom, 10);
+	if( !isNaN(bottom) )
+	{
+		var element_height = this.element.offsetHeight;
+
+		var parent_height = Math.max(parent_node.clientHeight, parent_node.innerHeight || 0);
+		this.element.style.top = String(parent_height - element_height + bottom) + 'px';
+		this.element.style.bottom = 'auto';
+	}
+
+	var right = parseInt(style.right, 10);
+	if( !isNaN(right) )
+	{
+		var element_width = this.element.offsetWidth;
+		var parent_width = Math.max(parent_node.clientWidth, parent_node.innerWidth || 0);
+		this.element.style.left = String(parent_width - element_width + right) + 'px';
+		this.element.style.right = 'auto';
+	}
+};
+
 
 // remove default dragging interaction on all images in IE8
 // IE8 does its own drag thing on images, which messes stuff up
