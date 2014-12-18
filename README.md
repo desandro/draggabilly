@@ -6,6 +6,21 @@
 
 Rad because it supports IE8+ and multi-touch.
 
+
+## About this Fork
+
+This fork changes only one thing: how `dragStart` fires. In draggabilly main, [`dragStart` fires on mouse down, right away, and the actual mouse down event is canceled](https://github.com/desandro/draggabilly/issues/13).
+
+Whenever you want an item to do one thing when you click it (say, select it), and a different thing when you drag it (say, move it), the existing event system will cause some issues.
+The mousedown event is needed to fire checkboxes, select boxes, dismiss modals, select list items, and many other things you might do in an application.
+
+I think `dragStart` should only fire when you begin to drag the element, not right when you click it, and that is what this fork does.
+
+This new feature is only active if you set the `dragOnMove` option, so this is not a breaking change.
+
+    var draggie = new Draggabilly( el, { dragOnMove: true } );
+
+
 ## Install
 
 Grab a packaged source file:

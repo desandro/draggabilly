@@ -286,7 +286,7 @@ Draggabilly.prototype.onmousedown = function( event ) {
   if ( button && ( button !== 0 && button !== 1 ) ) {
     return;
   }
-  this.dragStart( event, event );
+  this.watchForDrag( event, event );
 };
 
 Draggabilly.prototype.ontouchstart = function( event ) {
@@ -294,8 +294,7 @@ Draggabilly.prototype.ontouchstart = function( event ) {
   if ( this.isDragging ) {
     return;
   }
-
-  this.dragStart( event, event.changedTouches[0] );
+  this.watchForDrag( event, event.changedTouches[0] );
 };
 
 Draggabilly.prototype.onMSPointerDown =
@@ -304,8 +303,7 @@ Draggabilly.prototype.onpointerdown = function( event ) {
   if ( this.isDragging ) {
     return;
   }
-
-  this.dragStart( event, event );
+  this.watchForDrag( event, event );
 };
 
 function setPointerPoint( point, pointer ) {
@@ -322,15 +320,16 @@ var postStartEvents = {
 };
 
 /**
- * drag start
+ * Called on mousedown or touchstart. If this.options.dragOnMove, doesn't count as an actual drag unless the mouse moves.
  * @param {Event} event
  * @param {Event or Touch} pointer
  */
-Draggabilly.prototype.dragStart = function( event, pointer ) {
+Draggabilly.prototype.watchForDrag = function( event, pointer ) {
   if ( !this.isEnabled ) {
     return;
   }
 
+  // Should we prevent the default mousedown/touchstart event?
   if ( event.preventDefault ) {
     event.preventDefault();
   } else {
@@ -366,11 +365,25 @@ Draggabilly.prototype.dragStart = function( event, pointer ) {
     node: event.preventDefault ? window : document
   });
 
+  // Should we start the drag right away (legacy behavior), or wait for a mouse move?
+  if ( !this.options.dragOnMove ) {
+    this.dragStart(event, pointer);
+  }
+};
+
+/**
+ * drag start
+ * @param {Event} event
+ * @param {Event or Touch} pointer
+ */
+Draggabilly.prototype.dragStart = function( event, pointer ) {
+
   classie.add( this.element, 'is-dragging' );
 
   // reset isDragging flag
   this.isDragging = true;
 
+  event.draggabillyEvent = 'dragStart'; // Allows a handler to differentiate draggabilly event callbacks if they'd like to.
   this.emitEvent( 'dragStart', [ this, event, pointer ] );
 
   // start animation
@@ -452,6 +465,12 @@ Draggabilly.prototype.ontouchmove = function( event ) {
  */
 Draggabilly.prototype.dragMove = function( event, pointer ) {
 
+  // If we are in dragMove but not yet dragging, it's because a listener was set up but the actual drag hasn't started. Start it up!
+  if ( !this.isDragging ) {
+    this.dragStart( event, pointer ); // TODO: Should I maintain the original mousedown event and pass that here, or is it OK to be 1px or so off the initial position?
+                                      // eg: this.dragStart.apply(this.startingArgs);
+  }
+
   setPointerPoint( this.dragPoint, pointer );
   var dragX = this.dragPoint.x - this.startPoint.x;
   var dragY = this.dragPoint.y - this.startPoint.y;
@@ -476,6 +495,7 @@ Draggabilly.prototype.dragMove = function( event, pointer ) {
   this.dragPoint.x = dragX;
   this.dragPoint.y = dragY;
 
+  event.draggabillyEvent = 'dragMove';
   this.emitEvent( 'dragMove', [ this, event, pointer ] );
 };
 
@@ -523,6 +543,7 @@ Draggabilly.prototype.ontouchend = function( event ) {
  * @param {Event or Touch} pointer
  */
 Draggabilly.prototype.dragEnd = function( event, pointer ) {
+
   this.isDragging = false;
 
   delete this.pointerIdentifier;
@@ -538,7 +559,9 @@ Draggabilly.prototype.dragEnd = function( event, pointer ) {
 
   classie.remove( this.element, 'is-dragging' );
 
+  event.draggabillyEvent = 'dragEnd';
   this.emitEvent( 'dragEnd', [ this, event, pointer ] );
+
 
 };
 

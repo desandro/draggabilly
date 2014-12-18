@@ -44,7 +44,7 @@
     }
 
     .is-dragging {
-      opacity: 0.5;
+      opacity: 0.7;
       /* hack for artifacts http://stackoverflow.com/a/12023155 */
       -webkit-backface-visibility: hidden;
     }
@@ -105,6 +105,21 @@
       left: 400px;
     }
 
+    .eventExposer {
+      position: absolute;
+      width: 200px;
+      height: 100px;
+      left: 400px;
+      top: 520px;
+      /* Prevent the text contents of draggable elements from being selectable. */
+      -moz-user-select: none;
+      -khtml-user-select: none;
+      -webkit-user-select: none;
+      user-select: none;
+    }
+    #EventExposer1 { background: palegreen; }
+    #EventExposer2 { background: paleturquoise; top: 630px; }
+
     #axis-x { top: 160px; }
 
     #axis-y { top: 230px; }
@@ -154,6 +169,9 @@
 
   <div id="axis-x" class="axised">axis: x</div>
   <div id="axis-y" class="axised">axis: y</div>
+
+  <pre id="EventExposer1" class="eventExposer">dragOnMove: true</pre>
+  <pre id="EventExposer2" class="eventExposer">Events</pre>
 
 <script src="bower_components/eventEmitter/EventEmitter.js"></script>
 <script src="bower_components/eventie/eventie.js"></script>
@@ -234,8 +252,31 @@ window.onload = function() {
     });
   })();
 
+
   new Draggabilly( '#axis-x', { axis: 'x' });
   new Draggabilly( '#axis-y', { axis: 'y' });
+
+  // Show The events on the Draggie while they're happening.
+  var exposeEvent = function ( instance, event, pointer ) {
+    instance.element.innerHTML =    'DOM Event:   ' + event.type + '<br/>';
+    if ( event.draggabillyEvent ){
+      instance.element.innerHTML += 'Draggabilly: ' + event.draggabillyEvent;
+    }
+  };
+
+  var el1 = document.getElementById('EventExposer1');
+  var ee1 = new Draggabilly( el1, { dragOnMove:true } );
+  ee1.on( 'mouseDown', exposeEvent );
+  ee1.on( 'dragStart', exposeEvent );
+  ee1.on( 'dragMove',  exposeEvent );
+  ee1.on( 'dragEnd',   exposeEvent );
+
+  var el2 = document.getElementById('EventExposer2');
+  var ee2 = new Draggabilly( el2 );
+  ee2.on( 'mouseDown', exposeEvent );
+  ee2.on( 'dragStart', exposeEvent );
+  ee2.on( 'dragMove',  exposeEvent );
+  ee2.on( 'dragEnd',   exposeEvent );
 
 };
 </script>
