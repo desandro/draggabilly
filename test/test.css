@@ -1,0 +1,36 @@
+body {
+  font-family: sans-serif;
+}
+
+.draggie {
+  width: 100px;
+  height: 100px;
+  background: #F90;
+}
+.draggie.is-pointer-down { background: #09F; }
+.draggie.is-dragging { opacity: 0.7; }
+
+.test {
+  border: 2px solid transparent;
+  margin-bottom: 20px;
+  padding: 10px;
+}
+
+.test.running { border-color: #F90; }
+
+.test.running h2 { color: #F90; }
+
+@media screen and (min-width: 640px) {
+  .column {
+    float: left;
+  }
+
+  .column--left {
+    width: 30%;
+    margin-right: 4%;s
+  }
+
+  .column--right {
+    width: 66%;
+  }
+}

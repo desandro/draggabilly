@@ -8,9 +8,12 @@
     "eventEmitter": ">=3 <5",
     "get-size": "~1.2.2",
     "get-style-property": "~1.0.4",
-    "unidragger": "~1.1.0"
+    "unidragger": "~1.0.0"
   },
-  "homepage": "https://github.com/desandro/draggabilly",
+  "devDependencies": {
+    "qunit": "~1.17.1"
+  },
+  "homepage": "http://draggabilly.desandro.com",
   "authors": [
     "David DeSandro"
   ],
@@ -29,7 +32,7 @@
     "node_modules",
     "bower_components",
     "test",
-    "tests"
+    "tests",
     "changelog.md",
     "Gruntfile.js",
     "package.json",
