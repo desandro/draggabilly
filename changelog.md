@@ -1,5 +1,9 @@
 # Changelog
 
+### v1.2.0
+
++ Remove `draggieInstance` first argument from event callbacks
+
 #### v1.1.2
 
 Add `destroy` method. Fixes [#72](https://github.com/desandro/draggabilly/issues/72)

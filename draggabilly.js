@@ -59,7 +59,7 @@ function extend( a, b ) {
   return a;
 }
 
-function noop() {}
+// function noop() {}
 
 // ----- get style ----- //
 
@@ -176,81 +176,7 @@ Draggabilly.prototype.setHandles = function() {
   this.handles = this.options.handle ?
     this.element.querySelectorAll( this.options.handle ) : [ this.element ];
 
-  this.bindHandles( true );
-};
-
-// -------------------------- bind -------------------------- //
-
-/**
- * @param {Boolean} isBind - will unbind if falsey
- */
-Draggabilly.prototype.bindHandles = function( isBind ) {
-  var binder;
-  if ( window.navigator.pointerEnabled ) {
-    binder = this.bindPointer;
-  } else if ( window.navigator.msPointerEnabled ) {
-    binder = this.bindMSPointer;
-  } else {
-    binder = this.bindMouseTouch;
-  }
-  // munge isBind, default to true
-  isBind = isBind === undefined ? true : !!isBind;
-  for ( var i=0, len = this.handles.length; i < len; i++ ) {
-    var handle = this.handles[i];
-    binder.call( this, handle, isBind );
-  }
-};
-
-Draggabilly.prototype.bindPointer = function( handle, isBind ) {
-  // W3C Pointer Events, IE11. See https://coderwall.com/p/mfreca
-  var bindMethod = isBind ? 'bind' : 'unbind';
-  eventie[ bindMethod ]( handle, 'pointerdown', this );
-  // disable scrolling on the element
-  handle.style.touchAction = isBind ? 'none' : '';
-};
-
-Draggabilly.prototype.bindMSPointer = function( handle, isBind ) {
-  // IE10 Pointer Events
-  var bindMethod = isBind ? 'bind' : 'unbind';
-  eventie[ bindMethod ]( handle, 'MSPointerDown', this );
-  // disable scrolling on the element
-  handle.style.msTouchAction = isBind ? 'none' : '';
-};
-
-Draggabilly.prototype.bindMouseTouch = function( handle, isBind ) {
-  // listen for both, for devices like Chrome Pixel
-  //   which has touch and mouse events
-  var bindMethod = isBind ? 'bind' : 'unbind';
-  eventie[ bindMethod ]( handle, 'mousedown', this );
-  eventie[ bindMethod ]( handle, 'touchstart', this );
-  // TODO re-enable img.ondragstart when unbinding
-  if ( isBind ) {
-    disableImgOndragstart( handle );
-  }
-};
-
-// remove default dragging interaction on all images in IE8
-// IE8 does its own drag thing on images, which messes stuff up
-
-function noDragStart() {
-  return false;
-}
-
-// TODO replace this with a IE8 test
-var isIE8 = 'attachEvent' in document.documentElement;
-
-// IE8 only
-var disableImgOndragstart = !isIE8 ? noop : function( handle ) {
-
-  if ( handle.nodeName === 'IMG' ) {
-    handle.ondragstart = noDragStart;
-  }
-
-  var images = handle.querySelectorAll('img');
-  for ( var i=0, len = images.length; i < len; i++ ) {
-    var img = images[i];
-    img.ondragstart = noDragStart;
-  }
+  this.bindHandles();
 };
 
 // -------------------------- position -------------------------- //
@@ -293,67 +219,6 @@ Draggabilly.prototype._addTransformPosition = function( style ) {
 
 // -------------------------- events -------------------------- //
 
-// trigger handler methods for events
-Draggabilly.prototype.handleEvent = function( event ) {
-  var method = 'on' + event.type;
-  if ( this[ method ] ) {
-    this[ method ]( event );
-  }
-};
-
-// returns the touch that we're keeping track of
-Draggabilly.prototype.getTouch = function( touches ) {
-  for ( var i=0, len = touches.length; i < len; i++ ) {
-    var touch = touches[i];
-    if ( touch.identifier === this.pointerIdentifier ) {
-      return touch;
-    }
-  }
-};
-
-// ----- start event ----- //
-
-Draggabilly.prototype.onmousedown = function( event ) {
-  // dismiss clicks from right or middle buttons
-  var button = event.button;
-  if ( button && ( button !== 0 && button !== 1 ) ) {
-    return;
-  }
-  this.dragStart( event, event );
-};
-
-Draggabilly.prototype.ontouchstart = function( event ) {
-  // disregard additional touches
-  if ( this.isDragging ) {
-    return;
-  }
-
-  this.dragStart( event, event.changedTouches[0] );
-};
-
-Draggabilly.prototype.onMSPointerDown =
-Draggabilly.prototype.onpointerdown = function( event ) {
-  // disregard additional touches
-  if ( this.isDragging ) {
-    return;
-  }
-
-  this.dragStart( event, event );
-};
-
-function setPointerPoint( point, pointer ) {
-  point.x = pointer.pageX !== undefined ? pointer.pageX : pointer.clientX;
-  point.y = pointer.pageY !== undefined ? pointer.pageY : pointer.clientY;
-}
-
-// hash of events to be bound after start event
-var postStartEvents = {
-  mousedown: [ 'mousemove', 'mouseup' ],
-  touchstart: [ 'touchmove', 'touchend', 'touchcancel' ],
-  pointerdown: [ 'pointermove', 'pointerup', 'pointercancel' ],
-  MSPointerDown: [ 'MSPointerMove', 'MSPointerUp', 'MSPointerCancel' ]
-};
-
 /**
  * drag start
  * @param {Event} event
@@ -363,74 +228,42 @@ Draggabilly.prototype.dragStart = function( event, pointer ) {
   if ( !this.isEnabled ) {
     return;
   }
-
-  if ( event.preventDefault ) {
-    event.preventDefault();
-  } else {
-    event.returnValue = false;
-  }
-
-  // save pointer identifier to match up touch events
-  this.pointerIdentifier = pointer.pointerId !== undefined ?
-    // pointerId for pointer events, touch.indentifier for touch events
-    pointer.pointerId : pointer.identifier;
-
   this._getPosition();
-
   this.measureContainment();
-
-  // point where drag began
-  setPointerPoint( this.startPoint, pointer );
   // position _when_ drag began
   this.startPosition.x = this.position.x;
   this.startPosition.y = this.position.y;
-
   // reset left/top style
   this.setLeftTop();
 
   this.dragPoint.x = 0;
   this.dragPoint.y = 0;
 
-  // bind move and end events
-  this._bindEvents({
-    // get proper events to match start event
-    events: postStartEvents[ event.type ],
-    // IE8 needs to be bound to document
-    node: event.preventDefault ? window : document
-  });
-
-  classie.add( this.element, 'is-dragging' );
-
   // reset isDragging flag
   this.isDragging = true;
-
+  classie.add( this.element, 'is-dragging' );
   this.emitEvent( 'dragStart', [ this, event, pointer ] );
-
   // start animation
   this.animate();
 };
 
-Draggabilly.prototype._bindEvents = function( args ) {
-  for ( var i=0, len = args.events.length; i < len; i++ ) {
-    var event = args.events[i];
-    eventie.bind( args.node, event, this );
-  }
-  // save these arguments
-  this._boundEvents = args;
-};
 
-Draggabilly.prototype._unbindEvents = function() {
-  var args = this._boundEvents;
-  // IE8 can trigger dragEnd twice, check for _boundEvents
-  if ( !args || !args.events ) {
-    return;
+/**
+ * pointer start
+ * @param {Event} event
+ * @param {Event or Touch} pointer
+ */
+Draggabilly.prototype.pointerDown = function( event, pointer ) {
+  this._dragPointerDown( event, pointer );
+  // kludge to blur focused inputs in dragger
+  var focused = document.activeElement;
+  if ( focused && focused.blur ) {
+    focused.blur();
   }
-
-  for ( var i=0, len = args.events.length; i < len; i++ ) {
-    var event = args.events[i];
-    eventie.unbind( args.node, event, this );
-  }
-  delete this._boundEvents;
+  // bind move and end events
+  this._bindPostStartEvents( event );
+  classie.add( this.element, 'is-pointer-down' );
+  this.emitEvent( 'pointerDown', [ event, pointer ] );
 };
 
 Draggabilly.prototype.measureContainment = function() {
@@ -460,34 +293,14 @@ Draggabilly.prototype.measureContainment = function() {
 
 // ----- move event ----- //
 
-Draggabilly.prototype.onmousemove = function( event ) {
-  this.dragMove( event, event );
-};
-
-Draggabilly.prototype.onMSPointerMove =
-Draggabilly.prototype.onpointermove = function( event ) {
-  if ( event.pointerId === this.pointerIdentifier ) {
-    this.dragMove( event, event );
-  }
-};
-
-Draggabilly.prototype.ontouchmove = function( event ) {
-  var touch = this.getTouch( event.changedTouches );
-  if ( touch ) {
-    this.dragMove( event, touch );
-  }
-};
-
 /**
  * drag move
  * @param {Event} event
  * @param {Event or Touch} pointer
  */
-Draggabilly.prototype.dragMove = function( event, pointer ) {
-
-  setPointerPoint( this.dragPoint, pointer );
-  var dragX = this.dragPoint.x - this.startPoint.x;
-  var dragY = this.dragPoint.y - this.startPoint.y;
+Draggabilly.prototype.dragMove = function( event, pointer, moveVector ) {
+  var dragX = moveVector.x;
+  var dragY = moveVector.y;
 
   var grid = this.options.grid;
   var gridX = grid && grid[0];
@@ -509,7 +322,7 @@ Draggabilly.prototype.dragMove = function( event, pointer ) {
   this.dragPoint.x = dragX;
   this.dragPoint.y = dragY;
 
-  this.emitEvent( 'dragMove', [ this, event, pointer ] );
+  this.emitEvent( 'dragMove', [ event, pointer, moveVector ] );
 };
 
 function applyGrid( value, grid, method ) {
@@ -532,24 +345,6 @@ Draggabilly.prototype.containDrag = function( axis, drag, grid ) {
 
 // ----- end event ----- //
 
-Draggabilly.prototype.onmouseup = function( event ) {
-  this.dragEnd( event, event );
-};
-
-Draggabilly.prototype.onMSPointerUp =
-Draggabilly.prototype.onpointerup = function( event ) {
-  if ( event.pointerId === this.pointerIdentifier ) {
-    this.dragEnd( event, event );
-  }
-};
-
-Draggabilly.prototype.ontouchend = function( event ) {
-  var touch = this.getTouch( event.changedTouches );
-  if ( touch ) {
-    this.dragEnd( event, touch );
-  }
-};
-
 /**
  * drag end
  * @param {Event} event
@@ -557,38 +352,13 @@ Draggabilly.prototype.ontouchend = function( event ) {
  */
 Draggabilly.prototype.dragEnd = function( event, pointer ) {
   this.isDragging = false;
-
-  delete this.pointerIdentifier;
-
   // use top left position when complete
   if ( transformProperty ) {
     this.element.style[ transformProperty ] = '';
     this.setLeftTop();
   }
-
-  // remove events
-  this._unbindEvents();
-
   classie.remove( this.element, 'is-dragging' );
-
   this.emitEvent( 'dragEnd', [ this, event, pointer ] );
-
-};
-
-// ----- cancel event ----- //
-
-// coerce to end event
-
-Draggabilly.prototype.onMSPointerCancel =
-Draggabilly.prototype.onpointercancel = function( event ) {
-  if ( event.pointerId === this.pointerIdentifier ) {
-    this.dragEnd( event, event );
-  }
-};
-
-Draggabilly.prototype.ontouchcancel = function( event ) {
-  var touch = this.getTouch( event.changedTouches );
-  this.dragEnd( event, touch );
 };
 
 // -------------------------- animation -------------------------- //
@@ -652,7 +422,7 @@ Draggabilly.prototype.destroy = function() {
   this.element.style.top = '';
   this.element.style.position = '';
   // unbind handles
-  this.bindHandles( false );
+  this.unbindHandles();
 };
 
 // -----  ----- //

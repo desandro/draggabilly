@@ -101,30 +101,27 @@ draggie.once( 'dragMove', function() {
 ### dragStart
 
 ```js
-.on( 'dragStart', function( draggieInstance, event, pointer ) { //...
+.on( 'dragStart', function( event, pointer ) { //...
 ```
 
-+ `draggieInstance` - **Type:** _Draggabilly_ - the Draggabilly instance
 + `event` - **Type:** _Event_ - the original `mousedown` or `touchstart` event
 + `pointer` - **Type:** _MouseEvent_ or _Touch_ - the event object that has `.pageX` and `.pageY`
 
 ### dragMove
 
 ```js
-.on( 'dragMove', function( draggieInstance, event, pointer ) { //...
+.on( 'dragMove', function( event, pointer ) { //...
 ```
 
-+ `draggieInstance` - **Type:** _Draggabilly_ - the Draggabilly instance
 + `event` - **Type:** _Event_ - the original `mousemove` or `touchmove` event
 + `pointer` - **Type:** _MouseEvent_ or _Touch_ - the event object that has `.pageX` and `.pageY`
 
 ### dragEnd
 
 ```js
-.on( 'dragEnd', function( draggieInstance, event, pointer ) { //...
+.on( 'dragEnd', function( event, pointer ) { //...
 ```
 
-+ `draggieInstance` - **Type:** _Draggabilly_ - the Draggabilly instance
 + `event` - **Type:** _Event_ - the original `mouseup` or `touchend` event
 + `pointer` - **Type:** _MouseEvent_ or _Touch_ - the event object that has `.pageX` and `.pageY`
 
