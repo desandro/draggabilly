@@ -7,6 +7,7 @@
   "predef": {
     "define": false,
     "module": false,
-    "require": false
+    "require": false,
+    "jQuery": false
   }
 }

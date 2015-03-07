@@ -176,6 +176,30 @@ Draggabilly.prototype.setHandles = function() {
   this.bindHandles();
 };
 
+/**
+ * emits events via eventEmitter and jQuery events
+ * @param {String} type - name of event
+ * @param {Event} event - original event
+ * @param {Array} args - extra arguments
+ */
+Draggabilly.prototype.dispatchEvent = function( type, event, args ) {
+  var emitArgs = [ event ].concat( args );
+  this.emitEvent( type, emitArgs );
+  var jQuery = window.jQuery;
+  // trigger jQuery event
+  if ( jQuery && this.$element ) {
+    if ( event ) {
+      // create jQuery event
+      var $event = jQuery.Event( event );
+      $event.type = type;
+      this.$element.trigger( $event, args );
+    } else {
+      // just trigger with type if no event available
+      this.$element.trigger( type, args );
+    }
+  }
+};
+
 // -------------------------- position -------------------------- //
 
 // get left/top position from style
@@ -217,6 +241,35 @@ Draggabilly.prototype._addTransformPosition = function( style ) {
 // -------------------------- events -------------------------- //
 
 /**
+ * pointer start
+ * @param {Event} event
+ * @param {Event or Touch} pointer
+ */
+Draggabilly.prototype.pointerDown = function( event, pointer ) {
+  this._dragPointerDown( event, pointer );
+  // kludge to blur focused inputs in dragger
+  var focused = document.activeElement;
+  if ( focused && focused.blur ) {
+    focused.blur();
+  }
+  // bind move and end events
+  this._bindPostStartEvents( event );
+  classie.add( this.element, 'is-pointer-down' );
+  this.dispatchEvent( 'pointerDown', event, [ pointer ] );
+};
+
+/**
+ * drag move
+ * @param {Event} event
+ * @param {Event or Touch} pointer
+ */
+Draggabilly.prototype.pointerMove = function( event, pointer ) {
+  var moveVector = this._dragPointerMove( event, pointer );
+  this.dispatchEvent( 'pointerMove', event, [ pointer, moveVector ] );
+  this._dragMove( event, pointer, moveVector );
+};
+
+/**
  * drag start
  * @param {Event} event
  * @param {Event or Touch} pointer
@@ -239,28 +292,9 @@ Draggabilly.prototype.dragStart = function( event, pointer ) {
   // reset isDragging flag
   this.isDragging = true;
   classie.add( this.element, 'is-dragging' );
-  this.emitEvent( 'dragStart', [ this, event, pointer ] );
+  this.dispatchEvent( 'dragStart', event, [ pointer ] );
   // start animation
   this.animate();
-};
-
-
-/**
- * pointer start
- * @param {Event} event
- * @param {Event or Touch} pointer
- */
-Draggabilly.prototype.pointerDown = function( event, pointer ) {
-  this._dragPointerDown( event, pointer );
-  // kludge to blur focused inputs in dragger
-  var focused = document.activeElement;
-  if ( focused && focused.blur ) {
-    focused.blur();
-  }
-  // bind move and end events
-  this._bindPostStartEvents( event );
-  classie.add( this.element, 'is-pointer-down' );
-  this.emitEvent( 'pointerDown', [ event, pointer ] );
 };
 
 Draggabilly.prototype.measureContainment = function() {
@@ -319,7 +353,7 @@ Draggabilly.prototype.dragMove = function( event, pointer, moveVector ) {
   this.dragPoint.x = dragX;
   this.dragPoint.y = dragY;
 
-  this.emitEvent( 'dragMove', [ event, pointer, moveVector ] );
+  this.dispatchEvent( 'dragMove', event, [ pointer, moveVector ] );
 };
 
 function applyGrid( value, grid, method ) {
@@ -343,6 +377,16 @@ Draggabilly.prototype.containDrag = function( axis, drag, grid ) {
 // ----- end event ----- //
 
 /**
+ * pointer up
+ * @param {Event} event
+ * @param {Event or Touch} pointer
+ */
+Draggabilly.prototype.pointerUp = function( event, pointer ) {
+  this.dispatchEvent( 'pointerUp', event, [ pointer ] );
+  this._dragPointerUp( event, pointer );
+};
+
+/**
  * drag end
  * @param {Event} event
  * @param {Event or Touch} pointer
@@ -355,7 +399,7 @@ Draggabilly.prototype.dragEnd = function( event, pointer ) {
     this.setLeftTop();
   }
   classie.remove( this.element, 'is-dragging' );
-  this.emitEvent( 'dragEnd', [ this, event, pointer ] );
+  this.dispatchEvent( 'dragEnd', event, [ pointer ] );
 };
 
 // -------------------------- animation -------------------------- //
@@ -396,7 +440,13 @@ Draggabilly.prototype.positionDrag = transformProperty ?
     this.element.style[ transformProperty ] = translate( this.dragPoint.x, this.dragPoint.y );
   } : Draggabilly.prototype.setLeftTop;
 
-// -----  ----- //
+// ----- staticClick ----- //
+
+Draggabilly.prototype.staticClick = function( event, pointer ) {
+  this.dispatchEvent( 'staticClick', event, [ pointer ] );
+};
+
+// ----- methods ----- //
 
 Draggabilly.prototype.enable = function() {
   this.isEnabled = true;
