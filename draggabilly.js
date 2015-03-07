@@ -56,8 +56,6 @@ function extend( a, b ) {
   return a;
 }
 
-// function noop() {}
-
 // ----- get style ----- //
 
 var defView = document.defaultView;
@@ -133,7 +131,7 @@ function Draggabilly( element, options ) {
     document.querySelector( element ) : element;
 
   // options
-  this.options = utils.extend( {}, this.constructor.defaults );
+  this.options = extend( {}, this.constructor.defaults );
   this.option( options );
 
   this._create();
