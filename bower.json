@@ -1,20 +1,39 @@
 {
   "name": "draggabilly",
   "main": "draggabilly.js",
-  "version": "1.1.2",
+  "version": "1.2.0",
   "description": "make that shiz draggable",
   "dependencies": {
-    "classie": "^1",
+    "classie": "~1.0.1",
     "eventEmitter": ">=3 <5",
-    "eventie": "^1",
-    "get-size": "^1.1.8",
-    "get-style-property": "^1",
-    "unidragger": "~1.0.0"
+    "eventie": "~1.0.6",
+    "get-size": "~1.2.2",
+    "get-style-property": "~1.0.4",
+    "unidragger": "~1.1.0"
   },
+  "homepage": "https://github.com/desandro/draggabilly",
+  "authors": [
+    "David DeSandro"
+  ],
+  "moduleType": [
+    "amd",
+    "globals",
+    "node"
+  ],
+  "keywords": [
+    "drag",
+    "draggable"
+  ],
+  "license": "MIT",
   "ignore": [
     "**/.*",
-    "index.html",
+    "node_modules",
+    "bower_components",
+    "test",
+    "tests"
+    "changelog.md",
     "Gruntfile.js",
-    "*.json"
+    "package.json",
+    "sandbox"
   ]
 }
