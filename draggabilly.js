@@ -132,8 +132,9 @@ function Draggabilly( element, options ) {
   this.element = typeof element == 'string' ?
     document.querySelector( element ) : element;
 
-  this.options = extend( {}, this.options );
-  extend( this.options, options );
+  // options
+  this.options = utils.extend( {}, this.constructor.defaults );
+  this.option( options );
 
   this._create();
 }
@@ -141,7 +142,7 @@ function Draggabilly( element, options ) {
 // inherit EventEmitter methods
 extend( Draggabilly.prototype, Unidragger.prototype );
 
-Draggabilly.prototype.options = {
+Draggabilly.defaults = {
 };
 
 Draggabilly.prototype._create = function() {
