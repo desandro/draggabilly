@@ -12,37 +12,37 @@
     // AMD
     define( [
         'classie/classie',
-        'eventEmitter/EventEmitter',
         'eventie/eventie',
         'get-style-property/get-style-property',
-        'get-size/get-size'
+        'get-size/get-size',
+        'unidragger/unidraggger'
       ],
-      function( classie, EventEmitter, eventie, getStyleProperty, getSize ) {
-        factory( window, classie, EventEmitter, eventie, getStyleProperty, getSize );
+      function( classie, eventie, getStyleProperty, getSize, Unidragger ) {
+        factory( window, classie, eventie, getStyleProperty, getSize, Unidragger );
       });
   } else if ( typeof exports === 'object' ) {
     // CommonJS
     module.exports = factory(
       window,
       require('desandro-classie'),
-      require('wolfy87-eventemitter'),
       require('eventie'),
       require('desandro-get-style-property'),
-      require('get-size')
+      require('get-size'),
+      require('unidragger')
     );
   } else {
     // browser global
     window.Draggabilly = factory(
       window,
       window.classie,
-      window.EventEmitter,
       window.eventie,
       window.getStyleProperty,
-      window.getSize
+      window.getSize,
+      window.Unidragger
     );
   }
 
-}( window, function factory( window, classie, EventEmitter, eventie, getStyleProperty, getSize ) {
+}( window, function factory( window, classie, eventie, getStyleProperty, getSize, Unidragger ) {
 
 'use strict';
 
@@ -142,7 +142,7 @@ function Draggabilly( element, options ) {
 }
 
 // inherit EventEmitter methods
-extend( Draggabilly.prototype, EventEmitter.prototype );
+extend( Draggabilly.prototype, Unidragger.prototype );
 
 Draggabilly.prototype.options = {
 };
