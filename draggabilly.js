@@ -8,7 +8,7 @@
 ( function( window, factory ) {
   'use strict';
 
-  if ( typeof define === 'function' && define.amd ) {
+  if ( typeof define == 'function' && define.amd ) {
     // AMD
     define( [
         'classie/classie',
@@ -19,7 +19,7 @@
       function( classie, getStyleProperty, getSize, Unidragger ) {
         factory( window, classie, getStyleProperty, getSize, Unidragger );
       });
-  } else if ( typeof exports === 'object' ) {
+  } else if ( typeof exports == 'object' ) {
     // CommonJS
     module.exports = factory(
       window,
@@ -72,13 +72,13 @@ var getStyle = defView && defView.getComputedStyle ?
 
 
 // http://stackoverflow.com/a/384380/182183
-var isElement = ( typeof HTMLElement === 'object' ) ?
+var isElement = ( typeof HTMLElement == 'object' ) ?
   function isElementDOM2( obj ) {
     return obj instanceof HTMLElement;
   } :
   function isElementQuirky( obj ) {
-    return obj && typeof obj === 'object' &&
-      obj.nodeType === 1 && typeof obj.nodeName === 'string';
+    return obj && typeof obj == 'object' &&
+      obj.nodeType == 1 && typeof obj.nodeName == 'string';
   };
 
 // -------------------------- requestAnimationFrame -------------------------- //
@@ -129,7 +129,7 @@ var is3d = !!getStyleProperty('perspective');
 
 function Draggabilly( element, options ) {
   // querySelector if string
-  this.element = typeof element === 'string' ?
+  this.element = typeof element == 'string' ?
     document.querySelector( element ) : element;
 
   this.options = extend( {}, this.options );
@@ -157,7 +157,7 @@ Draggabilly.prototype._create = function() {
 
   // set relative positioning
   var style = getStyle( this.element );
-  if ( style.position !== 'relative' && style.position !== 'absolute' ) {
+  if ( style.position != 'relative' && style.position != 'absolute' ) {
     this.element.style.position = 'relative';
   }
 
@@ -275,7 +275,7 @@ Draggabilly.prototype.measureContainment = function() {
   // use element if element
   var container = isElement( containment ) ? containment :
     // fallback to querySelector if string
-    typeof containment === 'string' ? document.querySelector( containment ) :
+    typeof containment == 'string' ? document.querySelector( containment ) :
     // otherwise just `true`, use the parent
     this.element.parentNode;
 
@@ -310,8 +310,8 @@ Draggabilly.prototype.dragMove = function( event, pointer, moveVector ) {
   dragY = this.containDrag( 'y', dragY, gridY );
 
   // constrain to axis
-  dragX = this.options.axis === 'y' ? 0 : dragX;
-  dragY = this.options.axis === 'x' ? 0 : dragY;
+  dragX = this.options.axis == 'y' ? 0 : dragX;
+  dragY = this.options.axis == 'x' ? 0 : dragY;
 
   this.position.x = this.startPosition.x + dragX;
   this.position.y = this.startPosition.y + dragY;
@@ -331,7 +331,7 @@ Draggabilly.prototype.containDrag = function( axis, drag, grid ) {
   if ( !this.options.containment ) {
     return drag;
   }
-  var measure = axis === 'x' ? 'width' : 'height';
+  var measure = axis == 'x' ? 'width' : 'height';
 
   var rel = this.relativeStartPosition[ axis ];
   var min = applyGrid( -rel, grid, 'ceil' );
