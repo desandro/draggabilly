@@ -6,7 +6,6 @@
   "dependencies": {
     "classie": "~1.0.1",
     "eventEmitter": ">=3 <5",
-    "eventie": "~1.0.6",
     "get-size": "~1.2.2",
     "get-style-property": "~1.0.4",
     "unidragger": "~1.1.0"

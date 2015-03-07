@@ -12,20 +12,18 @@
     // AMD
     define( [
         'classie/classie',
-        'eventie/eventie',
         'get-style-property/get-style-property',
         'get-size/get-size',
         'unidragger/unidraggger'
       ],
-      function( classie, eventie, getStyleProperty, getSize, Unidragger ) {
-        factory( window, classie, eventie, getStyleProperty, getSize, Unidragger );
+      function( classie, getStyleProperty, getSize, Unidragger ) {
+        factory( window, classie, getStyleProperty, getSize, Unidragger );
       });
   } else if ( typeof exports === 'object' ) {
     // CommonJS
     module.exports = factory(
       window,
       require('desandro-classie'),
-      require('eventie'),
       require('desandro-get-style-property'),
       require('get-size'),
       require('unidragger')
@@ -35,14 +33,13 @@
     window.Draggabilly = factory(
       window,
       window.classie,
-      window.eventie,
       window.getStyleProperty,
       window.getSize,
       window.Unidragger
     );
   }
 
-}( window, function factory( window, classie, eventie, getStyleProperty, getSize, Unidragger ) {
+}( window, function factory( window, classie, getStyleProperty, getSize, Unidragger ) {
 
 'use strict';
 
