@@ -1,11 +1,48 @@
 /*!
- * Draggabilly v1.1.2
+ * Draggabilly v1.2.0
  * Make that shiz draggable
  * http://draggabilly.desandro.com
  * MIT license
  */
 
-( function( window ) {
+( function( window, factory ) {
+  'use strict';
+
+  if ( typeof define === 'function' && define.amd ) {
+    // AMD
+    define( [
+        'classie/classie',
+        'eventEmitter/EventEmitter',
+        'eventie/eventie',
+        'get-style-property/get-style-property',
+        'get-size/get-size'
+      ],
+      function( classie, EventEmitter, eventie, getStyleProperty, getSize ) {
+        factory( window, classie, EventEmitter, eventie, getStyleProperty, getSize );
+      });
+  } else if ( typeof exports === 'object' ) {
+    // CommonJS
+    module.exports = factory(
+      window,
+      require('desandro-classie'),
+      require('wolfy87-eventemitter'),
+      require('eventie'),
+      require('desandro-get-style-property'),
+      require('get-size')
+    );
+  } else {
+    // browser global
+    window.Draggabilly = factory(
+      window,
+      window.classie,
+      window.EventEmitter,
+      window.eventie,
+      window.getStyleProperty,
+      window.getSize
+    );
+  }
+
+}( window, function factory( window, classie, EventEmitter, eventie, getStyleProperty, getSize ) {
 
 'use strict';
 
@@ -84,10 +121,6 @@ if ( !requestAnimationFrame || !cancelAnimationFrame )  {
     window.clearTimeout( id );
   };
 }
-
-// -------------------------- definition -------------------------- //
-
-function draggabillyDefinition( classie, EventEmitter, eventie, getStyleProperty, getSize ) {
 
 // -------------------------- support -------------------------- //
 
@@ -626,38 +659,4 @@ Draggabilly.prototype.destroy = function() {
 
 return Draggabilly;
 
-} // end definition
-
-// -------------------------- transport -------------------------- //
-
-if ( typeof define === 'function' && define.amd ) {
-  // AMD
-  define( [
-      'classie/classie',
-      'eventEmitter/EventEmitter',
-      'eventie/eventie',
-      'get-style-property/get-style-property',
-      'get-size/get-size'
-    ],
-    draggabillyDefinition );
-} else if ( typeof exports === 'object' ) {
-  // CommonJS
-  module.exports = draggabillyDefinition(
-    require('desandro-classie'),
-    require('wolfy87-eventemitter'),
-    require('eventie'),
-    require('desandro-get-style-property'),
-    require('get-size')
-  );
-} else {
-  // browser global
-  window.Draggabilly = draggabillyDefinition(
-    window.classie,
-    window.EventEmitter,
-    window.eventie,
-    window.getStyleProperty,
-    window.getSize
-  );
-}
-
-})( window );
+}));
