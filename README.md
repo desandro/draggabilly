@@ -83,10 +83,10 @@ Draggabilly is an Event Emitter. You can bind event listeners to events.
 ``` js
 var draggie = new Draggabilly( elem );
 
-function onDragMove( instance, event, pointer ) {
+function onDragMove( event, pointer ) {
   console.log( 'dragMove on ' + event.type +
     pointer.pageX + ', ' + pointer.pageY +
-    ' position at ' + instance.position.x + ', ' + instance.position.y );
+    ' position at ' + this.position.x + ', ' + this.position.y );
 }
 // bind event listener
 draggie.on( 'dragMove', onDragMove );
@@ -100,6 +100,8 @@ draggie.once( 'dragMove', function() {
 
 ### dragStart
 
+Triggered when dragging starts and the element starts moving.
+
 ```js
 .on( 'dragStart', function( event, pointer ) { //...
 ```
@@ -109,14 +111,19 @@ draggie.once( 'dragMove', function() {
 
 ### dragMove
 
+Triggered when dragging moves.
+
 ```js
-.on( 'dragMove', function( event, pointer ) { //...
+.on( 'dragMove', function( event, pointer, moveVector ) { //...
 ```
 
 + `event` - **Type:** _Event_ - the original `mousemove` or `touchmove` event
 + `pointer` - **Type:** _MouseEvent_ or _Touch_ - the event object that has `.pageX` and `.pageY`
++ `moveVector` **Type:** _Object_ - How far the pointer has moved from its start position `{ x: 20, y: -30 }`
 
 ### dragEnd
+
+Triggered when dragging ends.
 
 ```js
 .on( 'dragEnd', function( event, pointer ) { //...
@@ -124,6 +131,54 @@ draggie.once( 'dragMove', function() {
 
 + `event` - **Type:** _Event_ - the original `mouseup` or `touchend` event
 + `pointer` - **Type:** _MouseEvent_ or _Touch_ - the event object that has `.pageX` and `.pageY`
+
+### pointerStart
+
+Triggered when the user's pointer (mouse, touch, pointer) presses down.
+
+```js
+.on( 'pointerStart', function( event, pointer ) { //...
+```
+
++ `event` - **Type:** _Event_ - the original `mousedown` or `touchstart` event
++ `pointer` - **Type:** _MouseEvent_ or _Touch_ - the event object that has `.pageX` and `.pageY`
+
+### pointerMove
+
+Triggered when the user's pointer moves.
+
+```js
+.on( 'pointerMove', function( event, pointer, moveVector ) { //...
+```
+
++ `event` - **Type:** _Event_ - the original `mousemove` or `touchmove` event
++ `pointer` - **Type:** _MouseEvent_ or _Touch_ - the event object that has `.pageX` and `.pageY`
++ `moveVector` **Type:** _Object_ - How far the pointer has moved from its start position `{ x: 20, y: -30 }`
+
+### pointerUp
+
+Triggered when the user's pointer unpresses.
+
+```js
+.on( 'pointerUp', function( event, pointer ) { //...
+```
+
++ `event` - **Type:** _Event_ - the original `mouseup` or `touchend` event
++ `pointer` - **Type:** _MouseEvent_ or _Touch_ - the event object that has `.pageX` and `.pageY`
+
+### staticClick
+
+Triggered when the user's pointer is pressed and unpressed and has not moved enough to start dragging.
+
+`click` events are hard to detect with draggable UI, as they are triggered whenever a user drags. Draggabilly's staticClick event resolves this, as it is triggered when the user has not dragged.
+
+```js
+.on( 'staticClick', function( event, pointer ) { //...
+```
+
++ `event` - **Type:** _Event_ - the original `mouseup` or `touchend` event
++ `pointer` - **Type:** _MouseEvent_ or _Touch_ - the event object that has `.pageX` and `.pageY`
+
 
 ## Methods
 

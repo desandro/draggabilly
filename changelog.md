@@ -2,7 +2,10 @@
 
 ### v1.2.0
 
-+ Remove `draggieInstance` first argument from event callbacks
++ Integrated [Unidragger](https://github.com/metafizzy/unidragger)
+  - Changed `dragStart` to trigger when dragging starts, rather than on pointer down. Fixed [#13](https://github.com/desandro/draggabilly/issues/13).
+  - Add `staticClick` event. Fixed [#19](https://github.com/desandro/draggabilly/issues/13).
++ Removed `draggieInstance` first argument from event callbacks
 
 #### v1.1.2
 

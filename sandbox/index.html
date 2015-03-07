@@ -179,6 +179,10 @@ window.onload = function() {
     console.log('dragStart', this.position.x, this.position.y, event.type, pointer.pageX, pointer.pageY );
   });
 
+  drag2.on( 'staticClick', function( event, pointer ) {
+    console.log( 'staticClick', event.type );
+  });
+
   drag2.on( 'dragMove', function( event, pointer ) {
     console.log('dragMove', this.position.x, this.position.y, event.type, pointer.pageX, pointer.pageY );
   });
