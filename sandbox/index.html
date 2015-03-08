@@ -155,12 +155,14 @@
   <div id="axis-x" class="axised">axis: x</div>
   <div id="axis-y" class="axised">axis: y</div>
 
-<script src="bower_components/eventEmitter/EventEmitter.js"></script>
-<script src="bower_components/eventie/eventie.js"></script>
-<script src="bower_components/get-style-property/get-style-property.js"></script>
-<script src="bower_components/classie/classie.js"></script>
-<script src="bower_components/get-size/get-size.js"></script>
-<script src="draggabilly.js"></script>
+<script src="../bower_components/eventEmitter/EventEmitter.js"></script>
+<script src="../bower_components/eventie/eventie.js"></script>
+<script src="../bower_components/get-style-property/get-style-property.js"></script>
+<script src="../bower_components/classie/classie.js"></script>
+<script src="../bower_components/get-size/get-size.js"></script>
+<script src="../bower_components/unipointer/unipointer.js"></script>
+<script src="../bower_components/unidragger/unidragger.js"></script>
+<script src="../draggabilly.js"></script>
 <script>
 
 
@@ -173,16 +175,20 @@ window.onload = function() {
   var drag2 = window.drag2 = new Draggabilly( ex2 );
 
 
-  drag2.on( 'dragStart', function( instance, event, pointer ) {
-    console.log('dragStart', instance.position.x, instance.position.y, event.type, pointer.pageX, pointer.pageY );
+  drag2.on( 'dragStart', function( event, pointer ) {
+    console.log('dragStart', this.position.x, this.position.y, event.type, pointer.pageX, pointer.pageY );
   });
 
-  drag2.on( 'dragMove', function( instance, event, pointer ) {
-    console.log('dragMove', instance.position.x, instance.position.y, event.type, pointer.pageX, pointer.pageY );
+  drag2.on( 'staticClick', function( event, pointer ) {
+    console.log( 'staticClick', event.type );
   });
 
-  drag2.on( 'dragEnd', function( instance, event, pointer ) {
-    console.log( 'dragEnd', instance.position.x, instance.position.y, event && event.type, pointer && pointer.pageX, pointer && pointer.pageY );
+  drag2.on( 'dragMove', function( event, pointer ) {
+    console.log('dragMove', this.position.x, this.position.y, event.type, pointer.pageX, pointer.pageY );
+  });
+
+  drag2.on( 'dragEnd', function( event, pointer ) {
+    console.log( 'dragEnd', this.position.x, this.position.y, event && event.type, pointer && pointer.pageX, pointer && pointer.pageY );
   });
 
   var handleDraggie = new Draggabilly( document.querySelector('#has-handles'), {
@@ -194,8 +200,8 @@ window.onload = function() {
 
   var elems = document.querySelectorAll('#container1 .box');
 
-  function handleDraggerEvent( instance, event, pointer ) {
-    console.log( event.type, instance.position.x, instance.position.y );
+  function handleDraggerEvent( event, pointer ) {
+    console.log( event.type, this.position.x, this.position.y );
   }
   for ( var i=0, len = elems.length; i < len; i++ ) {
     dragger = new Draggabilly( elems[i], {
