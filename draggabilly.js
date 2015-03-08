@@ -14,7 +14,7 @@
         'classie/classie',
         'get-style-property/get-style-property',
         'get-size/get-size',
-        'unidragger/unidraggger'
+        'unidragger/unidragger'
       ],
       function( classie, getStyleProperty, getSize, Unidragger ) {
         factory( window, classie, getStyleProperty, getSize, Unidragger );
