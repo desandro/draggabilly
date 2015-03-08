@@ -260,6 +260,25 @@ $draggable.draggabilly('destroy')
 draggie.destroy()
 ```
 
+### jQuery.fn.data('draggabilly')
+
+Get the Draggabilly instance from a jQuery object. Draggabilly instances are useful to access Draggabilly properties.
+
+``` js
+var draggie = $('.draggie').data('draggabilly')
+// access Draggabilly properties
+console.log( 'draggie at ' + draggie.position.x + ', ' + draggie.position.y )
+```
+
+## Properties
+
+### position
+
+`{ x: 20, y: -30 }`
+
++ `x` _Integer_
++ `y` _Integer_
+
 ## RequireJS
 
 Draggabilly works with [RequireJS](http://requirejs.org).
