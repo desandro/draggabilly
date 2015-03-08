@@ -98,16 +98,20 @@ docReady( function() {
       setText( output, message );
     }
 
-    draggie.on( 'dragStart', function( draggieInstance, event, pointer ) {
-      notify( 'DRAG START', draggieInstance, event, pointer );
+    draggie.on( 'pointerDown', function( event, pointer ) {
+      notify( 'pointerDown', this, event, pointer );
     });
 
-    draggie.on( 'dragMove', function( draggieInstance, event, pointer ) {
-      notify( 'DRAG MOVE', draggieInstance, event, pointer );
+    draggie.on( 'dragStart', function( event, pointer ) {
+      notify( 'dragStart', this, event, pointer );
     });
 
-    draggie.on( 'dragEnd', function( draggieInstance, event, pointer ) {
-      notify( 'DRAG END', draggieInstance, event, pointer  );
+    draggie.on( 'dragMove', function( event, pointer ) {
+      notify( 'dragMove', this, event, pointer );
+    });
+
+    draggie.on( 'dragEnd', function( event, pointer ) {
+      notify( 'dragEnd', this, event, pointer  );
     });
 
   })();

@@ -194,9 +194,6 @@ gulp.task( 'site-copy', function() {
     'bower_components/doc-ready/doc-ready.js'
   ])
     .pipe( gulp.dest('build') );
-
-  gulp.src('assets/fonts/*.*')
-    .pipe( gulp.dest('build/fonts') );
 });
 
 // ----- site ----- //
