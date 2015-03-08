@@ -1,3 +1,5 @@
+/*jshint jquery: true */
+
 test( 'init', function( assert ) {
   'use strict';
 
@@ -5,25 +7,27 @@ test( 'init', function( assert ) {
   assert.expect( 25 + ( transformProperty ? 1 : 0 ) );
   var done = assert.async();
 
-  var testElem = document.querySelector('.test--basics');
-  var h2 = testElem.querySelector('h2');
-  h2.textContent = 'Drag this element';
-  classie.add( testElem, 'running' );
-  var draggieElem =  testElem.querySelector('.draggie');
-  var draggie = new Draggabilly( draggieElem );
+  
+
+  var $test = $('.test--basics').addClass('running');
+  var $h2 = $test.find('h2').text('Drag this element');
+
+  var $draggie = $('.draggie').draggabilly();
+  var draggieElem = $draggie[0];
 
   equal( draggieElem.style.position, 'relative', 'position: relative set' );
 
   var didPointerDown, didPointerMove, didPointerUp, didDragStart, didDragMove,
     didDragEnd;
 
-  draggie.once( 'pointerDown', function( event, pointer ) {
+
+  $draggie.one( 'pointerDown', function( event, pointer ) {
     didPointerDown = true;
     equal( typeof event, 'object', 'pointerDown event argument' );
     ok( pointer.pageX, 'pointerDown pageX' );
   });
 
-  draggie.once( 'pointerMove', function( event, pointer, moveVector ) {
+  $draggie.one( 'pointerMove', function( event, pointer, moveVector ) {
     didPointerMove = true;
     equal( typeof event, 'object', 'pointerMove event argument' );
     equal( typeof pointer.pageX, 'number', 'pointerMove pageX' );
@@ -31,19 +35,19 @@ test( 'init', function( assert ) {
     equal( typeof moveVector.y, 'number', 'pointerMove moveVector.y' );
   });
 
-  draggie.once( 'pointerUp', function( event, pointer ) {
+  $draggie.one( 'pointerUp', function( event, pointer ) {
     didPointerUp = true;
     equal( typeof event, 'object', 'pointerUp event argument' );
     ok( pointer.pageX, 'pointerUp pageX' );
   });
 
-  draggie.once( 'dragStart', function( evnet, pointer ) {
+  $draggie.one( 'dragStart', function( evnet, pointer ) {
     didDragStart = true;
     equal( typeof event, 'object', 'didDragStart event argument' );
     equal( typeof pointer.pageX, 'number', 'didDragStart pageX' );
   });
 
-  draggie.once( 'dragMove', function( event, pointer, moveVector ) {
+  $draggie.one( 'dragMove', function( event, pointer, moveVector ) {
     didDragMove = true;
     equal( typeof event, 'object', 'dragMove event argument' );
     equal( typeof pointer.pageX, 'number', 'dragMove pageX' );
@@ -51,7 +55,7 @@ test( 'init', function( assert ) {
     equal( typeof moveVector.y, 'number', 'dragMove moveVector.y' );
   });
 
-  draggie.once( 'dragEnd', function( event, pointer ) {
+  $draggie.one( 'dragEnd', function( event, pointer ) {
     didDragEnd = true;
     equal( typeof event, 'object', 'dragEnd event argument' );
     ok( pointer.pageX, 'dragEnd pageX' );
@@ -69,8 +73,8 @@ test( 'init', function( assert ) {
       ok( !draggieElem.style[ transformProperty ], 'transform style removed' );
     }
     // done
-    h2.textContent = 'basics: done';
-    classie.remove( testElem, 'running' );
+    $h2.text('basics: done');
+    $test.removeClass('running');
     done();
   });
 

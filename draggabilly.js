@@ -46,6 +46,8 @@
 // vars
 var document = window.document;
 
+function noop() {}
+
 // -------------------------- helpers -------------------------- //
 
 // extend objects
@@ -123,12 +125,18 @@ var transformProperty = getStyleProperty('transform');
 // TODO fix quick & dirty check for 3D support
 var is3d = !!getStyleProperty('perspective');
 
+var jQuery = window.jQuery;
+
 // --------------------------  -------------------------- //
 
 function Draggabilly( element, options ) {
   // querySelector if string
   this.element = typeof element == 'string' ?
     document.querySelector( element ) : element;
+
+  if ( jQuery ) {
+    this.$element = jQuery( this.element );
+  }
 
   // options
   this.options = extend( {}, this.constructor.defaults );
@@ -141,6 +149,14 @@ function Draggabilly( element, options ) {
 extend( Draggabilly.prototype, Unidragger.prototype );
 
 Draggabilly.defaults = {
+};
+
+/**
+ * set options
+ * @param {Object} opts
+ */
+Draggabilly.prototype.option = function( opts ) {
+  extend( this.options, opts );
 };
 
 Draggabilly.prototype._create = function() {
@@ -469,7 +485,20 @@ Draggabilly.prototype.destroy = function() {
   this.element.style.position = '';
   // unbind handles
   this.unbindHandles();
+  // remove jQuery data
+  if ( this.$element ) {
+    this.$element.removeData('draggabilly');
+  }
 };
+
+// ----- jQuery bridget ----- //
+
+// required for jQuery bridget
+Draggabilly.prototype._init = noop;
+
+if ( jQuery && jQuery.bridget ) {
+  jQuery.bridget( 'draggabilly', Draggabilly );
+}
 
 // -----  ----- //
 

@@ -15,18 +15,33 @@ Grab a packaged source file:
 
 Install with [Bower](http://bower.io): `bower install draggabilly`
 
-Install with npm: `npm install draggabilly`
+Install with [npm](https://www.npmjs.com/package/draggabilly): `npm install draggabilly`
 
 ## Usage
 
+Initialize Draggabilly as a jQuery plugin
+
 ``` js
-var elem = document.querySelector('#draggable');
+var $draggable = $('.draggable').draggabilly({
+  // options...
+})
+```
+
+Initialize Draggabilly with vanilla JS
+
+``` js
+var elem = document.querySelector('.draggable');
 var draggie = new Draggabilly( elem, {
+  // options...
+});
+
+// or pass in selector string as first argument
+var draggie = new Draggabilly( '.draggie', {
   // options...
 });
 ```
 
-When dragging, Draggabillly will add the class `.is-dragging` to the element.
+When the user first presses down, Draggabillly will add the class `.is-pointer-down` to the element. When dragging, Draggabillly will add the class `.is-dragging` to the element.
 
 ## Options
 
@@ -47,7 +62,7 @@ Constrains movement to horizontal or vertical axis.
 **Type:** _Element_, Selector _String_, or _Boolean_
 
 ``` js
-containment: '#container'
+containment: '.container'
 ```
 
 Contains movement to the bounds of the element. If `true`, the container will be the parent element.
@@ -78,23 +93,39 @@ Specifies on what element the drag interaction starts.
 
 ## Events
 
+Bind events with jQuery with standard jQuery event methods `.on()`, `.off()`, and `.one()`.
+
+``` js
+// jQuery
+function listener(/* parameters */) {
+  console.log('eventName happened');
+}
+// bind event listener
+$draggable.on( 'eventName', listener );
+// unbind event listener
+$draggable.off( 'eventName', listener );
+// bind event listener to trigger once. note ONE not ON
+$draggable.one( 'eventName', function() {
+  console.log('eventName happened just once');
+});
+```
+
+Bind events with vanilla JS with `.on()`, `.off()`, and `.once()` methods.
+
 Draggabilly is an Event Emitter. You can bind event listeners to events.
 
 ``` js
-var draggie = new Draggabilly( elem );
-
-function onDragMove( event, pointer ) {
-  console.log( 'dragMove on ' + event.type +
-    pointer.pageX + ', ' + pointer.pageY +
-    ' position at ' + this.position.x + ', ' + this.position.y );
+// vanilla JS
+function listener(/* parameters */) {
+  console.log('eventName happened');
 }
 // bind event listener
-draggie.on( 'dragMove', onDragMove );
-// un-bind event listener
-draggie.off( 'dragMove', onDragMove );
-// return true to trigger an event listener just once
-draggie.once( 'dragMove', function() {
-  console.log('Draggabilly did move, just once');
+draggie.on( 'eventName', listener );
+// unbind event listener
+draggie.off( 'eventName', listener );
+// bind event listener to trigger once. note ONCE not ONE or ON
+draggie.once( 'eventName', function() {
+  console.log('eventName happened just once');
 });
 ```
 
@@ -103,7 +134,10 @@ draggie.once( 'dragMove', function() {
 Triggered when dragging starts and the element starts moving.
 
 ```js
-.on( 'dragStart', function( event, pointer ) { //...
+// jQuery
+$draggable.on( 'dragStart', function( event, pointer ) {...})
+// vanilla JS
+draggie.on( 'dragStart', function( event, pointer ) {...})
 ```
 
 + `event` - **Type:** _Event_ - the original `mousedown` or `touchstart` event
@@ -114,7 +148,10 @@ Triggered when dragging starts and the element starts moving.
 Triggered when dragging moves.
 
 ```js
-.on( 'dragMove', function( event, pointer, moveVector ) { //...
+// jQuery
+$draggable.on( 'dragMove', function( event, pointer, moveVector ) {...})
+// vanilla JS
+draggie.on( 'dragMove', function( event, pointer, moveVector ) {...})
 ```
 
 + `event` - **Type:** _Event_ - the original `mousemove` or `touchmove` event
@@ -126,7 +163,10 @@ Triggered when dragging moves.
 Triggered when dragging ends.
 
 ```js
-.on( 'dragEnd', function( event, pointer ) { //...
+// jQuery
+$draggable.on( 'dragEnd', function( event, pointer ) {...})
+// vanilla JS
+draggie.on( 'dragEnd', function( event, pointer ) {...})
 ```
 
 + `event` - **Type:** _Event_ - the original `mouseup` or `touchend` event
@@ -137,7 +177,10 @@ Triggered when dragging ends.
 Triggered when the user's pointer (mouse, touch, pointer) presses down.
 
 ```js
-.on( 'pointerStart', function( event, pointer ) { //...
+// jQuery
+$draggable.on( 'pointerStart', function( event, pointer ) {...})
+// vanilla JS
+draggie.on( 'pointerStart', function( event, pointer ) {...})
 ```
 
 + `event` - **Type:** _Event_ - the original `mousedown` or `touchstart` event
@@ -148,7 +191,10 @@ Triggered when the user's pointer (mouse, touch, pointer) presses down.
 Triggered when the user's pointer moves.
 
 ```js
-.on( 'pointerMove', function( event, pointer, moveVector ) { //...
+// jQuery
+$draggable.on( 'pointerMove', function( event, pointer, moveVector ) {...})
+// vanilla JS
+draggie.on( 'pointerMove', function( event, pointer, moveVector ) {...})
 ```
 
 + `event` - **Type:** _Event_ - the original `mousemove` or `touchmove` event
@@ -160,7 +206,10 @@ Triggered when the user's pointer moves.
 Triggered when the user's pointer unpresses.
 
 ```js
-.on( 'pointerUp', function( event, pointer ) { //...
+// jQuery
+$draggable.on( 'pointerUp', function( event, pointer ) {...})
+// vanilla JS
+draggie.on( 'pointerUp', function( event, pointer ) {...})
 ```
 
 + `event` - **Type:** _Event_ - the original `mouseup` or `touchend` event
@@ -173,31 +222,42 @@ Triggered when the user's pointer is pressed and unpressed and has not moved eno
 `click` events are hard to detect with draggable UI, as they are triggered whenever a user drags. Draggabilly's staticClick event resolves this, as it is triggered when the user has not dragged.
 
 ```js
-.on( 'staticClick', function( event, pointer ) { //...
+// jQuery
+$draggable.on( 'staticClick', function( event, pointer ) {...})
+// vanilla JS
+draggie.on( 'staticClick', function( event, pointer ) {...})
 ```
 
 + `event` - **Type:** _Event_ - the original `mouseup` or `touchend` event
 + `pointer` - **Type:** _MouseEvent_ or _Touch_ - the event object that has `.pageX` and `.pageY`
 
-
 ## Methods
-
-### destroy
-
-``` js
-draggie.destroy()
-```
 
 ### disable
 
 ``` js
+// jQuery
+$draggable.draggabilly('disable')
+// vanilla JS
 draggie.disable()
 ```
 
 ### enable
 
 ``` js
+// jQuery
+$draggable.draggabilly('enable')
+// vanilla JS
 draggie.enable()
+```
+
+### destroy
+
+``` js
+// jQuery
+$draggable.draggabilly('destroy')
+// vanilla JS
+draggie.destroy()
 ```
 
 ## RequireJS
