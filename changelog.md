@@ -7,6 +7,7 @@
   - Add `staticClick` event. Fixed [#19](https://github.com/desandro/draggabilly/issues/13).
 + Added jQuery plugin support. Fixed [#73](https://github.com/desandro/draggabilly/issues/73).
 + Removed `draggieInstance` first argument from event callbacks
++ Added tests
 
 #### v1.1.2
 
