@@ -293,6 +293,24 @@ requirejs( [
 });
 ```
 
+To use Draggabilly as a jQuery plugin with RequireJS and draggabilly.pkgd.js, you need to call jQuery Bridget.
+
+``` js
+// require the require function
+requirejs( [ 'require', 'jquery', 'path/to/draggabilly.pkgd.js' ],
+  function( require, $, Draggabilly ) {
+    // require jquery-bridget, it's included in draggabilly.pkgd.js
+    require( [ 'jquery-bridget/jquery.bridget' ],
+    function() {
+      // make Draggabilly a jQuery plugin
+      $.bridget( 'draggabilly', Draggabilly );
+      // now you can use $().draggabilly()
+      $('.draggable').draggabilly({...})
+    }
+  );
+});
+```
+
 Or, you can manage dependencies with [Bower](http://bower.io). Set `baseUrl` to `bower_components` and set a path config for all your application code.
 
 ``` js
@@ -309,6 +327,62 @@ requirejs( [
 ], function( Draggabilly, myComp ) {
   new Draggabilly( ... );
 });
+```
+
+You can require Bower dependencies and use Isotope as a jQuery plugin with jQuery Bridget.
+
+``` js
+requirejs.config({
+  baseUrl: '../bower_components',
+  paths: {
+    jquery: 'jquery/jquery'
+  }
+});
+
+requirejs( [
+    'jquery',
+    'draggabilly/draggabilly',
+    'jquery-bridget/jquery.bridget'
+  ],
+  function( $, Draggabilly ) {
+    // make Draggabilly a jQuery plugin
+    $.bridget( 'draggabilly', Draggabilly );
+    // now you can use $().draggabilly()
+    $('.draggable').draggabilly({...})
+});
+```
+
+## Browserify
+
+Draggabilly works with [Browserify](http://browserify.org/). Install [Draggabilly with npm](https://www.npmjs.com/package/draggabilly).
+
+```
+npm install draggabilly
+```
+
+``` js
+var Draggabilly = require('draggabilly');
+
+var draggie = new Draggabilly( '.draggable', {
+  // options
+});
+```
+
+To use Draggabilly as a jQuery plugin with Browserify, you need to call jQuery Bridget.
+
+```
+npm install jquery-bridget
+```
+
+``` js
+var $ = require('jquery');
+require('jquery-bridget');
+var Draggabilly = require('draggabilly');
+
+// make Draggabilly a jQuery plugin
+$.bridget( 'draggabilly', Draggabilly );
+// now you can use $().draggabilly()
+$('.draggable').draggabilly({...})
 ```
 
 ## License
