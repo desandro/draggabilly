@@ -44,7 +44,7 @@ module.exports = function( grunt ) {
           banner: banner
         }
       }
-    },
+    }
 
   });
 
