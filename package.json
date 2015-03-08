@@ -20,12 +20,11 @@
     "gulp-json-lint": "^0.1.0",
     "gulp-rename": "^1.2.0",
     "gulp-util": "^3.0.4",
-    "handlebars": "~1.0.10",
     "highlight.js": "~7.3.0",
     "marked": "~0.2.8",
+    "gulp-concat": "^2.5.2"
   },
-  "scripts": {
-  },
+  "scripts": {},
   "repository": {
     "type": "git",
     "url": "git://github.com/desandro/draggabilly.git"

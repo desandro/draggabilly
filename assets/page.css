@@ -1,6 +1,8 @@
 /* Draggabilly lil page styles
 ------------------------- */
 
+/* ---- base ---- */
+
 * {
   -webkit-box-sizing: border-box;
   -moz-box-sizing: border-box;
@@ -43,9 +45,15 @@ h2 {
   border-top: 2px solid #DDD;
   padding-top: 0.5em;
   margin-top: 2.0em;
+  font-size: 2.2em;
 }
 
 h3, h4, h5 { font-weight: normal; }
+
+h3 {
+  font-size: 1.5em;
+  margin-top: 2.0em;
+}
 
 a {
   color: #80D;
@@ -62,7 +70,7 @@ ul, ol {
 
 pre, code {
   font-family: Consolas, Menlo, monospace;
-  background: #FAFAFA;
+  background: #EEE;
   color: #111;
 }
 
@@ -72,8 +80,9 @@ code {
 }
 
 pre {
-  padding: 0.5em;
+  padding: 10px;
   border-radius: 7px;
+  border: 1px solid #DDD;
 }
 
 pre code {
@@ -216,7 +225,7 @@ code .at_rule { color: #088; }
 
 
 /* tablet and desktop */
-@media screen and (min-width: 720px) {
+@media screen and (min-width: 768px) {
 
   h1 {
     font-size: 70px;
@@ -225,15 +234,21 @@ code .at_rule { color: #088; }
   }
 
   #content {
-    width: 60%;
+    width: 65%;
     padding: 1.0em 2%;
-    background: #E5E5E5;
+    background: #F5F5F5;
   }
+
+  pre, code {
+    background: #FFF;
+  }
+
+  pre { border-color: #E5E5E5; }
 
   .example-frame .example {
     position: absolute;
-    left: 107.5%;
-    width: 64%;
+    left: 106%;
+    width: 52%;
   }
 
 }

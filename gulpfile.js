@@ -146,3 +146,59 @@ gulp.task( 'default', [
   'lint',
   'dist'
 ]);
+
+// -------------------------- site-content -------------------------- //
+
+var highlightjs = require('highlight.js');
+var marked = require('marked');
+
+// alias XML syntax highlighting as HTML
+highlightjs.LANGUAGES.html = highlightjs.LANGUAGES.xml;
+// alias js as javascript
+highlightjs.LANGUAGES.js = highlightjs.LANGUAGES.javascript;
+
+marked.setOptions({
+  highlight: function( code, lang ) {
+    return lang ? highlightjs.highlight( lang, code ).value : code;
+  }
+});
+
+gulp.task( 'site-content', function() {
+  var readmeHTML = marked( fs.readFileSync( 'README.md', 'utf8' ) );
+
+  return gulp.src('assets/page.html')
+    .pipe( replace( '{{{ content }}}', readmeHTML ) )
+    .pipe( rename('index.html') )
+    .pipe( gulp.dest('build') );
+});
+
+var concat = require('gulp-concat');
+
+// ----- site-css ----- //
+
+gulp.task( 'site-css', function() {
+  return gulp.src([
+    'bower_components/normalize.css/normalize.css',
+    'assets/page.css'
+  ])
+    .pipe( concat('styles.css') )
+    .pipe( gulp.dest('build') );
+});
+
+// ----- site-copy ----- //
+
+gulp.task( 'site-copy', function() {
+  gulp.src([
+    'dist/*',
+    'assets/scripts.js',
+    'bower_components/doc-ready/doc-ready.js'
+  ])
+    .pipe( gulp.dest('build') );
+
+  gulp.src('assets/fonts/*.*')
+    .pipe( gulp.dest('build/fonts') );
+});
+
+// ----- site ----- //
+
+gulp.task( 'site', [ 'site-content', 'site-css', 'site-copy' ] );
