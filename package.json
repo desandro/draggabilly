@@ -1,13 +1,14 @@
 {
   "name": "draggabilly",
-  "version": "1.1.2",
+  "version": "1.2.0",
   "description": "make that shiz draggable",
   "main": "draggabilly.js",
   "dependencies": {
-    "desandro-classie": "^1",
+    "desandro-classie": "~1.0.1",
     "wolfy87-eventemitter": ">=3 <5",
-    "get-size": "^1.1.8",
-    "desandro-get-style-property": "^1"
+    "get-size": "~1.2.2",
+    "desandro-get-style-property": "~1.0.4",
+    "unidragger": "~1.1.0"
   },
   "devDependencies": {
     "grunt": "^0.4.5",

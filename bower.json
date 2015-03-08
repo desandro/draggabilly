@@ -8,7 +8,7 @@
     "eventEmitter": ">=3 <5",
     "get-size": "~1.2.2",
     "get-style-property": "~1.0.4",
-    "unidragger": "~1.0.0"
+    "unidragger": "~1.1.0"
   },
   "devDependencies": {
     "qunit": "~1.17.1",
