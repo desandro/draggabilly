@@ -11,14 +11,17 @@
     "unidragger": "~1.1.0"
   },
   "devDependencies": {
-    "grunt": "^0.4.5",
-    "grunt-cli": "^0.1.13",
-    "grunt-contrib-jshint": "^0.10.0",
-    "grunt-contrib-uglify": "^0.5.0",
-    "grunt-requirejs": "^0.4.2"
+    "gulp": "^3.8.11",
+    "through2": "^0.6.3",
+    "gulp-replace": "^0.5.3",
+    "gulp-uglify": "^1.1.0",
+    "requirejs": "^2.1.16",
+    "gulp-jshint": "^1.9.2",
+    "gulp-json-lint": "^0.1.0",
+    "gulp-rename": "^1.2.0",
+    "gulp-util": "^3.0.4"
   },
   "scripts": {
-    "test": "grunt travis"
   },
   "repository": {
     "type": "git",
