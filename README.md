@@ -10,12 +10,24 @@ Rad because it supports IE8+ and multi-touch.
 
 Grab a packaged source file:
 
-+ [draggabilly.pkgd.min.js](http://draggabilly.desandro.com/draggabilly.pkgd.min.js) for production
-+ [draggabilly.pkgd.js](http://draggabilly.desandro.com/draggabilly.pkgd.js) for development
++ [draggabilly.pkgd.min.js](http://draggabilly.desandro.com/draggabilly.pkgd.min.js) minified
++ [draggabilly.pkgd.js](http://draggabilly.desandro.com/draggabilly.pkgd.js) un-minified
+
+### Package managers
 
 Install with [Bower](http://bower.io): `bower install draggabilly`
 
 Install with [npm](https://www.npmjs.com/package/draggabilly): `npm install draggabilly`
+
+### CDN
+
+Link directly to [Draggabilly files on cdnjs](https://cdnjs.com/libraries/draggabilly).
+
+``` html
+<script src="//cdnjs.cloudflare.com/ajax/libs/draggabilly/1.2.0/draggabilly.pkgd.min.js"></script>
+<!-- or -->
+<script src="//cdnjs.cloudflare.com/ajax/libs/draggabilly/1.2.0/draggabilly.pkgd.js"></script>
+```
 
 ## Usage
 
