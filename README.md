@@ -5,7 +5,10 @@
     <div id="basic" class="draggie">
       <div class="total-centered">Drag me</div>
     </div>
-    <p class="example-demo-link"><a href="http://codepen.io/desandro/pen/myXdej">Edit this demo on CodePen</a></p>
+    <p class="example-demo-link">
+      <a href="http://codepen.io/desandro/pen/yyRapr">Edit this demo on CodePen</a> or
+      <a href="http://codepen.io/desandro/pen/EadgXx">vanilla JS demo</a>
+    </p>
   </div>
 </div>
 
@@ -61,7 +64,10 @@ When the user first presses down, Draggabillly will add the class `.is-pointer-d
     <div class="draggie draggie--squat">
       <div class="total-centered">axis: 'x'</div>
     </div>
-    <p class="example-demo-link"><a href="http://codepen.io/desandro/pen/myXdej">Edit this demo on CodePen</a></p>
+    <p class="example-demo-link">
+      <a href="http://codepen.io/desandro/pen/WbaGMa">Edit this demo on CodePen</a> or
+      <a href="http://codepen.io/desandro/pen/myzrXB">vanilla JS demo</a>
+    </p>
   </div>
 </div>
 
@@ -84,7 +90,10 @@ Constrains movement to horizontal or vertical axis.
       <div class="draggie"></div>
       <div class="draggie"></div>
     </div>
-    <p class="example-demo-link"><a href="http://codepen.io/desandro/pen/myXdej">Edit this demo on CodePen</a></p>
+    <p class="example-demo-link">
+      <a href="http://codepen.io/desandro/pen/azRmYv">Edit this demo on CodePen</a> or
+      <a href="http://codepen.io/desandro/pen/dPgpev">vanilla JS demo</a>
+    </p>
   </div>
 </div>
 
@@ -103,7 +112,10 @@ Contains movement to the bounds of the element. If `true`, the container will be
     <div class="draggie draggie--squat">
       <div class="total-centered">grid: [ 20, 20 ]</div>
     </div>
-    <p class="example-demo-link"><a href="http://codepen.io/desandro/pen/myXdej">Edit this demo on CodePen</a></p>
+    <p class="example-demo-link">
+      <a href="http://codepen.io/desandro/pen/XJxjBJ">Edit this demo on CodePen</a> or
+      <a href="http://codepen.io/desandro/pen/ZYqpRg">vanilla JS demo</a>
+    </p>
   </div>
 </div>
 
@@ -124,7 +136,10 @@ Snaps the element to a grid, every x and y pixels.
     <div id="has-handle" class="draggie">
       <div class="handle"></div>
     </div>
-    <p class="example-demo-link"><a href="http://codepen.io/desandro/pen/myXdej">Edit this demo on CodePen</a></p>
+    <p class="example-demo-link">
+      <a href="http://codepen.io/desandro/pen/xbyEyO">Edit this demo on CodePen</a> or
+      <a href="http://codepen.io/desandro/pen/NPOROE">vanilla JS demo</a>
+    </p>
   </div>
 </div>
 
@@ -200,6 +215,8 @@ draggie.on( 'dragStart', function( event, pointer ) {...})
 + `event` - **Type:** _Event_ - the original `mousedown` or `touchstart` event
 + `pointer` - **Type:** _MouseEvent_ or _Touch_ - the event object that has `.pageX` and `.pageY`
 
+[Edit demo on CodePen](http://codepen.io/desandro/pen/KwGgGY) or [vanilla JS demo](http://codepen.io/desandro/pen/qEJaQq).
+
 ### dragMove
 
 Triggered when dragging moves.
@@ -215,6 +232,8 @@ draggie.on( 'dragMove', function( event, pointer, moveVector ) {...})
 + `pointer` - **Type:** _MouseEvent_ or _Touch_ - the event object that has `.pageX` and `.pageY`
 + `moveVector` **Type:** _Object_ - How far the pointer has moved from its start position `{ x: 20, y: -30 }`
 
+[Edit demo on CodePen](http://codepen.io/desandro/pen/gbBwQe) or [vanilla JS demo](http://codepen.io/desandro/pen/QwZKJY).
+
 ### dragEnd
 
 Triggered when dragging ends.
@@ -229,6 +248,8 @@ draggie.on( 'dragEnd', function( event, pointer ) {...})
 + `event` - **Type:** _Event_ - the original `mouseup` or `touchend` event
 + `pointer` - **Type:** _MouseEvent_ or _Touch_ - the event object that has `.pageX` and `.pageY`
 
+[Edit demo on CodePen](http://codepen.io/desandro/pen/RNeGOQ) or [vanilla JS demo](http://codepen.io/desandro/pen/ByqLEq).
+
 ### pointerStart
 
 Triggered when the user's pointer (mouse, touch, pointer) presses down.
@@ -242,6 +263,8 @@ draggie.on( 'pointerStart', function( event, pointer ) {...})
 
 + `event` - **Type:** _Event_ - the original `mousedown` or `touchstart` event
 + `pointer` - **Type:** _MouseEvent_ or _Touch_ - the event object that has `.pageX` and `.pageY`
+
+[Edit demo on CodePen](http://codepen.io/desandro/pen/QwZKYo) or [vanilla JS demo](http://codepen.io/desandro/pen/NPORJe).
 
 ### pointerMove
 
@@ -258,6 +281,8 @@ draggie.on( 'pointerMove', function( event, pointer, moveVector ) {...})
 + `pointer` - **Type:** _MouseEvent_ or _Touch_ - the event object that has `.pageX` and `.pageY`
 + `moveVector` **Type:** _Object_ - How far the pointer has moved from its start position `{ x: 20, y: -30 }`
 
+[Edit demo on CodePen](http://codepen.io/desandro/pen/dPgpaR) or [vanilla JS demo](http://codepen.io/desandro/pen/ZYqpwE).
+
 ### pointerUp
 
 Triggered when the user's pointer unpresses.
@@ -271,6 +296,8 @@ draggie.on( 'pointerUp', function( event, pointer ) {...})
 
 + `event` - **Type:** _Event_ - the original `mouseup` or `touchend` event
 + `pointer` - **Type:** _MouseEvent_ or _Touch_ - the event object that has `.pageX` and `.pageY`
+
+[Edit demo on CodePen](http://codepen.io/desandro/pen/zxmKQq) or [vanilla JS demo](http://codepen.io/desandro/pen/QwZKPP).
 
 ### staticClick
 
@@ -287,6 +314,8 @@ draggie.on( 'staticClick', function( event, pointer ) {...})
 
 + `event` - **Type:** _Event_ - the original `mouseup` or `touchend` event
 + `pointer` - **Type:** _MouseEvent_ or _Touch_ - the event object that has `.pageX` and `.pageY`
+
+[Edit demo on CodePen](http://codepen.io/desandro/pen/YPJGbE) or [vanilla JS demo](http://codepen.io/desandro/pen/OPBRYo).
 
 ## Methods
 
