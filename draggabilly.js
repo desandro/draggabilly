@@ -400,6 +400,7 @@ Draggabilly.prototype.containDrag = function( axis, drag, grid ) {
  * @param {Event or Touch} pointer
  */
 Draggabilly.prototype.pointerUp = function( event, pointer ) {
+  classie.remove( this.element, 'is-pointer-down' );
   this.dispatchEvent( 'pointerUp', event, [ pointer ] );
   this._dragPointerUp( event, pointer );
 };

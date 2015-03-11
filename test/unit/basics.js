@@ -2,7 +2,7 @@ test( 'init', function( assert ) {
   'use strict';
 
   var transformProperty = getStyleProperty('transform');
-  assert.expect( 25 + ( transformProperty ? 1 : 0 ) );
+  assert.expect( 29 + ( transformProperty ? 1 : 0 ) );
   var done = assert.async();
 
   var testElem = document.querySelector('.test--basics');
@@ -21,6 +21,7 @@ test( 'init', function( assert ) {
     didPointerDown = true;
     equal( typeof event, 'object', 'pointerDown event argument' );
     ok( pointer.pageX, 'pointerDown pageX' );
+    ok( classie.has( draggieElem, 'is-pointer-down' ), 'is-pointer-down class added' );
   });
 
   draggie.once( 'pointerMove', function( event, pointer, moveVector ) {
@@ -35,12 +36,14 @@ test( 'init', function( assert ) {
     didPointerUp = true;
     equal( typeof event, 'object', 'pointerUp event argument' );
     ok( pointer.pageX, 'pointerUp pageX' );
+    ok( !classie.has( draggieElem, 'is-pointer-down' ), 'is-pointer-down class removed' );
   });
 
   draggie.once( 'dragStart', function( evnet, pointer ) {
     didDragStart = true;
     equal( typeof event, 'object', 'didDragStart event argument' );
     equal( typeof pointer.pageX, 'number', 'didDragStart pageX' );
+    ok( classie.has( draggieElem, 'is-dragging' ), 'is-dragging class added' );
   });
 
   draggie.once( 'dragMove', function( event, pointer, moveVector ) {
@@ -55,6 +58,7 @@ test( 'init', function( assert ) {
     didDragEnd = true;
     equal( typeof event, 'object', 'dragEnd event argument' );
     ok( pointer.pageX, 'dragEnd pageX' );
+    ok( !classie.has( draggieElem, 'is-dragging' ), 'is-dragging class removed' );
 
     ok( didPointerDown, 'didPointerDown' );
     ok( didPointerMove, 'didPointerMove' );
