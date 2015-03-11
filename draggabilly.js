@@ -345,6 +345,9 @@ Draggabilly.prototype.measureContainment = function() {
  * @param {Event or Touch} pointer
  */
 Draggabilly.prototype.dragMove = function( event, pointer, moveVector ) {
+  if ( !this.isEnabled ) {
+    return;
+  }
   var dragX = moveVector.x;
   var dragY = moveVector.y;
 
@@ -397,6 +400,7 @@ Draggabilly.prototype.containDrag = function( axis, drag, grid ) {
  * @param {Event or Touch} pointer
  */
 Draggabilly.prototype.pointerUp = function( event, pointer ) {
+  classie.remove( this.element, 'is-pointer-down' );
   this.dispatchEvent( 'pointerUp', event, [ pointer ] );
   this._dragPointerUp( event, pointer );
 };
@@ -407,6 +411,9 @@ Draggabilly.prototype.pointerUp = function( event, pointer ) {
  * @param {Event or Touch} pointer
  */
 Draggabilly.prototype.dragEnd = function( event, pointer ) {
+  if ( !this.isEnabled ) {
+    return;
+  }
   this.isDragging = false;
   // use top left position when complete
   if ( transformProperty ) {
