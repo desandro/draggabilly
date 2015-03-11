@@ -1,5 +1,10 @@
 # Changelog
 
+#### v1.2.1
+
++ Fixed bug not removing `is-pointer-down` class
++ Fixed bug to ignore `dragMove` or `dragEnd` when disabled
+
 ### v1.2.0
 
 + Integrated [Unidragger](https://github.com/metafizzy/unidragger)
@@ -7,6 +12,7 @@
   - Add `staticClick` event. Fixed [#19](https://github.com/desandro/draggabilly/issues/13).
 + Added jQuery plugin support. Fixed [#73](https://github.com/desandro/draggabilly/issues/73).
 + Removed `draggieInstance` first argument from event callbacks
++ Added `is-pointer-down` class
 + Added tests
 
 #### v1.1.2

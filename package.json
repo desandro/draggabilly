@@ -1,11 +1,10 @@
 {
   "name": "draggabilly",
-  "version": "1.2.0",
+  "version": "1.2.1",
   "description": "make that shiz draggable",
   "main": "draggabilly.js",
   "dependencies": {
     "desandro-classie": "~1.0.1",
-    "wolfy87-eventemitter": ">=3 <5",
     "get-size": "~1.2.2",
     "desandro-get-style-property": "~1.0.4",
     "unidragger": "~1.1.0"
