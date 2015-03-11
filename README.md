@@ -22,12 +22,24 @@ Rad because it supports IE8+ and multi-touch.
 
 Grab a packaged source file:
 
-+ [draggabilly.pkgd.min.js](http://draggabilly.desandro.com/draggabilly.pkgd.min.js) for production
-+ [draggabilly.pkgd.js](http://draggabilly.desandro.com/draggabilly.pkgd.js) for development
++ [draggabilly.pkgd.min.js](http://draggabilly.desandro.com/draggabilly.pkgd.min.js) minified
++ [draggabilly.pkgd.js](http://draggabilly.desandro.com/draggabilly.pkgd.js) un-minified
+
+### Package managers
 
 Install with [Bower](http://bower.io): `bower install draggabilly`
 
 Install with [npm](https://www.npmjs.com/package/draggabilly): `npm install draggabilly`
+
+### CDN
+
+Link directly to [Draggabilly files on cdnjs](https://cdnjs.com/libraries/draggabilly).
+
+``` html
+<script src="//cdnjs.cloudflare.com/ajax/libs/draggabilly/1.2.0/draggabilly.pkgd.min.js"></script>
+<!-- or -->
+<script src="//cdnjs.cloudflare.com/ajax/libs/draggabilly/1.2.0/draggabilly.pkgd.js"></script>
+```
 
 ## Usage
 
@@ -48,12 +60,29 @@ var draggie = new Draggabilly( elem, {
 });
 
 // or pass in selector string as first argument
-var draggie = new Draggabilly( '.draggie', {
+var draggie = new Draggabilly( '.draggable', {
   // options...
 });
+
+// if you have multiple .draggable elements
+// get all draggie elements
+var draggableElems = document.querySelectorAll('.draggable');
+// array of Draggabillies
+var draggies = []
+// init Draggabillies
+for ( var i=0, len = draggableElems.length; i < len; i++ ) {
+  var draggableElem = draggableElems[i];
+  var draggie = new Draggabilly( draggableElem, {
+    containment: true
+  });
+  draggies.push( draggie );
+}
 ```
 
-When the user first presses down, Draggabillly will add the class `.is-pointer-down` to the element. When dragging, Draggabillly will add the class `.is-dragging` to the element.
+### Classes
+
++ `.is-pointer-down` added when the user's pointer (mouse, touch, pointer) first presses down.
++ `.is-dragging` added when elements starts to drag.
 
 ## Options
 
@@ -155,7 +184,7 @@ Specifies on what element the drag interaction starts.
 
 ## Events
 
-Bind events with jQuery with standard jQuery event methods `.on()`, `.off()`, and `.one()`.
+Bind events with jQuery with standard jQuery event methods `.on()`, `.off()`, and `.one()`. Inside jQuery event listeners `this` refers to the Draggabilly element.
 
 <div class="example-frame">
   <div id="evented" class="example">
@@ -170,7 +199,9 @@ Bind events with jQuery with standard jQuery event methods `.on()`, `.off()`, an
 ``` js
 // jQuery
 function listener(/* parameters */) {
-  console.log('eventName happened');
+  // get Draggabilly instance
+  var draggie = $(this).data('draggabilly');
+  console.log( 'eventName happened', draggie.position.x, draggie.position.y );
 }
 // bind event listener
 $draggable.on( 'eventName', listener );
@@ -182,14 +213,12 @@ $draggable.one( 'eventName', function() {
 });
 ```
 
-Bind events with vanilla JS with `.on()`, `.off()`, and `.once()` methods.
-
-Draggabilly is an Event Emitter. You can bind event listeners to events.
+Bind events with vanilla JS with `.on()`, `.off()`, and `.once()` methods. Inside vanilla JS event listeners `this` refers to the Draggabilly instance.
 
 ``` js
 // vanilla JS
 function listener(/* parameters */) {
-  console.log('eventName happened');
+  console.log( 'eventName happened', this.position.x, this.position.y );
 }
 // bind event listener
 draggie.on( 'eventName', listener );
@@ -203,7 +232,7 @@ draggie.once( 'eventName', function() {
 
 ### dragStart
 
-Triggered when dragging starts and the element starts moving.
+Triggered when dragging starts and the element starts moving. Dragging starts after the user's pointer has moved a couple pixels to allow for clicks.
 
 ```js
 // jQuery
@@ -250,15 +279,15 @@ draggie.on( 'dragEnd', function( event, pointer ) {...})
 
 [Edit demo on CodePen](http://codepen.io/desandro/pen/RNeGOQ) or [vanilla JS demo](http://codepen.io/desandro/pen/ByqLEq).
 
-### pointerStart
+### pointerDown
 
 Triggered when the user's pointer (mouse, touch, pointer) presses down.
 
 ```js
 // jQuery
-$draggable.on( 'pointerStart', function( event, pointer ) {...})
+$draggable.on( 'pointerDown', function( event, pointer ) {...})
 // vanilla JS
-draggie.on( 'pointerStart', function( event, pointer ) {...})
+draggie.on( 'pointerDown', function( event, pointer ) {...})
 ```
 
 + `event` - **Type:** _Event_ - the original `mousedown` or `touchstart` event
@@ -351,7 +380,7 @@ draggie.destroy()
 Get the Draggabilly instance from a jQuery object. Draggabilly instances are useful to access Draggabilly properties.
 
 ``` js
-var draggie = $('.draggie').data('draggabilly')
+var draggie = $('.draggable').data('draggabilly')
 // access Draggabilly properties
 console.log( 'draggie at ' + draggie.position.x + ', ' + draggie.position.y )
 ```
@@ -411,7 +440,7 @@ requirejs( [
   'draggabilly/draggabilly',
   'app/my-component.js'
 ], function( Draggabilly, myComp ) {
-  new Draggabilly( ... );
+  new Draggabilly( '.draggable', {...});
 });
 ```
 
