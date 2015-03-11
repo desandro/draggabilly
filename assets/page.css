@@ -21,7 +21,7 @@ body {
 
 h1, h2, h3, h4, h5,
 .tagline,
-.draggie {
+.draggable {
   font-family: 'Montserrat', Gotham, 'Proxima Nova', 'Lucida Sans', 'Lucida Sans Regular', 'Lucida Grande', 'Lucida Sans Unicode', Arial, sans-serif;
 }
 
@@ -83,6 +83,7 @@ pre {
   padding: 10px;
   border-radius: 7px;
   border: 1px solid #DDD;
+  white-space: pre-wrap;
 }
 
 pre code {
@@ -98,7 +99,7 @@ pre code {
 ------------------------- */
 
 #content {
-  padding: 1.0em;
+  padding: 1.0em 1.0em 4.0em;
 }
 
 .total-centered {
@@ -113,18 +114,18 @@ pre code {
           transform: translateY(-50%);
 }
 
-/* examples
+/* demo
 ------------------------- */
 
-.example-frame {
+.demo {
   position: relative;
 }
 
-.example-frame .example {
+.demo__positioner {
   margin-bottom: 0.8em;
 }
 
-.example-demo-link {
+.demo__edit-link {
   font-size: 0.9em;
   margin-top: 15px;
 }
@@ -133,7 +134,7 @@ pre code {
 /* draggabillies
 ------------------------- */
 
-.draggie {
+.draggable {
   width:  150px;
   height: 150px;
   background: #FA0;
@@ -141,22 +142,25 @@ pre code {
   z-index: 1;
 }
 
-.draggie.is-dragging {
+.draggable--squat { height: 100px; }
+
+.draggable.is-dragging {
   opacity: 0.5;
   z-index: 2;
 }
 
-.draggie.is-dragging,
-.draggie:hover,
-#has-handle .handle:hover {
+.draggable.is-dragging,
+.draggable:hover,
+.demo--handle .handle:hover {
   cursor: move;
   background: #0AF;
 }
 
+
 /* specific examples
 ------------------------- */
 
-#container {
+.demo--containment__container {
   top: -2.4em;
   height: 150px;
   padding: 15px 2.5%;
@@ -164,25 +168,23 @@ pre code {
   border: 6px solid #FA0;
 }
 
-#container .draggie {
+.demo--containment .draggable {
   width: 23.3%;
   height: 80px;
   float: left;
   margin: 15px 5%;
 }
 
-.draggie--squat { height: 100px; }
-
-#has-handle {
+.demo--handle .draggable {
   padding: 20px;
 }
 
-#has-handle:hover {
+.demo--handle .draggable:hover {
   cursor: default;
   background: #FA0;
 }
 
-#has-handle .handle {
+.demo--handle .handle {
   background: #555;
   background: hsla(0, 0%, 0%, 0.4);
   width:  60px;
@@ -190,12 +192,12 @@ pre code {
   border-radius: 5px;
 }
 
-#evented pre {
+.demo--events pre {
   background: #555;
   color: white;
 }
 
-#evented pre code {
+.demo--events pre code {
   color: white;
   background: none;
 }
@@ -240,7 +242,7 @@ code .at_rule { color: #088; }
 
   #content {
     width: 65%;
-    padding: 1.0em 2%;
+    padding: 1.0em 2% 4.0em;
     background: #F5F5F5;
   }
 
@@ -250,7 +252,7 @@ code .at_rule { color: #088; }
 
   pre { border-color: #E5E5E5; }
 
-  .example-frame .example {
+  .demo__positioner {
     position: absolute;
     left: 106%;
     width: 52%;

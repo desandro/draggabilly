@@ -29,10 +29,9 @@ docReady( function() {
   // ----- basic ----- //
 
   ( function() {
-
-    var elem = document.querySelector('#basic');
-    var draggie = new Draggabilly( '#basic' );
-    var textElem = elem.querySelector('.total-centered');
+    var demo = document.querySelector('.demo--basic');
+    var draggie = new Draggabilly( '.demo--basic .draggable' );
+    var textElem = demo.querySelector('.total-centered');
     // set cute phrase on drag
     var movePhrases = [
       'Weeeeee!',
@@ -50,15 +49,15 @@ docReady( function() {
 
   // ----- axised ----- //
 
-  new Draggabilly( '#axised .draggie', {
+  new Draggabilly( '.demo--axis .draggable', {
     axis: 'x'
   });
 
   // ----- containment ----- //
 
   ( function() {
-    var container = document.querySelector('#container');
-    var elems = container.querySelectorAll('.draggie');
+    var container = document.querySelector('.demo--containment__container');
+    var elems = container.querySelectorAll('.draggable');
     for ( var i=0, len = elems.length; i < len; i++ ) {
       var elem = elems[i];
       new Draggabilly( elem, {
@@ -69,15 +68,14 @@ docReady( function() {
 
   // ----- grid ----- //
 
-  new Draggabilly( '#gridded .draggie', {
+  new Draggabilly( '.demo--grid .draggable', {
     grid: [ 20, 20 ]
   });
 
   // ----- handle ----- //
 
   ( function() {
-    var elem = document.querySelector('#has-handle');
-    new Draggabilly( elem, {
+    new Draggabilly( '.demo--handle .draggable', {
       handle: '.handle'
     });
   })();
@@ -85,8 +83,8 @@ docReady( function() {
   // ----- events ----- //
 
   ( function() {
-    var demo = document.querySelector('#evented');
-    var elem = demo.querySelector('.draggie');
+    var demo = document.querySelector('.demo--events');
+    var elem = demo.querySelector('.draggable');
     var draggie = new Draggabilly( elem );
     var output = demo.querySelector('code');
 
@@ -112,6 +110,10 @@ docReady( function() {
 
     draggie.on( 'dragEnd', function( event, pointer ) {
       notify( 'dragEnd', this, event, pointer  );
+    });
+
+    draggie.on( 'staticClick', function( event, pointer ) {
+      notify( 'staticClick', this, event, pointer  );
     });
 
   })();

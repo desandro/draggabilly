@@ -1,11 +1,11 @@
 # Draggabilly
 
-<div class="example-frame">
-  <div class="example">
-    <div id="basic" class="draggie">
+<div class="demo demo--basic">
+  <div class="demo__positioner">
+    <div class="draggable">
       <div class="total-centered">Drag me</div>
     </div>
-    <p class="example-demo-link">
+    <p class="demo__edit-link">
       <a href="http://codepen.io/desandro/pen/yyRapr">Edit this demo on CodePen</a> or
       <a href="http://codepen.io/desandro/pen/EadgXx">vanilla JS demo</a>
     </p>
@@ -88,12 +88,12 @@ for ( var i=0, len = draggableElems.length; i < len; i++ ) {
 
 ### axis
 
-<div class="example-frame">
-  <div id="axised" class="example">
-    <div class="draggie draggie--squat">
+<div class="demo demo--axis">
+  <div class="demo__positioner">
+    <div class="draggable draggable--squat">
       <div class="total-centered">axis: 'x'</div>
     </div>
-    <p class="example-demo-link">
+    <p class="demo__edit-link">
       <a href="http://codepen.io/desandro/pen/WbaGMa">Edit this demo on CodePen</a> or
       <a href="http://codepen.io/desandro/pen/myzrXB">vanilla JS demo</a>
     </p>
@@ -112,14 +112,14 @@ Constrains movement to horizontal or vertical axis.
 
 ### containment
 
-<div class="example-frame">
-  <div class="example">
-    <div id="container">
-      <div class="draggie"></div>
-      <div class="draggie"></div>
-      <div class="draggie"></div>
+<div class="demo demo--containment">
+  <div class="demo__positioner">
+    <div class="demo--containment__container">
+      <div class="draggable"></div>
+      <div class="draggable"></div>
+      <div class="draggable"></div>
     </div>
-    <p class="example-demo-link">
+    <p class="demo__edit-link">
       <a href="http://codepen.io/desandro/pen/azRmYv">Edit this demo on CodePen</a> or
       <a href="http://codepen.io/desandro/pen/dPgpev">vanilla JS demo</a>
     </p>
@@ -136,14 +136,14 @@ Contains movement to the bounds of the element. If `true`, the container will be
 
 ### grid
 
-<div class="example-frame">
-  <div id="gridded" class="example">
-    <div class="draggie draggie--squat">
+<div class="demo demo--grid">
+  <div class="demo__positioner">
+    <div class="draggable draggable--squat">
       <div class="total-centered">grid: [ 20, 20 ]</div>
     </div>
-    <p class="example-demo-link">
-      <a href="http://codepen.io/desandro/pen/XJxjBJ">Edit this demo on CodePen</a> or
-      <a href="http://codepen.io/desandro/pen/ZYqpRg">vanilla JS demo</a>
+    <p class="demo__edit-link">
+      <a href="http://codepen.io/desandro/pen/ZYqpRg">Edit this demo on CodePen</a> or
+      <a href="http://codepen.io/desandro/pen/XJxjBJ">vanilla JS demo</a>
     </p>
   </div>
 </div>
@@ -160,12 +160,12 @@ Snaps the element to a grid, every x and y pixels.
 
 ### handle
 
-<div class="example-frame">
-  <div class="example">
-    <div id="has-handle" class="draggie">
+<div class="demo demo--handle">
+  <div class="demo__positioner">
+    <div class="draggable">
       <div class="handle"></div>
     </div>
-    <p class="example-demo-link">
+    <p class="demo__edit-link">
       <a href="http://codepen.io/desandro/pen/xbyEyO">Edit this demo on CodePen</a> or
       <a href="http://codepen.io/desandro/pen/NPOROE">vanilla JS demo</a>
     </p>
@@ -186,13 +186,13 @@ Specifies on what element the drag interaction starts.
 
 Bind events with jQuery with standard jQuery event methods `.on()`, `.off()`, and `.one()`. Inside jQuery event listeners `this` refers to the Draggabilly element.
 
-<div class="example-frame">
-  <div id="evented" class="example">
+<div class="demo demo--events">
+  <div class="demo__positioner">
     <pre><code>
 
 
 </code></pre>
-    <div class="draggie"></div>
+    <div class="draggable"></div>
   </div>
 </div>
 
