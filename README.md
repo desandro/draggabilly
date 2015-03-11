@@ -73,7 +73,7 @@ var draggies = []
 for ( var i=0, len = draggableElems.length; i < len; i++ ) {
   var draggableElem = draggableElems[i];
   var draggie = new Draggabilly( draggableElem, {
-    containment: true
+    // options...
   });
   draggies.push( draggie );
 }
@@ -398,7 +398,7 @@ console.log( 'draggie at ' + draggie.position.x + ', ' + draggie.position.y )
 
 Draggabilly works with [RequireJS](http://requirejs.org).
 
-You can require [draggabilly.pkgd.js](http://draggabilly.desandro.io/draggabilly.pkgd.js).
+You can require `draggabilly.pkgd.js`..
 
 ``` js
 requirejs( [
