@@ -1,5 +1,5 @@
 /*!
- * Draggabilly v1.2.0
+ * Draggabilly v1.2.1
  * Make that shiz draggable
  * http://draggabilly.desandro.com
  * MIT license
@@ -145,7 +145,7 @@ function Draggabilly( element, options ) {
   this._create();
 }
 
-// inherit EventEmitter methods
+// inherit Unidragger methods
 extend( Draggabilly.prototype, Unidragger.prototype );
 
 Draggabilly.defaults = {
