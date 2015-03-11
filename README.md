@@ -5,6 +5,7 @@
     <div id="basic" class="draggie">
       <div class="total-centered">Drag me</div>
     </div>
+    <p class="example-demo-link"><a href="http://codepen.io/desandro/pen/myXdej">Edit this demo on CodePen</a></p>
   </div>
 </div>
 
@@ -60,6 +61,7 @@ When the user first presses down, Draggabillly will add the class `.is-pointer-d
     <div class="draggie draggie--squat">
       <div class="total-centered">axis: 'x'</div>
     </div>
+    <p class="example-demo-link"><a href="http://codepen.io/desandro/pen/myXdej">Edit this demo on CodePen</a></p>
   </div>
 </div>
 
@@ -76,10 +78,13 @@ Constrains movement to horizontal or vertical axis.
 ### containment
 
 <div class="example-frame">
-  <div id="container" class="example">
-    <div class="draggie"></div>
-    <div class="draggie"></div>
-    <div class="draggie"></div>
+  <div class="example">
+    <div id="container">
+      <div class="draggie"></div>
+      <div class="draggie"></div>
+      <div class="draggie"></div>
+    </div>
+    <p class="example-demo-link"><a href="http://codepen.io/desandro/pen/myXdej">Edit this demo on CodePen</a></p>
   </div>
 </div>
 
@@ -98,6 +103,7 @@ Contains movement to the bounds of the element. If `true`, the container will be
     <div class="draggie draggie--squat">
       <div class="total-centered">grid: [ 20, 20 ]</div>
     </div>
+    <p class="example-demo-link"><a href="http://codepen.io/desandro/pen/myXdej">Edit this demo on CodePen</a></p>
   </div>
 </div>
 
@@ -118,6 +124,7 @@ Snaps the element to a grid, every x and y pixels.
     <div id="has-handle" class="draggie">
       <div class="handle"></div>
     </div>
+    <p class="example-demo-link"><a href="http://codepen.io/desandro/pen/myXdej">Edit this demo on CodePen</a></p>
   </div>
 </div>
 
