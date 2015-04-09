@@ -34,6 +34,7 @@
     "test",
     "tests",
     "changelog.md",
+    "contributing.md",
     "Gruntfile.js",
     "gulpfile.js",
     "package.json",
