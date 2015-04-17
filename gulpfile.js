@@ -94,12 +94,13 @@ function getBanner() {
 
 var replace = require('gulp-replace');
 var rename = require('gulp-rename');
+var uglify = require('gulp-uglify');
 
 function addBanner( str ) {
   return replace( /^/, str );
 }
 
-gulp.task( 'requirejs', function() {
+gulp.task( 'dist', function() {
   var banner = getBanner();
   // HACK src is not needed
   // should refactor rjsOptimize to produce src
@@ -119,26 +120,14 @@ gulp.task( 'requirejs', function() {
     // add banner
     .pipe( addBanner( banner ) )
     .pipe( rename('draggabilly.pkgd.js') )
-    .pipe( gulp.dest('dist') );
-});
-
-// ----- uglify ----- //
-
-var uglify = require('gulp-uglify');
-
-gulp.task( 'uglify', function() {
-  var banner = getBanner();
-  return gulp.src('dist/draggabilly.pkgd.js')
+    .pipe( gulp.dest('dist') )
+    // pkgd.min.js
     .pipe( uglify() )
     // add banner
     .pipe( addBanner( banner ) )
     .pipe( rename('draggabilly.pkgd.min.js') )
     .pipe( gulp.dest('dist') );
 });
-
-// ----- dist ----- //
-
-gulp.task( 'dist', [ 'requirejs', 'uglify' ] );
 
 // ----- default ----- //
 

@@ -1,5 +1,13 @@
 # Changelog
 
+#### v1.2.3
+
++ Updated `draggabilly.pkgd.min.js`, botched in v1.2.2
+
+#### v1.2.2
+
+Fixed bug with AMD/RequireJS, missing `return factory`. Fixed [#82](https://github.com/desandro/draggabilly/pull/82)
+
 #### v1.2.1
 
 + Fixed bug not removing `is-pointer-down` class
