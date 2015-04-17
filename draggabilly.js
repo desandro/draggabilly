@@ -1,5 +1,5 @@
 /*!
- * Draggabilly v1.2.1
+ * Draggabilly v1.2.2
  * Make that shiz draggable
  * http://draggabilly.desandro.com
  * MIT license
@@ -17,7 +17,7 @@
         'unidragger/unidragger'
       ],
       function( classie, getStyleProperty, getSize, Unidragger ) {
-        factory( window, classie, getStyleProperty, getSize, Unidragger );
+        return factory( window, classie, getStyleProperty, getSize, Unidragger );
       });
   } else if ( typeof exports == 'object' ) {
     // CommonJS

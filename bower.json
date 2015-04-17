@@ -1,7 +1,7 @@
 {
   "name": "draggabilly",
   "main": "draggabilly.js",
-  "version": "1.2.1",
+  "version": "1.2.2",
   "description": "make that shiz draggable",
   "dependencies": {
     "classie": "~1.0.1",
@@ -36,6 +36,7 @@
     "test",
     "tests",
     "changelog.md",
+    "contributing.md",
     "Gruntfile.js",
     "gulpfile.js",
     "package.json",
