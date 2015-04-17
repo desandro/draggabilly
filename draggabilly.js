@@ -17,7 +17,7 @@
         'unidragger/unidragger'
       ],
       function( classie, getStyleProperty, getSize, Unidragger ) {
-        factory( window, classie, getStyleProperty, getSize, Unidragger );
+        return factory( window, classie, getStyleProperty, getSize, Unidragger );
       });
   } else if ( typeof exports == 'object' ) {
     // CommonJS
