@@ -1,5 +1,5 @@
 /*!
- * Draggabilly PACKAGED v1.2.1
+ * Draggabilly PACKAGED v1.2.3
  * Make that shiz draggable
  * http://draggabilly.desandro.com
  * MIT license
@@ -1737,7 +1737,7 @@ return Unidragger;
 }));
 
 /*!
- * Draggabilly v1.2.1
+ * Draggabilly v1.2.3
  * Make that shiz draggable
  * http://draggabilly.desandro.com
  * MIT license
@@ -1755,7 +1755,7 @@ return Unidragger;
         'unidragger/unidragger'
       ],
       function( classie, getStyleProperty, getSize, Unidragger ) {
-        factory( window, classie, getStyleProperty, getSize, Unidragger );
+        return factory( window, classie, getStyleProperty, getSize, Unidragger );
       });
   } else if ( typeof exports == 'object' ) {
     // CommonJS
