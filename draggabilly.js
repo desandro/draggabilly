@@ -328,7 +328,7 @@ Draggabilly.prototype.measureContainment = function() {
     // otherwise just `true`, use the parent
     this.element.parentNode;
 
-  if( container == 'window' ) {
+  if( containment == 'window' ) {
     this.containerSize = {
       width: window.innerWidth,
       height: window.innerHeight
