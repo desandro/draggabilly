@@ -1,5 +1,9 @@
 # Changelog
 
+#### v1.2.4
+
+Removed named RequireJS module. Fixed [#87](https://github.com/desandro/draggabilly/issues/87)
+
 #### v1.2.3
 
 + Updated `draggabilly.pkgd.min.js`, botched in v1.2.2

@@ -1,5 +1,5 @@
 /*!
- * Draggabilly PACKAGED v1.2.3
+ * Draggabilly PACKAGED v1.2.4
  * Make that shiz draggable
  * http://draggabilly.desandro.com
  * MIT license
@@ -1737,7 +1737,7 @@ return Unidragger;
 }));
 
 /*!
- * Draggabilly v1.2.3
+ * Draggabilly v1.2.4
  * Make that shiz draggable
  * http://draggabilly.desandro.com
  * MIT license
@@ -1748,7 +1748,7 @@ return Unidragger;
 
   if ( typeof define == 'function' && define.amd ) {
     // AMD
-    define( 'draggabilly/draggabilly',[
+    define( [
         'classie/classie',
         'get-style-property/get-style-property',
         'get-size/get-size',
