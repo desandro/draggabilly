@@ -328,13 +328,23 @@ Draggabilly.prototype.measureContainment = function() {
     // otherwise just `true`, use the parent
     this.element.parentNode;
 
-  this.containerSize = getSize( container );
-  var containerRect = container.getBoundingClientRect();
-
-  this.relativeStartPosition = {
-    x: elemRect.left - containerRect.left,
-    y: elemRect.top  - containerRect.top
-  };
+  if( containment == 'window' ) {
+    this.containerSize = {
+      width: window.innerWidth,
+      height: window.innerHeight
+    };
+    this.relativeStartPosition = {
+      x: elemRect.left,
+      y: elemRect.top
+    };
+  } else {
+    this.containerSize = getSize( container );
+    var containerRect = container.getBoundingClientRect();
+    this.relativeStartPosition = {
+      x: elemRect.left - containerRect.left,
+      y: elemRect.top - containerRect.top
+    };
+  }
 };
 
 // ----- move event ----- //
