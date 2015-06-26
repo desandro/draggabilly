@@ -417,7 +417,9 @@ Draggabilly.prototype.dragEnd = function( event, pointer ) {
   this.isDragging = false;
   // use top left position when complete
   if ( transformProperty ) {
-    this.element.style[ transformProperty ] = '';
+    var transform = this.element.style[ transformProperty ];
+    transform = transform.replace( /translate(3d)?\(.*\)/, '' );
+    this.element.style[ transformProperty ] = transform;
     this.setLeftTop();
   }
   classie.remove( this.element, 'is-dragging' );
@@ -459,7 +461,9 @@ Draggabilly.prototype.setLeftTop = function() {
 Draggabilly.prototype.positionDrag = transformProperty ?
   function() {
     // position with transform
-    this.element.style[ transformProperty ] = translate( this.dragPoint.x, this.dragPoint.y );
+    var transform = this.element.style[ transformProperty ];
+    transform = transform.replace( /translate(3d)?\(.*\)/, '' );
+    this.element.style[ transformProperty ] = transform + translate( this.dragPoint.x, this.dragPoint.y );   
   } : Draggabilly.prototype.setLeftTop;
 
 // ----- staticClick ----- //
@@ -485,7 +489,9 @@ Draggabilly.prototype.destroy = function() {
   this.disable();
   // reset styles
   if ( transformProperty ) {
-    this.element.style[ transformProperty ] = '';
+    var transform = this.element.style[ transformProperty ];
+    transform = transform.replace( /translate(3d)?\(.*\)/, '' );
+    this.element.style[ transformProperty ] = transform;
   }
   this.element.style.left = '';
   this.element.style.top = '';
