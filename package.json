@@ -1,0 +1,23 @@
+{
+  "name": "draggabilly",
+  "version": "1.0.9",
+  "description": "make that shiz draggable",
+  "main": "draggabilly.js",
+  "dependencies": {},
+  "devDependencies": {},
+  "scripts": {},
+  "repository": {
+  "type": "git",
+    "url": "git://github.com/dynamicaction/draggabilly.git"
+  },
+  "keywords": [
+    "DOM",
+    "drag",
+    "draggable",
+    "touch",
+    "multitouch"
+  ],
+  "author": "David DeSandro",
+  "license": "MIT",
+  "homepage": "http://draggabilly.desandro.com/"
+}
