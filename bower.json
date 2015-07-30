@@ -1,6 +1,6 @@
 {
   "name": "draggabilly",
-  "main": "draggabilly.js",
+  "main": "dist/draggabilly.pkgd.js",
   "version": "1.2.4",
   "description": "make that shiz draggable",
   "dependencies": {
