@@ -4,6 +4,7 @@
  * http://draggabilly.desandro.com
  * MIT license
  */
+if('undefined' !== typeof window) {
 
 ( function( window, factory ) {
   'use strict';
@@ -512,3 +513,5 @@ if ( jQuery && jQuery.bridget ) {
 return Draggabilly;
 
 }));
+
+}
