@@ -1158,6 +1158,9 @@
       if ( button && ( button !== 0 && button !== 1 ) ) {
         return;
       }
+      if (event.target.className.split(" ").indexOf('disableDraggability') > -1) {
+        return;
+      }
       this.dragStart( event, event );
     };
 
