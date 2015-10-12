@@ -120,6 +120,8 @@ gulp.task( 'dist', function() {
     // add banner
     .pipe( addBanner( banner ) )
     .pipe( rename('draggabilly.pkgd.js') )
+    // remove named module
+    .pipe( replace( "'draggabilly/draggabilly',", '' ) )
     .pipe( gulp.dest('dist') )
     // pkgd.min.js
     .pipe( uglify() )
