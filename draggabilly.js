@@ -222,8 +222,17 @@ Draggabilly.prototype._getPosition = function() {
   // properties
   var style = getStyle( this.element );
 
-  var x = parseInt( style.left, 10 );
-  var y = parseInt( style.top, 10 );
+  var x, y;
+  try {
+    var parentBoundingRect = this.element.parentElement.getBoundingClientRect();
+    var boundingRect = this.element.getBoundingClientRect();
+    x = parseInt(boundingRect.left, 10) - parseInt(parentBoundingRect.left, 10);
+    y = parseInt(boundingRect.top, 10) - parseInt(parentBoundingRect.top, 10);
+  } catch (error) {
+    x = parseInt(style.left, 10);
+    y = parseInt(style.top, 10);
+  }
+
 
   // clean up 'auto' or other non-integer values
   this.position.x = isNaN( x ) ? 0 : x;
