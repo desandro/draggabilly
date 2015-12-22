@@ -108,7 +108,7 @@ function Draggabilly( element, options ) {
 }
 
 // inherit Unidragger methods
-extend( Draggabilly.prototype, Unidragger.prototype );
+var proto = Draggabilly.prototype = Object.create( Unidragger.prototype );
 
 Draggabilly.defaults = {
 };
@@ -117,11 +117,11 @@ Draggabilly.defaults = {
  * set options
  * @param {Object} opts
  */
-Draggabilly.prototype.option = function( opts ) {
+proto.option = function( opts ) {
   extend( this.options, opts );
 };
 
-Draggabilly.prototype._create = function() {
+proto._create = function() {
 
   // properties
   this.position = {};
@@ -146,7 +146,7 @@ Draggabilly.prototype._create = function() {
 /**
  * set this.handles and bind start events to 'em
  */
-Draggabilly.prototype.setHandles = function() {
+proto.setHandles = function() {
   this.handles = this.options.handle ?
     this.element.querySelectorAll( this.options.handle ) : [ this.element ];
 
@@ -159,7 +159,7 @@ Draggabilly.prototype.setHandles = function() {
  * @param {Event} event - original event
  * @param {Array} args - extra arguments
  */
-Draggabilly.prototype.dispatchEvent = function( type, event, args ) {
+proto.dispatchEvent = function( type, event, args ) {
   var emitArgs = [ event ].concat( args );
   this.emitEvent( type, emitArgs );
   var jQuery = window.jQuery;
@@ -180,7 +180,7 @@ Draggabilly.prototype.dispatchEvent = function( type, event, args ) {
 // -------------------------- position -------------------------- //
 
 // get left/top position from style
-Draggabilly.prototype._getPosition = function() {
+proto._getPosition = function() {
   // properties
   var style = getComputedStyle( this.element );
 
@@ -195,7 +195,7 @@ Draggabilly.prototype._getPosition = function() {
 };
 
 // add transform: translate( x, y ) to position
-Draggabilly.prototype._addTransformPosition = function( style ) {
+proto._addTransformPosition = function( style ) {
   if ( !transformProperty ) {
     return;
   }
@@ -222,7 +222,7 @@ Draggabilly.prototype._addTransformPosition = function( style ) {
  * @param {Event} event
  * @param {Event or Touch} pointer
  */
-Draggabilly.prototype.pointerDown = function( event, pointer ) {
+proto.pointerDown = function( event, pointer ) {
   this._dragPointerDown( event, pointer );
   // kludge to blur focused inputs in dragger
   var focused = document.activeElement;
@@ -240,7 +240,7 @@ Draggabilly.prototype.pointerDown = function( event, pointer ) {
  * @param {Event} event
  * @param {Event or Touch} pointer
  */
-Draggabilly.prototype.pointerMove = function( event, pointer ) {
+proto.pointerMove = function( event, pointer ) {
   var moveVector = this._dragPointerMove( event, pointer );
   this.dispatchEvent( 'pointerMove', event, [ pointer, moveVector ] );
   this._dragMove( event, pointer, moveVector );
@@ -251,7 +251,7 @@ Draggabilly.prototype.pointerMove = function( event, pointer ) {
  * @param {Event} event
  * @param {Event or Touch} pointer
  */
-Draggabilly.prototype.dragStart = function( event, pointer ) {
+proto.dragStart = function( event, pointer ) {
   if ( !this.isEnabled ) {
     return;
   }
@@ -274,7 +274,7 @@ Draggabilly.prototype.dragStart = function( event, pointer ) {
   this.animate();
 };
 
-Draggabilly.prototype.measureContainment = function() {
+proto.measureContainment = function() {
   var containment = this.options.containment;
   if ( !containment ) {
     return;
@@ -306,7 +306,7 @@ Draggabilly.prototype.measureContainment = function() {
  * @param {Event} event
  * @param {Event or Touch} pointer
  */
-Draggabilly.prototype.dragMove = function( event, pointer, moveVector ) {
+proto.dragMove = function( event, pointer, moveVector ) {
   if ( !this.isEnabled ) {
     return;
   }
@@ -341,7 +341,7 @@ function applyGrid( value, grid, method ) {
   return grid ? Math[ method ]( value / grid ) * grid : value;
 }
 
-Draggabilly.prototype.containDrag = function( axis, drag, grid ) {
+proto.containDrag = function( axis, drag, grid ) {
   if ( !this.options.containment ) {
     return drag;
   }
@@ -361,7 +361,7 @@ Draggabilly.prototype.containDrag = function( axis, drag, grid ) {
  * @param {Event} event
  * @param {Event or Touch} pointer
  */
-Draggabilly.prototype.pointerUp = function( event, pointer ) {
+proto.pointerUp = function( event, pointer ) {
   this.element.classList.remove('is-pointer-down');
   this.dispatchEvent( 'pointerUp', event, [ pointer ] );
   this._dragPointerUp( event, pointer );
@@ -372,7 +372,7 @@ Draggabilly.prototype.pointerUp = function( event, pointer ) {
  * @param {Event} event
  * @param {Event or Touch} pointer
  */
-Draggabilly.prototype.dragEnd = function( event, pointer ) {
+proto.dragEnd = function( event, pointer ) {
   if ( !this.isEnabled ) {
     return;
   }
@@ -388,7 +388,7 @@ Draggabilly.prototype.dragEnd = function( event, pointer ) {
 
 // -------------------------- animation -------------------------- //
 
-Draggabilly.prototype.animate = function() {
+proto.animate = function() {
   // only render and animate if dragging
   if ( !this.isDragging ) {
     return;
@@ -404,36 +404,36 @@ Draggabilly.prototype.animate = function() {
 };
 
 // left/top positioning
-Draggabilly.prototype.setLeftTop = function() {
+proto.setLeftTop = function() {
   this.element.style.left = this.position.x + 'px';
   this.element.style.top  = this.position.y + 'px';
 };
 
-Draggabilly.prototype.positionDrag = function() {
+proto.positionDrag = function() {
   this.element.style[ transformProperty ] = 'translate3d( ' + this.dragPoint.x +
     'px, ' + this.dragPoint.y + 'px, 0)';
 };
 
 // ----- staticClick ----- //
 
-Draggabilly.prototype.staticClick = function( event, pointer ) {
+proto.staticClick = function( event, pointer ) {
   this.dispatchEvent( 'staticClick', event, [ pointer ] );
 };
 
 // ----- methods ----- //
 
-Draggabilly.prototype.enable = function() {
+proto.enable = function() {
   this.isEnabled = true;
 };
 
-Draggabilly.prototype.disable = function() {
+proto.disable = function() {
   this.isEnabled = false;
   if ( this.isDragging ) {
     this.dragEnd();
   }
 };
 
-Draggabilly.prototype.destroy = function() {
+proto.destroy = function() {
   this.disable();
   // reset styles
   if ( transformProperty ) {
@@ -453,7 +453,7 @@ Draggabilly.prototype.destroy = function() {
 // ----- jQuery bridget ----- //
 
 // required for jQuery bridget
-Draggabilly.prototype._init = noop;
+proto._init = noop;
 
 if ( jQuery && jQuery.bridget ) {
   jQuery.bridget( 'draggabilly', Draggabilly );
