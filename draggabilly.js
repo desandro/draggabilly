@@ -11,19 +11,17 @@
   if ( typeof define == 'function' && define.amd ) {
     // AMD
     define( [
-        'classie/classie',
         'get-style-property/get-style-property',
         'get-size/get-size',
         'unidragger/unidragger'
       ],
-      function( classie, getStyleProperty, getSize, Unidragger ) {
-        return factory( window, classie, getStyleProperty, getSize, Unidragger );
+      function( getStyleProperty, getSize, Unidragger ) {
+        return factory( window, getStyleProperty, getSize, Unidragger );
       });
   } else if ( typeof exports == 'object' ) {
     // CommonJS
     module.exports = factory(
       window,
-      require('desandro-classie'),
       require('desandro-get-style-property'),
       require('get-size'),
       require('unidragger')
@@ -32,14 +30,13 @@
     // browser global
     window.Draggabilly = factory(
       window,
-      window.classie,
       window.getStyleProperty,
       window.getSize,
       window.Unidragger
     );
   }
 
-}( window, function factory( window, classie, getStyleProperty, getSize, Unidragger ) {
+}( window, function factory( window, getStyleProperty, getSize, Unidragger ) {
 
 'use strict';
 
@@ -58,28 +55,11 @@ function extend( a, b ) {
   return a;
 }
 
-// ----- get style ----- //
+var getComputedStyle = window.getComputedStyle;
 
-var defView = document.defaultView;
-
-var getStyle = defView && defView.getComputedStyle ?
-  function( elem ) {
-    return defView.getComputedStyle( elem, null );
-  } :
-  function( elem ) {
-    return elem.currentStyle;
-  };
-
-
-// http://stackoverflow.com/a/384380/182183
-var isElement = ( typeof HTMLElement == 'object' ) ?
-  function isElementDOM2( obj ) {
-    return obj instanceof HTMLElement;
-  } :
-  function isElementQuirky( obj ) {
-    return obj && typeof obj == 'object' &&
-      obj.nodeType == 1 && typeof obj.nodeName == 'string';
-  };
+function isElement( obj ) {
+  return obj instanceof HTMLElement;
+}
 
 // -------------------------- requestAnimationFrame -------------------------- //
 
@@ -122,8 +102,6 @@ if ( !requestAnimationFrame || !cancelAnimationFrame )  {
 // -------------------------- support -------------------------- //
 
 var transformProperty = getStyleProperty('transform');
-// TODO fix quick & dirty check for 3D support
-var is3d = !!getStyleProperty('perspective');
 
 var jQuery = window.jQuery;
 
@@ -171,7 +149,7 @@ Draggabilly.prototype._create = function() {
   this.startPosition = extend( {}, this.position );
 
   // set relative positioning
-  var style = getStyle( this.element );
+  var style = getComputedStyle( this.element );
   if ( style.position != 'relative' && style.position != 'absolute' ) {
     this.element.style.position = 'relative';
   }
@@ -220,7 +198,7 @@ Draggabilly.prototype.dispatchEvent = function( type, event, args ) {
 // get left/top position from style
 Draggabilly.prototype._getPosition = function() {
   // properties
-  var style = getStyle( this.element );
+  var style = getComputedStyle( this.element );
 
   var x = parseInt( style.left, 10 );
   var y = parseInt( style.top, 10 );
@@ -269,7 +247,7 @@ Draggabilly.prototype.pointerDown = function( event, pointer ) {
   }
   // bind move and end events
   this._bindPostStartEvents( event );
-  classie.add( this.element, 'is-pointer-down' );
+  this.element.classList.add('is-pointer-down');
   this.dispatchEvent( 'pointerDown', event, [ pointer ] );
 };
 
@@ -306,7 +284,7 @@ Draggabilly.prototype.dragStart = function( event, pointer ) {
 
   // reset isDragging flag
   this.isDragging = true;
-  classie.add( this.element, 'is-dragging' );
+  this.element.classList.add('is-dragging');
   this.dispatchEvent( 'dragStart', event, [ pointer ] );
   // start animation
   this.animate();
@@ -400,7 +378,7 @@ Draggabilly.prototype.containDrag = function( axis, drag, grid ) {
  * @param {Event or Touch} pointer
  */
 Draggabilly.prototype.pointerUp = function( event, pointer ) {
-  classie.remove( this.element, 'is-pointer-down' );
+  this.element.classList.remove('is-pointer-down');
   this.dispatchEvent( 'pointerUp', event, [ pointer ] );
   this._dragPointerUp( event, pointer );
 };
@@ -420,7 +398,7 @@ Draggabilly.prototype.dragEnd = function( event, pointer ) {
     this.element.style[ transformProperty ] = '';
     this.setLeftTop();
   }
-  classie.remove( this.element, 'is-dragging' );
+  this.element.classList.remove('is-dragging');
   this.dispatchEvent( 'dragEnd', event, [ pointer ] );
 };
 
@@ -441,26 +419,16 @@ Draggabilly.prototype.animate = function() {
 
 };
 
-// transform translate function
-var translate = is3d ?
-  function( x, y ) {
-    return 'translate3d( ' + x + 'px, ' + y + 'px, 0)';
-  } :
-  function( x, y ) {
-    return 'translate( ' + x + 'px, ' + y + 'px)';
-  };
-
 // left/top positioning
 Draggabilly.prototype.setLeftTop = function() {
   this.element.style.left = this.position.x + 'px';
   this.element.style.top  = this.position.y + 'px';
 };
 
-Draggabilly.prototype.positionDrag = transformProperty ?
-  function() {
-    // position with transform
-    this.element.style[ transformProperty ] = translate( this.dragPoint.x, this.dragPoint.y );
-  } : Draggabilly.prototype.setLeftTop;
+Draggabilly.prototype.positionDrag = function() {
+  this.element.style[ transformProperty ] = 'translate3d( ' + this.dragPoint.x +
+    'px, ' + this.dragPoint.y + 'px, 0)';
+};
 
 // ----- staticClick ----- //
 
