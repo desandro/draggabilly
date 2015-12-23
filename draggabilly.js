@@ -226,7 +226,8 @@ proto.pointerDown = function( event, pointer ) {
   this._dragPointerDown( event, pointer );
   // kludge to blur focused inputs in dragger
   var focused = document.activeElement;
-  if ( focused && focused.blur ) {
+  // do not blur body for IE10, metafizzy/flickity#117
+  if ( focused && focused.blur && focused != document.body ) {
     focused.blur();
   }
   // bind move and end events
