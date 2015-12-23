@@ -1,10 +1,9 @@
 {
   "name": "draggabilly",
   "main": "draggabilly.js",
-  "version": "1.2.4",
+  "version": "2.0.0",
   "description": "make that shiz draggable",
   "dependencies": {
-    "classie": "~1.0.1",
     "get-size": "~1.2.2",
     "get-style-property": "~1.0.4",
     "unidragger": "~1.1.0"

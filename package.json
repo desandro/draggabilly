@@ -1,10 +1,9 @@
 {
   "name": "draggabilly",
-  "version": "1.2.4",
+  "version": "2.0.0",
   "description": "make that shiz draggable",
   "main": "draggabilly.js",
   "dependencies": {
-    "desandro-classie": "~1.0.1",
     "get-size": "~1.2.2",
     "desandro-get-style-property": "~1.0.4",
     "unidragger": "~1.1.0"
@@ -20,8 +19,7 @@
     "gulp-rename": "^1.2.0",
     "gulp-util": "^3.0.4"
   },
-  "scripts": {
-  },
+  "scripts": {},
   "repository": {
     "type": "git",
     "url": "git://github.com/desandro/draggabilly.git"
@@ -35,5 +33,11 @@
   ],
   "author": "David DeSandro",
   "license": "MIT",
-  "homepage": "http://draggabilly.desandro.com/"
+  "homepage": "http://draggabilly.desandro.com/",
+  "bugs": {
+    "url": "https://github.com/desandro/draggabilly/issues"
+  },
+  "directories": {
+    "test": "test"
+  }
 }
