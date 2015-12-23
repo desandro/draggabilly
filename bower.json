@@ -32,7 +32,6 @@
     "bower_components",
     "test",
     "tests",
-    "changelog.md",
     "contributing.md",
     "Gruntfile.js",
     "gulpfile.js",
