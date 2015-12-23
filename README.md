@@ -4,7 +4,7 @@
 
 [draggabilly.desandro.com](http://draggabilly.desandro.com)
 
-Rad because it supports IE8+ and multi-touch.
+Rad because it supports IE10+ and multi-touch.
 
 ## Install
 
@@ -24,9 +24,9 @@ Install with [npm](https://www.npmjs.com/package/draggabilly): `npm install drag
 Link directly to [Draggabilly files on cdnjs](https://cdnjs.com/libraries/draggabilly).
 
 ``` html
-<script src="//cdnjs.cloudflare.com/ajax/libs/draggabilly/1.2.0/draggabilly.pkgd.min.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/draggabilly/2.0.0/draggabilly.pkgd.min.js"></script>
 <!-- or -->
-<script src="//cdnjs.cloudflare.com/ajax/libs/draggabilly/1.2.0/draggabilly.pkgd.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/draggabilly/2.0.0/draggabilly.pkgd.js"></script>
 ```
 
 ## Usage

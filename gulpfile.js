@@ -131,6 +131,35 @@ gulp.task( 'dist', function() {
     .pipe( gulp.dest('dist') );
 });
 
+// ----- version ----- //
+
+var minimist = require('minimist');
+var chalk = require('chalk');
+
+// use gulp version -t 1.2.3
+gulp.task( 'version', function() {
+  var args = minimist( process.argv.slice(3) );
+  var version = args.t;
+  if ( !version || !/\d\.\d\.\d/.test( version ) ) {
+    gutil.log( 'invalid version: ' + chalk.red( version ) );
+    return;
+  }
+  gutil.log( 'ticking version to ' + chalk.green( version ) );
+
+  gulp.src('draggabilly.js')
+    .pipe( replace( /Draggabilly v\d\.\d\.\d/, 'Draggabilly v' + version ) )
+    .pipe( gulp.dest('.') );
+
+  gulp.src( [ 'bower.json', 'package.json' ] )
+    .pipe( replace( /"version": "\d\.\d\.\d"/, '"version": "' + version + '"' ) )
+    .pipe( gulp.dest('.') );
+  // replace CDN links in README
+  gulp.src('README.md')
+    .pipe( replace( /ajax\/libs\/draggabilly\/\d\.\d\.\d/g,
+      'ajax/libs/draggabilly/' + version ))
+    .pipe( gulp.dest('.') );
+});
+
 // ----- default ----- //
 
 gulp.task( 'default', [
