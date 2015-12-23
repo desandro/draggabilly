@@ -267,8 +267,6 @@ proto.dragStart = function( event, pointer ) {
   this.dragPoint.x = 0;
   this.dragPoint.y = 0;
 
-  // reset isDragging flag
-  this.isDragging = true;
   this.element.classList.add('is-dragging');
   this.dispatchEvent( 'dragStart', event, [ pointer ] );
   // start animation
@@ -377,7 +375,6 @@ proto.dragEnd = function( event, pointer ) {
   if ( !this.isEnabled ) {
     return;
   }
-  this.isDragging = false;
   // use top left position when complete
   if ( transformProperty ) {
     this.element.style[ transformProperty ] = '';
