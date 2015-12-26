@@ -11,18 +11,16 @@
   if ( typeof define == 'function' && define.amd ) {
     // AMD
     define( [
-        'get-style-property/get-style-property',
         'get-size/get-size',
         'unidragger/unidragger'
       ],
-      function( getStyleProperty, getSize, Unidragger ) {
-        return factory( window, getStyleProperty, getSize, Unidragger );
+      function( getSize, Unidragger ) {
+        return factory( window, getSize, Unidragger );
       });
   } else if ( typeof exports == 'object' ) {
     // CommonJS
     module.exports = factory(
       window,
-      require('desandro-get-style-property'),
       require('get-size'),
       require('unidragger')
     );
@@ -30,13 +28,12 @@
     // browser global
     window.Draggabilly = factory(
       window,
-      window.getStyleProperty,
       window.getSize,
       window.Unidragger
     );
   }
 
-}( window, function factory( window, getStyleProperty, getSize, Unidragger ) {
+}( window, function factory( window, getSize, Unidragger ) {
 
 'use strict';
 
@@ -85,7 +82,13 @@ if ( !requestAnimationFrame )  {
 
 // -------------------------- support -------------------------- //
 
-var transformProperty = getStyleProperty('transform');
+var transformProperty = ( function () {
+  var style = document.documentElement.style;
+  if ( typeof style.transform == 'string' ) {
+    return 'transform';
+  }
+  return 'WebkitTransform';
+})();
 
 var jQuery = window.jQuery;
 
@@ -196,9 +199,6 @@ proto._getPosition = function() {
 
 // add transform: translate( x, y ) to position
 proto._addTransformPosition = function( style ) {
-  if ( !transformProperty ) {
-    return;
-  }
   var transform = style[ transformProperty ];
   // bail out if value is 'none'
   if ( transform.indexOf('matrix') !== 0 ) {
@@ -434,9 +434,7 @@ proto.disable = function() {
 proto.destroy = function() {
   this.disable();
   // reset styles
-  if ( transformProperty ) {
-    this.element.style[ transformProperty ] = '';
-  }
+  this.element.style[ transformProperty ] = '';
   this.element.style.left = '';
   this.element.style.top = '';
   this.element.style.position = '';
