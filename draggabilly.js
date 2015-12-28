@@ -279,9 +279,6 @@ proto.measureContainment = function() {
     return;
   }
 
-  this.size = getSize( this.element );
-  var elemRect = this.element.getBoundingClientRect();
-
   // use element if element
   var container = isElement( containment ) ? containment :
     // fallback to querySelector if string
@@ -289,12 +286,22 @@ proto.measureContainment = function() {
     // otherwise just `true`, use the parent
     this.element.parentNode;
 
-  this.containerSize = getSize( container );
+  var elemSize = getSize( this.element );
+  var containerSize = getSize( container );
+  var elemRect = this.element.getBoundingClientRect();
   var containerRect = container.getBoundingClientRect();
 
-  this.relativeStartPosition = {
-    x: elemRect.left - containerRect.left,
-    y: elemRect.top  - containerRect.top
+  var borderSizeX = containerSize.borderLeftWidth + containerSize.borderRightWidth;
+  var borderSizeY = containerSize.borderTopWidth + containerSize.borderBottomWidth;
+
+  var position = this.relativeStartPosition = {
+    x: elemRect.left - ( containerRect.left + containerSize.borderLeftWidth ),
+    y: elemRect.top - ( containerRect.top + containerSize.borderTopWidth )
+  };
+
+  this.containSize = {
+    width: ( containerSize.width - borderSizeX ) - position.x - elemSize.width,
+    height: ( containerSize.height - borderSizeY ) - position.y - elemSize.height
   };
 };
 
@@ -348,7 +355,7 @@ proto.containDrag = function( axis, drag, grid ) {
 
   var rel = this.relativeStartPosition[ axis ];
   var min = applyGrid( -rel, grid, 'ceil' );
-  var max = this.containerSize[ measure ] - rel - this.size[ measure ];
+  var max = this.containSize[ measure ];
   max = applyGrid( max, grid, 'floor' );
   return  Math.min( max, Math.max( min, drag ) );
 };
