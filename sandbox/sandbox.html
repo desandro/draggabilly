@@ -156,9 +156,6 @@
   <div id="axis-y" class="axised">axis: y</div>
 
 <script src="../bower_components/eventEmitter/EventEmitter.js"></script>
-<script src="../bower_components/eventie/eventie.js"></script>
-<script src="../bower_components/get-style-property/get-style-property.js"></script>
-<script src="../bower_components/classie/classie.js"></script>
 <script src="../bower_components/get-size/get-size.js"></script>
 <script src="../bower_components/unipointer/unipointer.js"></script>
 <script src="../bower_components/unidragger/unidragger.js"></script>
@@ -212,7 +209,7 @@ window.onload = function() {
   }
 
   // toggle drag2 enable/disable on [B] keypress
-  eventie.bind( document, 'keyup', function( event ) {
+  document.addEventListener( 'keyup', function( event ) {
     var code = event.keyCode || event.which;
     // console.log( code );
     switch ( code ) {

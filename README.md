@@ -16,7 +16,7 @@
 
 [github.com/desandro/draggabilly](http://github.com/desandro/draggabilly)
 
-Rad because it supports IE8+ and multi-touch.
+Rad because it supports IE10+ and multi-touch.
 
 ## Install
 
@@ -27,18 +27,18 @@ Grab a packaged source file:
 
 ### Package managers
 
-Install with [Bower](http://bower.io): `bower install draggabilly`
-
 Install with [npm](https://www.npmjs.com/package/draggabilly): `npm install draggabilly`
+
+Install with [Bower](http://bower.io): `bower install draggabilly`
 
 ### CDN
 
-Link directly to [Draggabilly files on cdnjs](https://cdnjs.com/libraries/draggabilly).
+Link directly to Draggabilly files on [npmcdn.com](https://npmcdn.com).
 
 ``` html
-<script src="//cdnjs.cloudflare.com/ajax/libs/draggabilly/1.2.4/draggabilly.pkgd.min.js"></script>
+<script src="https://npmcdn.com/draggabilly@2.0.0/dist/draggabilly.pkgd.min.js"></script>
 <!-- or -->
-<script src="//cdnjs.cloudflare.com/ajax/libs/draggabilly/1.2.4/draggabilly.pkgd.js"></script>
+<script src="https://npmcdn.com/draggabilly@2.0.0/dist/draggabilly.pkgd.js"></script>
 ```
 
 ## Usage
@@ -415,7 +415,7 @@ To use Draggabilly as a jQuery plugin with RequireJS and draggabilly.pkgd.js, yo
 requirejs( [ 'require', 'jquery', 'path/to/draggabilly.pkgd.js' ],
   function( require, $, Draggabilly ) {
     // require jquery-bridget, it's included in draggabilly.pkgd.js
-    require( [ 'jquery-bridget/jquery.bridget' ],
+    require( [ 'jquery-bridget/jquery-bridget' ],
     function() {
       // make Draggabilly a jQuery plugin
       $.bridget( 'draggabilly', Draggabilly );
@@ -499,6 +499,12 @@ $.bridget( 'draggabilly', Draggabilly );
 // now you can use $().draggabilly()
 $('.draggable').draggabilly({...})
 ```
+
+## Browser support
+
+IE10+, Android 4+, iOS 6+, and all modern browsers
+
+Use [Draggabilly v1 for IE8 & 9, and Android 2.3+ support](http://draggabilly.desandro.com/v1)
 
 ## License
 
