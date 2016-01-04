@@ -52,8 +52,6 @@ function extend( a, b ) {
   return a;
 }
 
-var getComputedStyle = window.getComputedStyle;
-
 function isElement( obj ) {
   return obj instanceof HTMLElement;
 }
