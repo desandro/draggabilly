@@ -1,5 +1,5 @@
 /*!
- * Draggabilly PACKAGED v2.0.0
+ * Draggabilly PACKAGED v2.0.1
  * Make that shiz draggable
  * http://draggabilly.desandro.com
  * MIT license
@@ -151,7 +151,7 @@ return jQueryBridget;
 }));
 
 /*!
- * getSize v2.0.1
+ * getSize v2.0.2
  * measure size of elements
  * MIT license
  */
@@ -164,7 +164,9 @@ return jQueryBridget;
 
   if ( typeof define == 'function' && define.amd ) {
     // AMD
-    define( factory() );
+    define( 'get-size/get-size',[],function() {
+      return factory();
+    });
   } else if ( typeof module == 'object' && module.exports ) {
     // CommonJS
     module.exports = factory();
@@ -357,8 +359,6 @@ function getSize( elem ) {
 return getSize;
 
 });
-
-define("get-size/get-size", function(){});
 
 /*!
  * EventEmitter v4.2.11 - git.io/ee
@@ -1426,7 +1426,7 @@ return Unidragger;
 }));
 
 /*!
- * Draggabilly v2.0.0
+ * Draggabilly v2.0.1
  * Make that shiz draggable
  * http://draggabilly.desandro.com
  * MIT license
