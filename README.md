@@ -329,7 +329,7 @@ To use Draggabilly as a jQuery plugin with RequireJS and draggabilly.pkgd.js, yo
 requirejs( [ 'require', 'jquery', 'path/to/draggabilly.pkgd.js' ],
   function( require, $, Draggabilly ) {
     // require jquery-bridget, it's included in draggabilly.pkgd.js
-    require( [ 'jquery-bridget/jquery.bridget' ],
+    require( [ 'jquery-bridget/jquery-bridget' ],
     function() {
       // make Draggabilly a jQuery plugin
       $.bridget( 'draggabilly', Draggabilly );
