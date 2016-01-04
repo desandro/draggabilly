@@ -24,9 +24,9 @@ Install with [Bower](http://bower.io): `bower install draggabilly`
 Link directly to Draggabilly files on [npmcdn.com](https://npmcdn.com).
 
 ``` html
-<script src="https://npmcdn.com/draggabilly@2.0.0/dist/draggabilly.pkgd.min.js"></script>
+<script src="https://npmcdn.com/draggabilly@2.0.1/dist/draggabilly.pkgd.min.js"></script>
 <!-- or -->
-<script src="https://npmcdn.com/draggabilly@2.0.0/dist/draggabilly.pkgd.js"></script>
+<script src="https://npmcdn.com/draggabilly@2.0.1/dist/draggabilly.pkgd.js"></script>
 ```
 
 ## Usage
