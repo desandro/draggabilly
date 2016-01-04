@@ -1,4 +1,4 @@
-test( 'destroy', function( assert ) {
+QUnit.test( 'destroy', function( assert ) {
   'use strict';
 
   var done = assert.async();
@@ -8,10 +8,10 @@ test( 'destroy', function( assert ) {
 
   setTimeout( function() {
     draggie.destroy();
-    ok( true, 'draggie destroyed' );
-    ok( !draggieElem.style.left, 'no style left' );
-    ok( !draggieElem.style.top, 'no style top' );
-    ok( !draggieElem.style.position, 'no style position' );
+    assert.ok( true, 'draggie destroyed' );
+    assert.ok( !draggieElem.style.left, 'no style left' );
+    assert.ok( !draggieElem.style.top, 'no style top' );
+    assert.ok( !draggieElem.style.position, 'no style position' );
     done();
   });
 });
