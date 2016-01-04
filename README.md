@@ -36,9 +36,9 @@ Install with [npm](https://www.npmjs.com/package/draggabilly): `npm install drag
 Link directly to [Draggabilly files on cdnjs](https://cdnjs.com/libraries/draggabilly).
 
 ``` html
-<script src="//cdnjs.cloudflare.com/ajax/libs/draggabilly/1.2.0/draggabilly.pkgd.min.js"></script>
+<script src="//cdnjs.cloudflare.com/ajax/libs/draggabilly/1.2.4/draggabilly.pkgd.min.js"></script>
 <!-- or -->
-<script src="//cdnjs.cloudflare.com/ajax/libs/draggabilly/1.2.0/draggabilly.pkgd.js"></script>
+<script src="//cdnjs.cloudflare.com/ajax/libs/draggabilly/1.2.4/draggabilly.pkgd.js"></script>
 ```
 
 ## Usage
