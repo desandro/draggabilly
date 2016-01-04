@@ -15,18 +15,18 @@ Grab a packaged source file:
 
 ### Package managers
 
-Install with [Bower](http://bower.io): `bower install draggabilly`
-
 Install with [npm](https://www.npmjs.com/package/draggabilly): `npm install draggabilly`
+
+Install with [Bower](http://bower.io): `bower install draggabilly`
 
 ### CDN
 
-Link directly to [Draggabilly files on cdnjs](https://cdnjs.com/libraries/draggabilly).
+Link directly to Draggabilly files on [npmcdn.com](https://npmcdn.com).
 
 ``` html
-<script src="https://cdnjs.cloudflare.com/ajax/libs/draggabilly/2.0.0/draggabilly.pkgd.min.js"></script>
+<script src="https://npmcdn.com/draggabilly@2.0.0/dist/draggabilly.pkgd.min.js"></script>
 <!-- or -->
-<script src="https://cdnjs.cloudflare.com/ajax/libs/draggabilly/2.0.0/draggabilly.pkgd.js"></script>
+<script src="https://npmcdn.com/draggabilly@2.0.0/dist/draggabilly.pkgd.js"></script>
 ```
 
 ## Usage
@@ -413,6 +413,12 @@ $.bridget( 'draggabilly', Draggabilly );
 // now you can use $().draggabilly()
 $('.draggable').draggabilly({...})
 ```
+
+## Browser support
+
+IE10+, Android 4+, iOS 6+, and all modern browsers
+
+Use [Draggabilly v1 for IE8 & 9, and Android 2.3+ support](http://draggabilly.desandro.com/v1)
 
 ## License
 

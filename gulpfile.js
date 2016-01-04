@@ -155,8 +155,7 @@ gulp.task( 'version', function() {
     .pipe( gulp.dest('.') );
   // replace CDN links in README
   gulp.src('README.md')
-    .pipe( replace( /ajax\/libs\/draggabilly\/\d\.\d\.\d/g,
-      'ajax/libs/draggabilly/' + version ))
+    .pipe( replace( /draggabilly@\d\.\d\.\d/g, 'draggabilly@' + version ) )
     .pipe( gulp.dest('.') );
 });
 
