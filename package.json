@@ -4,8 +4,8 @@
   "description": "make that shiz draggable",
   "main": "draggabilly.js",
   "dependencies": {
-    "get-size": "~1.2.2",
-    "unidragger": "~1.1.0"
+    "get-size": "~2.0.1",
+    "unidragger": "~2.0.0"
   },
   "devDependencies": {
     "chalk": "^1.1.1",
@@ -16,6 +16,7 @@
     "gulp-replace": "^0.5.3",
     "gulp-uglify": "^1.1.0",
     "gulp-util": "^3.0.4",
+    "jquery-bridget": "~2.0.0",
     "minimist": "^1.2.0",
     "requirejs": "^2.1.16",
     "through2": "^0.6.3"

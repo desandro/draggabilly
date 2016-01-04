@@ -4,12 +4,12 @@
   "version": "2.0.0",
   "description": "make that shiz draggable",
   "dependencies": {
-    "get-size": "~1.2.2",
-    "unidragger": "~1.1.0"
+    "get-size": "~2.0.1",
+    "unidragger": "~2.0.0"
   },
   "devDependencies": {
     "qunit": "~1.17.1",
-    "jquery-bridget": "~1.1.0"
+    "jquery-bridget": "~2.0.0"
   },
   "homepage": "http://draggabilly.desandro.com",
   "authors": [
