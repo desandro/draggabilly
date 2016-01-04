@@ -6,7 +6,6 @@
   "unused": true,
   "predef": {
     "define": false,
-    "docReady": false,
     "module": false,
     "require": false
   }

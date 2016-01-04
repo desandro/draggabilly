@@ -2,7 +2,7 @@
  * Draggabilly demo page
  */
 
-docReady( function() {
+( function() {
 
   'use strict';
 
@@ -118,5 +118,4 @@ docReady( function() {
 
   })();
 
-});
-
+})();
