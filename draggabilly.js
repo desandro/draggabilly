@@ -180,19 +180,26 @@ proto.dispatchEvent = function( type, event, args ) {
 
 // -------------------------- position -------------------------- //
 
-// get left/top position from style
-proto._getPosition = function() {
-  // properties
+// get x/y position from style
+Draggabilly.prototype._getPosition = function() {
   var style = getComputedStyle( this.element );
-
-  var x = parseInt( style.left, 10 );
-  var y = parseInt( style.top, 10 );
-
+  var x = this._getPositionCoord( style.left, 'width' );
+  var y = this._getPositionCoord( style.top, 'height' );
   // clean up 'auto' or other non-integer values
   this.position.x = isNaN( x ) ? 0 : x;
   this.position.y = isNaN( y ) ? 0 : y;
 
   this._addTransformPosition( style );
+};
+
+Draggabilly.prototype._getPositionCoord = function( styleSide, measure ) {
+  if ( styleSide.indexOf('%') != -1 ) {
+    // convert percent into pixel for Safari, #75
+    var parentSize = getSize( this.element.parentNode );
+    return ( parseFloat( styleSide ) / 100 ) * parentSize[ measure ];
+  }
+
+  return parseInt( styleSide, 10 );
 };
 
 // add transform: translate( x, y ) to position
