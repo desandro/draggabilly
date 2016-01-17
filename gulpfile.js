@@ -140,22 +140,23 @@ var chalk = require('chalk');
 gulp.task( 'version', function() {
   var args = minimist( process.argv.slice(3) );
   var version = args.t;
-  if ( !version || !/\d\.\d\.\d/.test( version ) ) {
+  if ( !version || !/^\d+\.\d+\.\d+/.test( version ) ) {
     gutil.log( 'invalid version: ' + chalk.red( version ) );
     return;
   }
   gutil.log( 'ticking version to ' + chalk.green( version ) );
 
   gulp.src('draggabilly.js')
-    .pipe( replace( /Draggabilly v\d\.\d\.\d/, 'Draggabilly v' + version ) )
+    .pipe( replace( /Draggabilly v\d+\.\d+\.\d+/, 'Draggabilly v' + version ) )
     .pipe( gulp.dest('.') );
 
-  gulp.src( [ 'bower.json', 'package.json' ] )
-    .pipe( replace( /"version": "\d\.\d\.\d"/, '"version": "' + version + '"' ) )
+  gulp.src('package.json')
+    .pipe( replace( /"version": "\d+\.\d+\.\d+"/, '"version": "' + version + '"' ) )
     .pipe( gulp.dest('.') );
   // replace CDN links in README
+  var minorVersion = version.match(/\d+\.\d+/)[0];
   gulp.src('README.md')
-    .pipe( replace( /draggabilly@\d\.\d\.\d/g, 'draggabilly@' + version ) )
+    .pipe( replace( /draggabilly@\d+\.\d+/g, 'draggabilly@' + minorVersion ) )
     .pipe( gulp.dest('.') );
 });
 
