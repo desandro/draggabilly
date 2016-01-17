@@ -1,13 +1,15 @@
 /*!
- * Draggabilly v2.0.1
+ * Draggabilly v2.1.0
  * Make that shiz draggable
  * http://draggabilly.desandro.com
  * MIT license
  */
 
-( function( window, factory ) {
-  'use strict';
+/*jshint browser: true, strict: true, undef: true, unused: true */
 
+( function( window, factory ) {
+  // universal module definition
+  /* jshint strict: false */ /*globals define, module, require */
   if ( typeof define == 'function' && define.amd ) {
     // AMD
     define( [
@@ -17,7 +19,7 @@
       function( getSize, Unidragger ) {
         return factory( window, getSize, Unidragger );
       });
-  } else if ( typeof exports == 'object' ) {
+  } else if ( typeof module == 'object' && module.exports ) {
     // CommonJS
     module.exports = factory(
       window,
@@ -58,21 +60,17 @@ function isElement( obj ) {
 
 // -------------------------- requestAnimationFrame -------------------------- //
 
-// https://gist.github.com/1866474
-
-// get rAF and cAF, prefixed, if present
+// get rAF, prefixed, if present
 var requestAnimationFrame = window.requestAnimationFrame ||
   window.webkitRequestAnimationFrame || window.mozRequestAnimationFrame;
 
+// fallback to setTimeout
 var lastTime = 0;
-// fallback to setTimeout and clearTimeout if either request/cancel is not supported
 if ( !requestAnimationFrame )  {
   requestAnimationFrame = function( callback ) {
     var currTime = new Date().getTime();
     var timeToCall = Math.max( 0, 16 - ( currTime - lastTime ) );
-    var id = setTimeout( function() {
-      callback( currTime + timeToCall );
-    }, timeToCall );
+    var id = setTimeout( callback, timeToCall );
     lastTime = currTime + timeToCall;
     return id;
   };
@@ -80,13 +78,9 @@ if ( !requestAnimationFrame )  {
 
 // -------------------------- support -------------------------- //
 
-var transformProperty = ( function () {
-  var style = document.documentElement.style;
-  if ( typeof style.transform == 'string' ) {
-    return 'transform';
-  }
-  return 'WebkitTransform';
-})();
+var docElem = document.documentElement;
+var transformProperty = typeof docElem.style.transform == 'string' ?
+  'transform' : 'WebkitTransform';
 
 var jQuery = window.jQuery;
 
@@ -155,7 +149,7 @@ proto.setHandles = function() {
 };
 
 /**
- * emits events via eventEmitter and jQuery events
+ * emits events via EvEmitter and jQuery events
  * @param {String} type - name of event
  * @param {Event} event - original event
  * @param {Array} args - extra arguments
