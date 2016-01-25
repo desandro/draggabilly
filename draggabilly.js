@@ -167,6 +167,8 @@ Draggabilly.prototype._create = function() {
 
   this.startPoint = { x: 0, y: 0 };
   this.dragPoint = { x: 0, y: 0 };
+  
+  this.preventDragUpdates = false;
 
   this.startPosition = extend( {}, this.position );
 
@@ -348,29 +350,33 @@ Draggabilly.prototype.dragMove = function( event, pointer, moveVector ) {
   if ( !this.isEnabled ) {
     return;
   }
-  var dragX = moveVector.x;
-  var dragY = moveVector.y;
+  
+  if(this.preventDragUpdates === false) {
+  
+    var dragX = moveVector.x;
+    var dragY = moveVector.y;
 
-  var grid = this.options.grid;
-  var gridX = grid && grid[0];
-  var gridY = grid && grid[1];
+    var grid = this.options.grid;
+    var gridX = grid && grid[0];
+    var gridY = grid && grid[1];
 
-  dragX = applyGrid( dragX, gridX );
-  dragY = applyGrid( dragY, gridY );
+    dragX = applyGrid( dragX, gridX );
+    dragY = applyGrid( dragY, gridY );
 
-  dragX = this.containDrag( 'x', dragX, gridX );
-  dragY = this.containDrag( 'y', dragY, gridY );
+    dragX = this.containDrag( 'x', dragX, gridX );
+    dragY = this.containDrag( 'y', dragY, gridY );
 
-  // constrain to axis
-  dragX = this.options.axis == 'y' ? 0 : dragX;
-  dragY = this.options.axis == 'x' ? 0 : dragY;
-
-  this.position.x = this.startPosition.x + dragX;
-  this.position.y = this.startPosition.y + dragY;
-  // set dragPoint properties
-  this.dragPoint.x = dragX;
-  this.dragPoint.y = dragY;
-
+    // constrain to axis
+    dragX = this.options.axis == 'y' ? 0 : dragX;
+    dragY = this.options.axis == 'x' ? 0 : dragY;
+    
+    this.position.x = this.startPosition.x + dragX;
+    this.position.y = this.startPosition.y + dragY;
+    // set dragPoint properties
+    this.dragPoint.x = dragX;
+    this.dragPoint.y = dragY;
+  }
+  
   this.dispatchEvent( 'dragMove', event, [ pointer, moveVector ] );
 };
 
