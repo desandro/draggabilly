@@ -372,7 +372,7 @@ Draggabilly.prototype.dragMove = function( event, pointer, moveVector ) {
   // set dragPoint properties
   this.dragPoint.x = dragX;
   
-  if(preventDragUpdates == false) {
+  if(this.preventDragUpdates == false) {
     this.position.y = this.startPosition.y + dragY;
     this.dragPoint.y = dragY;
   }
