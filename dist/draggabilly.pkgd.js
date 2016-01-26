@@ -1940,27 +1940,49 @@ Draggabilly.prototype.option = function( opts ) {
 };
 
 Draggabilly.prototype._create = function() {
-
+  
   // properties
   this.position = {};
   this._getPosition();
-
+  
   this.startPoint = { x: 0, y: 0 };
   this.dragPoint = { x: 0, y: 0 };
   
+  this.scrollMode = false;
   this.preventDragUpdates = false;
-
+  this.scrollY = 0;
+  this.scrollElement = null;
+  this.maxScrollHeight = 0;
+  this.scrollInterval = null;
+  this.windowScrollingInProgress = false;
+  this.lastDragMove = {};
+  this.scrollDownThreshold = window.innerHeight - (window.innerHeight * 0.2);
+  this.scrollUpThreshold = window.innerHeight * 0.2;
+  this.scrollSpeed = 10;
+  
   this.startPosition = extend( {}, this.position );
-
+  
+  window.addEventListener('resize', this._onResize.bind(this));
+  
   // set relative positioning
   var style = getStyle( this.element );
   if ( style.position != 'relative' && style.position != 'absolute' ) {
     this.element.style.position = 'relative';
   }
-
+  
   this.enable();
   this.setHandles();
+  
+};
 
+Draggabilly.prototype._onResize = function() {
+  this.scrollDownThreshold = window.innerHeight - (window.innerHeight * 0.2);
+  this.scrollUpThreshold = window.innerHeight * 0.2;
+};
+
+Draggabilly.prototype.setScrollElement = function(el) {
+  this.scrollElement = el;
+  this.maxScrollHeight = el.scrollHeight;
 };
 
 /**
@@ -2147,18 +2169,121 @@ Draggabilly.prototype.dragMove = function( event, pointer, moveVector ) {
   // constrain to axis
   dragX = this.options.axis == 'y' ? 0 : dragX;
   dragY = this.options.axis == 'x' ? 0 : dragY;
-
+  
+  // set x values
   this.position.x = this.startPosition.x + dragX;
-  // set dragPoint properties
   this.dragPoint.x = dragX;
   
-  if(this.preventDragUpdates == false) {
+  this.lastDragMove = {event: event, pointer: pointer, moveVector: moveVector};
+  
+  // set y values depending on if scrolling
+  if(!this.scrollMode) {
     this.position.y = this.startPosition.y + dragY;
     this.dragPoint.y = dragY;
+  } else {
+    this.position.y = this.startPosition.y + dragY + this.scrollY;
+    this.dragPoint.y = dragY + this.scrollY;
   }
   
-  this.dispatchEvent( 'dragMove', event, [ pointer, moveVector ] );
+  if(this.scrollElement !== null) {
+    
+    var yPos = event.clientY;
+    
+    if(yPos > this.scrollDownThreshold) {
+      
+      if(this.windowScrollingInProgress === false) {
+        
+        this.maxScrollHeight = this.scrollElement.scrollHeight;
+        
+        if((this.maxScrollHeight - (this.scrollElement.scrollTop + window.innerHeight)) > 0) {
+          this.startScrollingDown();
+        }
+      }
+      
+    } else if(yPos < this.scrollUpThreshold) {
+      if(this.windowScrollingInProgress === false) {
+        
+        this.maxScrollHeight = this.scrollElement.scrollHeight;
+        
+        if(this.scrollElement.scrollTop > 0) {
+          this.startScrollingUp();
+        }
+      }
+      
+    } else {
+      clearInterval(this.scrollWindowInterval);
+      this.windowScrollingInProgress = false;
+    }
+  }
+  
+  if(this.scrollMode) {
+    this.dispatchEvent( 'dragMove', event, [ pointer, {x: dragX, y: dragY + this.scrollY} ] );
+  } else {
+    this.dispatchEvent( 'dragMove', event, [ pointer, moveVector ] );
+  }
+  
 };
+
+
+Draggabilly.prototype.startScrollingDown = function() {
+  
+  this.scrollMode = true;
+  this.windowScrollingInProgress = true;
+  clearInterval(this.scrollWindowInterval);
+  
+  var self = this;
+  
+  this.scrollWindowInterval = setInterval(function() {
+    
+    if((self.maxScrollHeight - (self.scrollElement.scrollTop + window.innerHeight)) > 0) {
+      
+      self.scrollElement.scrollTop += self.scrollSpeed;
+      
+      self.scrollY += self.scrollSpeed;
+      
+      var e = this.lastDragMove.event;
+      var p = this.lastDragMove.pointer;
+      var mv = this.lastDragMove.moveVector;
+      
+      self.dragMove(e, p, mv);
+      
+    } else {
+      clearInterval(self.scrollWindowInterval);
+      self.scrollElement.scrollTop = self.maxScrollHeight - window.innerHeight;
+    }
+  }, 10);
+};
+
+
+Draggabilly.prototype.startScrollingUp = function() {
+  
+  this.scrollMode = true;
+  this.windowScrollingInProgress = true;
+  clearInterval(this.scrollWindowInterval);
+  
+  var self = this;
+
+  this.scrollWindowInterval = setInterval(function() {
+    
+    if(self.scrollElement.scrollTop > 0) {
+      
+      self.scrollElement.scrollTop -= self.scrollSpeed;
+      
+      self.scrollY -= self.scrollSpeed;
+      
+      var e = this.lastDragMove.event;
+      var p = this.lastDragMove.pointer;
+      var mv = this.lastDragMove.moveVector;
+      
+      self.dragMove(e, p, mv);
+      
+    } else {
+      clearInterval(self._scrollWindowInterval);
+      self.scrollElement.scrollTop = 0;
+    }
+  }, 10);
+};
+
 
 function applyGrid( value, grid, method ) {
   method = method || 'round';
@@ -2186,6 +2311,10 @@ Draggabilly.prototype.containDrag = function( axis, drag, grid ) {
  * @param {Event or Touch} pointer
  */
 Draggabilly.prototype.pointerUp = function( event, pointer ) {
+  this.scrollMode = false;
+  this.scrollY = 0;
+  clearInterval(this.scrollWindowInterval);
+  
   classie.remove( this.element, 'is-pointer-down' );
   this.dispatchEvent( 'pointerUp', event, [ pointer ] );
   this._dragPointerUp( event, pointer );
@@ -2201,6 +2330,7 @@ Draggabilly.prototype.dragEnd = function( event, pointer ) {
     return;
   }
   this.isDragging = false;
+  clearInterval(this.scrollWindowInterval);
   // use top left position when complete
   if ( transformProperty ) {
     this.element.style[ transformProperty ] = '';
