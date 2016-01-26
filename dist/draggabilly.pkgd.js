@@ -2241,9 +2241,9 @@ Draggabilly.prototype.startScrollingDown = function() {
       
       self.scrollY += self.scrollSpeed;
       
-      var e = this.lastDragMove.event;
-      var p = this.lastDragMove.pointer;
-      var mv = this.lastDragMove.moveVector;
+      var e = self.lastDragMove.event;
+      var p = self.lastDragMove.pointer;
+      var mv = self.lastDragMove.moveVector;
       
       self.dragMove(e, p, mv);
       
@@ -2271,9 +2271,9 @@ Draggabilly.prototype.startScrollingUp = function() {
       
       self.scrollY -= self.scrollSpeed;
       
-      var e = this.lastDragMove.event;
-      var p = this.lastDragMove.pointer;
-      var mv = this.lastDragMove.moveVector;
+      var e = self.lastDragMove.event;
+      var p = self.lastDragMove.pointer;
+      var mv = self.lastDragMove.moveVector;
       
       self.dragMove(e, p, mv);
       
