@@ -405,6 +405,10 @@ Draggabilly.prototype.dragMove = function( event, pointer, moveVector ) {
     this.dragPoint.y = dragY + this.scrollY;
   }
   
+  if(!this.scrollMode) {
+    this.maxScrollHeight = this.scrollElement.scrollHeight;
+  }
+  
   if(this.scrollElement !== null) {
     
     var yPos = event.clientY;
@@ -413,8 +417,6 @@ Draggabilly.prototype.dragMove = function( event, pointer, moveVector ) {
       
       if(this.windowScrollingInProgress === false) {
         
-        this.maxScrollHeight = this.scrollElement.scrollHeight;
-        
         if((this.maxScrollHeight - (this.scrollElement.scrollTop + window.innerHeight)) > 0) {
           this.startScrollingDown();
         }
@@ -422,8 +424,6 @@ Draggabilly.prototype.dragMove = function( event, pointer, moveVector ) {
       
     } else if(yPos < this.scrollUpThreshold) {
       if(this.windowScrollingInProgress === false) {
-        
-        this.maxScrollHeight = this.scrollElement.scrollHeight;
         
         if(this.scrollElement.scrollTop > 0) {
           this.startScrollingUp();
