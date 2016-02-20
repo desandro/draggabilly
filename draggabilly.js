@@ -58,6 +58,12 @@ function isElement( obj ) {
   return obj instanceof HTMLElement;
 }
 
+// helps separate our temporary drag transform from other transforms on an element
+function removeTranslateTransform( transform ) {
+	var cleanTransform = transform.replace( /translate(3d)?\(.*?\)/, '' );
+	return cleanTransform.trim();
+}
+
 // -------------------------- requestAnimationFrame -------------------------- //
 
 // get rAF, prefixed, if present
@@ -383,7 +389,7 @@ proto.dragEnd = function( event, pointer ) {
   }
   // use top left position when complete
   if ( transformProperty ) {
-    this.element.style[ transformProperty ] = '';
+    this.element.style[ transformProperty ] = removeTranslateTransform( this.element.style[ transformProperty ] );
     this.setLeftTop();
   }
   this.element.classList.remove('is-dragging');
@@ -414,8 +420,12 @@ proto.setLeftTop = function() {
 };
 
 proto.positionDrag = function() {
-  this.element.style[ transformProperty ] = 'translate3d( ' + this.dragPoint.x +
-    'px, ' + this.dragPoint.y + 'px, 0)';
+	var transform = removeTranslateTransform( this.element.style[ transformProperty ] );
+	var translate = 'translate3d( ' + this.dragPoint.x + 'px, ' + this.dragPoint.y + 'px, 0)' + (transform ? ' ' : '');
+	// do translation before any other transforms, e.g. rotation,
+	// or else we'll be moving in the element's rotated coordinate system:
+	// https://staff.washington.edu/fmf/2011/07/15/css3-transform-attribute-order/
+	this.element.style[ transformProperty ] = translate + transform;
 };
 
 // ----- staticClick ----- //
@@ -440,7 +450,7 @@ proto.disable = function() {
 proto.destroy = function() {
   this.disable();
   // reset styles
-  this.element.style[ transformProperty ] = '';
+  this.element.style[ transformProperty ] = removeTranslateTransform( this.element.style[ transformProperty ] );
   this.element.style.left = '';
   this.element.style.top = '';
   this.element.style.position = '';
