@@ -1,0 +1,31 @@
+{
+    "name": "desandro/draggabilly",
+    "description": "make that shiz draggabl",
+    "type": "component",
+    "license": "MIT",
+    "homepage" : "http://draggabilly.desandro.com",
+    "require": {
+        "components/jquery": "*"
+    },
+    "extra": {
+        "component": {
+            "name": "draggabilly",
+            "scripts": [
+                "dist/draggabilly.pkgd.js"
+            ],
+            "files": [
+                "dist/draggabilly.pkgd.min.js"
+            ]
+        }
+    },
+    "support" : {
+         "issues" : "https://github.com/desandro/draggabilly/issues",
+         "source" : "https://github.com/desandro/draggabilly"
+    },
+    "authors": [
+    {
+        "name": "David DeSandro",
+        "homepage": "http://desandro.com/",
+        "role": "developer"
+    }]
+}
