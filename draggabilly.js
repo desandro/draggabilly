@@ -187,6 +187,10 @@ Draggabilly.prototype._getPosition = function() {
 };
 
 Draggabilly.prototype._getPositionCoord = function( styleSide, measure ) {
+  if( this.element.parentNode === null ) {
+    return 0;
+  }
+  
   if ( styleSide.indexOf('%') != -1 ) {
     // convert percent into pixel for Safari, #75
     var parentSize = getSize( this.element.parentNode );
