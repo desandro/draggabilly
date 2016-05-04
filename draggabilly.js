@@ -175,7 +175,7 @@ proto.dispatchEvent = function( type, event, args ) {
 // -------------------------- position -------------------------- //
 
 // get x/y position from style
-Draggabilly.prototype._getPosition = function() {
+proto._getPosition = function() {
   var style = getComputedStyle( this.element );
   var x = this._getPositionCoord( style.left, 'width' );
   var y = this._getPositionCoord( style.top, 'height' );
@@ -186,13 +186,14 @@ Draggabilly.prototype._getPosition = function() {
   this._addTransformPosition( style );
 };
 
-Draggabilly.prototype._getPositionCoord = function( styleSide, measure ) {
+proto._getPositionCoord = function( styleSide, measure ) {
   if ( styleSide.indexOf('%') != -1 ) {
     // convert percent into pixel for Safari, #75
     var parentSize = getSize( this.element.parentNode );
-    return ( parseFloat( styleSide ) / 100 ) * parentSize[ measure ];
+    // prevent not-in-DOM element throwing bug, #131
+    return !parentSize ? 0 :
+      ( parseFloat( styleSide ) / 100 ) * parentSize[ measure ];
   }
-
   return parseInt( styleSide, 10 );
 };
 
