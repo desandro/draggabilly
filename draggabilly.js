@@ -116,6 +116,13 @@ proto.option = function( opts ) {
   extend( this.options, opts );
 };
 
+// css position values that don't need to be set
+var positionValues = {
+  relative: true,
+  absolute: true,
+  fixed: true
+};
+
 proto._create = function() {
 
   // properties
@@ -129,7 +136,7 @@ proto._create = function() {
 
   // set relative positioning
   var style = getComputedStyle( this.element );
-  if ( style.position != 'relative' && style.position != 'absolute' ) {
+  if ( !positionValues[ style.position ] ) {
     this.element.style.position = 'relative';
   }
 
