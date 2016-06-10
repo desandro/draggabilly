@@ -1,5 +1,5 @@
 /*!
- * Draggabilly v2.1.0
+ * Draggabilly v2.1.1
  * Make that shiz draggable
  * http://draggabilly.desandro.com
  * MIT license
@@ -116,6 +116,13 @@ proto.option = function( opts ) {
   extend( this.options, opts );
 };
 
+// css position values that don't need to be set
+var positionValues = {
+  relative: true,
+  absolute: true,
+  fixed: true
+};
+
 proto._create = function() {
 
   // properties
@@ -129,7 +136,7 @@ proto._create = function() {
 
   // set relative positioning
   var style = getComputedStyle( this.element );
-  if ( style.position != 'relative' && style.position != 'absolute' ) {
+  if ( !positionValues[ style.position ] ) {
     this.element.style.position = 'relative';
   }
 
@@ -175,7 +182,7 @@ proto.dispatchEvent = function( type, event, args ) {
 // -------------------------- position -------------------------- //
 
 // get x/y position from style
-Draggabilly.prototype._getPosition = function() {
+proto._getPosition = function() {
   var style = getComputedStyle( this.element );
   var x = this._getPositionCoord( style.left, 'width' );
   var y = this._getPositionCoord( style.top, 'height' );
@@ -186,13 +193,14 @@ Draggabilly.prototype._getPosition = function() {
   this._addTransformPosition( style );
 };
 
-Draggabilly.prototype._getPositionCoord = function( styleSide, measure ) {
+proto._getPositionCoord = function( styleSide, measure ) {
   if ( styleSide.indexOf('%') != -1 ) {
     // convert percent into pixel for Safari, #75
     var parentSize = getSize( this.element.parentNode );
-    return ( parseFloat( styleSide ) / 100 ) * parentSize[ measure ];
+    // prevent not-in-DOM element throwing bug, #131
+    return !parentSize ? 0 :
+      ( parseFloat( styleSide ) / 100 ) * parentSize[ measure ];
   }
-
   return parseInt( styleSide, 10 );
 };
 
