@@ -10,8 +10,8 @@ Rad because it supports IE10+ and multi-touch.
 
 Grab a packaged source file:
 
-+ [draggabilly.pkgd.min.js](http://draggabilly.desandro.com/draggabilly.pkgd.min.js) minified
-+ [draggabilly.pkgd.js](http://draggabilly.desandro.com/draggabilly.pkgd.js) un-minified
++ [draggabilly.pkgd.min.js](https://npmcdn.com/draggabilly@2.1/dist/draggabilly.pkgd.min.js) minified
++ [draggabilly.pkgd.js](https://npmcdn.com/draggabilly@2.1/dist/draggabilly.pkgd.js) un-minified
 
 ### Package managers
 
