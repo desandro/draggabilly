@@ -131,7 +131,7 @@ proto._create = function() {
 
   this.startPoint = { x: 0, y: 0 };
   this.dragPoint = { x: 0, y: 0 };
-  this.startCoords = { left: '', top: '' };
+  this.startCoords = { x: 0, y: 0 };
 
   this.startPosition = extend( {}, this.position );
 
@@ -184,8 +184,10 @@ proto.dispatchEvent = function( type, event, args ) {
 
 proto._getStartCoords = function() {
   var style = getComputedStyle( this.element );
-  this.startCoords.left = style.left;
-  this.startCoords.top = style.top;
+  var x = parseInt( style.left, 10 );
+  var y = parseInt( style.top, 10 );
+  this.startCoords.x = isNaN( x ) ? 0 : x;
+  this.startCoords.y = isNaN( y ) ? 0 : y;
 };
 
 // get x/y position from style
@@ -437,10 +439,11 @@ proto.setLeftTop = function() {
 
 // transform positioning
 proto.setTransformPosition = function() {
-  this.element.style.left = this.startCoords.left;
-  this.element.style.top  = this.startCoords.top;
-  this.element.style[ transformProperty ] = 'translate3d( ' + this.position.x +
-    'px, ' + this.position.y + 'px, 0)';
+  this.element.style.left = this.startCoords.x + 'px';
+  this.element.style.top  = this.startCoords.y + 'px';
+  this.element.style[ transformProperty ] = 'translate3d( ' +
+    ( this.position.x - this.startCoords.x ) + 'px, ' +
+    ( this.position.y - this.startCoords.y ) + 'px, 0)';
 };
 
 proto.positionDrag = function() {
