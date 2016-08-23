@@ -410,8 +410,13 @@ proto.dragEnd = function( event, pointer ) {
       this.setLeftTop();
     }
   }
-  this.element.classList.remove('is-dragging');
-  this.dispatchEvent( 'dragEnd', event, [ pointer ] );
+
+  // force repaint to avoid side-effect related to 'is-dragging' class removal
+  var _this = this;
+  setTimeout(function() {
+    _this.element.classList.remove('is-dragging');
+    _this.dispatchEvent( 'dragEnd', event, [ pointer ] );
+  }, 0);
 };
 
 // -------------------------- animation -------------------------- //
