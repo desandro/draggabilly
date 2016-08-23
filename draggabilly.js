@@ -131,6 +131,7 @@ proto._create = function() {
 
   this.startPoint = { x: 0, y: 0 };
   this.dragPoint = { x: 0, y: 0 };
+  this.startCoords = { left: '', top: '' };
 
   this.startPosition = extend( {}, this.position );
 
@@ -180,6 +181,12 @@ proto.dispatchEvent = function( type, event, args ) {
 };
 
 // -------------------------- position -------------------------- //
+
+proto._getStartCoords = function() {
+  var style = getComputedStyle( this.element );
+  this.startCoords.left = style.left;
+  this.startCoords.top = style.top;
+};
 
 // get x/y position from style
 proto._getPosition = function() {
@@ -263,6 +270,7 @@ proto.dragStart = function( event, pointer ) {
   if ( !this.isEnabled ) {
     return;
   }
+  this._getStartCoords();
   this._getPosition();
   this.measureContainment();
   // position _when_ drag began
@@ -389,10 +397,16 @@ proto.dragEnd = function( event, pointer ) {
   if ( !this.isEnabled ) {
     return;
   }
-  // use top left position when complete
+
   if ( transformProperty ) {
     this.element.style[ transformProperty ] = '';
-    this.setLeftTop();
+    if ( this.options.positionByTransform ) {
+      // use original top left position plus occurred transformation
+      this.setTransformPosition();
+    } else {
+      // use top left position when complete
+      this.setLeftTop();
+    }
   }
   this.element.classList.remove('is-dragging');
   this.dispatchEvent( 'dragEnd', event, [ pointer ] );
@@ -419,6 +433,14 @@ proto.animate = function() {
 proto.setLeftTop = function() {
   this.element.style.left = this.position.x + 'px';
   this.element.style.top  = this.position.y + 'px';
+};
+
+// transform positioning
+proto.setTransformPosition = function() {
+  this.element.style.left = this.startCoords.left;
+  this.element.style.top  = this.startCoords.top;
+  this.element.style[ transformProperty ] = 'translate3d( ' + this.position.x +
+    'px, ' + this.position.y + 'px, 0)';
 };
 
 proto.positionDrag = function() {
