@@ -10,8 +10,8 @@ Rad because it supports IE10+ and multi-touch.
 
 Grab a packaged source file:
 
-+ [draggabilly.pkgd.min.js](https://npmcdn.com/draggabilly@2.1/dist/draggabilly.pkgd.min.js) minified
-+ [draggabilly.pkgd.js](https://npmcdn.com/draggabilly@2.1/dist/draggabilly.pkgd.js) un-minified
++ [draggabilly.pkgd.min.js](https://unpkg.com/draggabilly@2.1/dist/draggabilly.pkgd.min.js) minified
++ [draggabilly.pkgd.js](https://unpkg.com/draggabilly@2.1/dist/draggabilly.pkgd.js) un-minified
 
 ### Package managers
 
@@ -21,12 +21,12 @@ Install with [Bower](http://bower.io): `bower install draggabilly`
 
 ### CDN
 
-Link directly to Draggabilly files on [npmcdn.com](https://npmcdn.com).
+Link directly to Draggabilly files on [unpkg.com](https://unpkg.com).
 
 ``` html
-<script src="https://npmcdn.com/draggabilly@2.1/dist/draggabilly.pkgd.min.js"></script>
+<script src="https://unpkg.com/draggabilly@2.1/dist/draggabilly.pkgd.min.js"></script>
 <!-- or -->
-<script src="https://npmcdn.com/draggabilly@2.1/dist/draggabilly.pkgd.js"></script>
+<script src="https://unpkg.com/draggabilly@2.1/dist/draggabilly.pkgd.js"></script>
 ```
 
 ## Usage
