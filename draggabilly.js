@@ -224,6 +224,12 @@ proto._addTransformPosition = function( style ) {
 
 // -------------------------- events -------------------------- //
 
+// preventDefault if enabled and not a <select>. #141
+proto.canPreventDefaultOnPointerDown = function( event ) {
+  // prevent default, unless touchstart or <select>
+  return this.isEnabled && event.target.nodeName != 'SELECT';
+};
+
 /**
  * pointer start
  * @param {Event} event
