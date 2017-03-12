@@ -35,12 +35,12 @@
     );
   }
 
-}( typeof window !== 'undefined' ? window : global.window, function factory( window, getSize, Unidragger ) {
+}( typeof window !== 'undefined' ? window : this, function factory( window, getSize, Unidragger ) {
 
 'use strict';
 
 // vars
-var document = window.document;
+var document = typeof window !== 'undefined' ? window.document : null;
 
 function noop() {}
 
