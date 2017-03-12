@@ -35,7 +35,7 @@
     );
   }
 
-}( window, function factory( window, getSize, Unidragger ) {
+}( typeof window !== 'undefined' ? window : global.window, function factory( window, getSize, Unidragger ) {
 
 'use strict';
 
