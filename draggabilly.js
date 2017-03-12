@@ -78,7 +78,7 @@ if ( !requestAnimationFrame )  {
 
 // -------------------------- support -------------------------- //
 
-var docElem = document.documentElement;
+var docElem = document ? document.documentElement : {style: {}};
 var transformProperty = typeof docElem.style.transform == 'string' ?
   'transform' : 'WebkitTransform';
 
