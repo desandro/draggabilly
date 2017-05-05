@@ -153,11 +153,6 @@ gulp.task( 'version', function() {
   gulp.src('package.json')
     .pipe( replace( /"version": "\d+\.\d+\.\d+"/, '"version": "' + version + '"' ) )
     .pipe( gulp.dest('.') );
-  // replace CDN links in README
-  var minorVersion = version.match(/\d+\.\d+/)[0];
-  gulp.src('README.md')
-    .pipe( replace( /draggabilly@\d+\.\d+/g, 'draggabilly@' + minorVersion ) )
-    .pipe( gulp.dest('.') );
 });
 
 // ----- default ----- //
