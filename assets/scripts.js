@@ -2,18 +2,11 @@
  * Draggabilly demo page
  */
 
+/*jshint browser: true, unused: true, undef: true */
+
 ( function() {
 
   'use strict';
-
-  // ----- setText helper ----- //
-
-  var docElem = document.documentElement;
-  var textSetter = docElem.textContent !== undefined ? 'textContent' : 'innerText';
-
-  function setText( elem, value ) {
-    elem[ textSetter ] = value;
-  }
 
   // ----- getRandom ----- //
 
@@ -40,10 +33,10 @@
       'Oh wow!'
     ];
     draggie.on( 'dragStart', function() {
-      setText( textElem, getRandom( movePhrases ) );
+      textElem.textContent = getRandom( movePhrases );
     });
     draggie.on( 'dragEnd', function() {
-      setText( textElem, 'Drag me' );
+      textElem.textContent = 'Drag me';
     });
   })();
 
@@ -93,7 +86,7 @@
       var message = dragEvent + '\n' +
         event.type + ' at ' + pointer.pageX + ', ' + pointer.pageY + '\n' +
         'draggie position at ' + position.x + ', ' + position.y;
-      setText( output, message );
+      output.textContent = message;
     }
 
     draggie.on( 'pointerDown', function( event, pointer ) {

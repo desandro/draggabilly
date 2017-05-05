@@ -206,7 +206,6 @@ gulp.task( 'site-copy', function() {
   gulp.src([
     'dist/*',
     'assets/scripts.js',
-    'bower_components/doc-ready/doc-ready.js'
   ])
     .pipe( gulp.dest('build') );
 });
