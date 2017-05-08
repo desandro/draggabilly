@@ -364,6 +364,9 @@ proto.containDrag = function( axis, drag, grid ) {
   if ( !this.options.containment ) {
     return drag;
   }
+  if (this.options.containmentAxis && this.options.containmentAxis !== axis) {
+    return drag;
+  }
   var measure = axis == 'x' ? 'width' : 'height';
 
   var rel = this.relativeStartPosition[ axis ];
