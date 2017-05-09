@@ -1,0 +1,14 @@
+# Git attributes to ignore selection of files and directories
+# when publishing any of releases release.
+
+# Exclude git files and other files starting with .
+.* export-ignore
+node_modules export-ignore
+bower_components export-ignore
+test export-ignore
+tests export-ignore
+vendor export-ignore
+contributing.md export-ignore
+Gruntfile.js export-ignore
+gulpfile.js export-ignore
+sandbox export-ignore
