@@ -4,6 +4,7 @@
  * http://draggabilly.desandro.com
  * MIT license
  */
+if('undefined' !== typeof window) {
 
 /*jshint browser: true, strict: true, undef: true, unused: true */
 
@@ -480,3 +481,5 @@ if ( jQuery && jQuery.bridget ) {
 return Draggabilly;
 
 }));
+
+}
