@@ -194,6 +194,10 @@ proto._getPosition = function() {
 };
 
 proto._getPositionCoord = function( styleSide, measure ) {
+  if (!styleSide) {
+    return NaN
+  }
+
   if ( styleSide.indexOf('%') != -1 ) {
     // convert percent into pixel for Safari, #75
     var parentSize = getSize( this.element.parentNode );
