@@ -149,9 +149,13 @@ proto._create = function() {
  * set this.handles and bind start events to 'em
  */
 proto.setHandles = function() {
-  this.handles = this.options.handle ?
-    this.element.querySelectorAll( this.options.handle ) : [ this.element ];
-
+  if (typeof(this.options.handle) === 'string') {
+    this.handles = this.element.querySelectorAll( this.options.handle );
+  } else if (typeof(this.options.handle) === 'object') {
+    this.handles = this.options.handle;
+  } else {
+    this.handles = [ this.element ];
+  }
   this.bindHandles();
 };
 
