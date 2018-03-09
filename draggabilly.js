@@ -236,7 +236,11 @@ proto.canPreventDefaultOnPointerDown = function( event ) {
  * @param {Event or Touch} pointer
  */
 proto.pointerDown = function( event, pointer ) {
-  this._dragPointerDown( event, pointer );
+  //if draggabilly is disabled, it should not handle events, until enabled again.
+  if(this.isEnabled){
+    this._dragPointerDown( event, pointer );
+  }
+  
   // kludge to blur focused inputs in dragger
   var focused = document.activeElement;
   // do not blur body for IE10, metafizzy/flickity#117
