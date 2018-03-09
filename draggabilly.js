@@ -370,7 +370,7 @@ proto.containDrag = function( axis, drag, grid ) {
   var min = applyGrid( -rel, grid, 'ceil' );
   var max = this.containSize[ measure ];
   max = applyGrid( max, grid, 'floor' );
-  return  Math.min( max, Math.max( min, drag ) );
+  return  Math.max( min, Math.min( max, drag ) );
 };
 
 // ----- end event ----- //
