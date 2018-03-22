@@ -35,12 +35,12 @@
     );
   }
 
-}( window, function factory( window, getSize, Unidragger ) {
+}( typeof window !== 'undefined' ? window : this, function factory( window, getSize, Unidragger ) {
 
 'use strict';
 
 // vars
-var document = window.document;
+var document = typeof window !== 'undefined' ? window.document : null;
 
 function noop() {}
 
@@ -78,7 +78,7 @@ if ( !requestAnimationFrame )  {
 
 // -------------------------- support -------------------------- //
 
-var docElem = document.documentElement;
+var docElem = document ? document.documentElement : {style: {}};
 var transformProperty = typeof docElem.style.transform == 'string' ?
   'transform' : 'WebkitTransform';
 
