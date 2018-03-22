@@ -2,7 +2,7 @@
 
 <p class="tagline">Make that shiz draggable</p>
 
-[draggabilly.desandro.com](http://draggabilly.desandro.com)
+[draggabilly.desandro.com](https://draggabilly.desandro.com)
 
 Rad because it supports IE10+ and multi-touch.
 
@@ -17,7 +17,7 @@ Grab a packaged source file:
 
 Install with [npm](https://www.npmjs.com/package/draggabilly): `npm install draggabilly`
 
-Install with [Bower](http://bower.io): `bower install draggabilly`
+Install with [Bower](https://bower.io): `bower install draggabilly`
 
 ### CDN
 
@@ -118,7 +118,7 @@ handle: '.handle'
 
 Specifies on what element the drag interaction starts.
 
-`handle` is useful for when you do not want all inner elements to be used for dragging, like inputs and forms. See [back handle example on CodePen](http://codepen.io/desandro/pen/znAuH).
+`handle` is useful for when you do not want all inner elements to be used for dragging, like inputs and forms. See [back handle example on CodePen](https://codepen.io/desandro/pen/znAuH).
 
 ## Events
 
@@ -424,4 +424,4 @@ Use [Draggabilly v1 for IE8 & 9, and Android 2.3+ support](https://draggabilly.d
 
 ## License
 
-Draggabilly is released under the [MIT License](http://desandro.mit-license.org/). Have at it.
+Draggabilly is released under the [MIT License](https://desandro.mit-license.org/). Have at it.

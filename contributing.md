@@ -2,7 +2,7 @@
 
 ### Reduced test case required
 
-All bug reports and problem issues require a [**reduced test case**](http://css-tricks.com/reduced-test-cases/). Create one by forking any one of the [CodePen demos](http://codepen.io/desandro/tag/draggabilly-docs) from [the docs](http://draggabilly.desandro.com). Try forking the [basic jQuery demo](http://codepen.io/desandro/pen/yyRapr) or [vanilla JS demo](http://codepen.io/desandro/pen/EadgXx).
+All bug reports and problem issues require a [**reduced test case**](https://css-tricks.com/reduced-test-cases/). Create one by forking any one of the [CodePen demos](https://codepen.io/desandro/tag/draggabilly-docs) from [the docs](https://draggabilly.desandro.com). Try forking the [basic jQuery demo](https://codepen.io/desandro/pen/yyRapr) or [vanilla JS demo](https://codepen.io/desandro/pen/EadgXx).
 
 + A reduced test case clearly demonstrates the bug or issue.
 + It contains the bare minimum HTML, CSS, and JavaScript required to demonstrate the bug.
