@@ -40,7 +40,7 @@ QUnit.test( 'init', function( assert ) {
     assert.ok( !$draggie.hasClass('is-pointer-down'), 'is-pointer-down class removed' );
   });
 
-  $draggie.one( 'dragStart', function( evnet, pointer ) {
+  $draggie.one( 'dragStart', function( event, pointer ) {
     didDragStart = true;
     assert.equal( typeof event, 'object', 'didDragStart event argument' );
     assert.equal( typeof pointer.pageX, 'number', 'didDragStart pageX' );
