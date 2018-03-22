@@ -5,7 +5,7 @@
   "main": "draggabilly.js",
   "dependencies": {
     "get-size": "~2.0.2",
-    "unidragger": "~2.1.0"
+    "unidragger": "^2.3.0"
   },
   "devDependencies": {
     "chalk": "^1.1.1",

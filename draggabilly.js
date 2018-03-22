@@ -214,13 +214,14 @@ proto.canPreventDefaultOnPointerDown = function( event ) {
  * @param {Event or Touch} pointer
  */
 proto.pointerDown = function( event, pointer ) {
-  this._dragPointerDown( event, pointer );
-  // kludge to blur focused inputs in dragger
-  var focused = document.activeElement;
-  // do not blur body for IE10, metafizzy/flickity#117
-  if ( focused && focused.blur && focused != document.body ) {
-    focused.blur();
+  var isOkayTarget = this.getPointerDownOkayTarget( event.target );
+  if ( !isOkayTarget ) {
+    this.cancelPointerDown();
+    return;
   }
+
+  this._dragPointerDown( event, pointer );
+  this.pointerDownBlur();
   // bind move and end events
   this._bindPostStartEvents( event );
   this.element.classList.add('is-pointer-down');

@@ -153,6 +153,11 @@
   <div id="axis-x" class="axised">axis: x</div>
   <div id="axis-y" class="axised">axis: y</div>
 
+  <div id="got-inputs" class="box">
+    <input />
+    <input type="checkbox" />
+  </div>
+
 <script src="../bower_components/ev-emitter/ev-emitter.js"></script>
 <script src="../bower_components/get-size/get-size.js"></script>
 <script src="../bower_components/unipointer/unipointer.js"></script>
@@ -238,6 +243,8 @@ window.onload = function() {
   new Draggabilly( '#axis-x', { axis: 'x' });
   new Draggabilly( '#axis-y', { axis: 'y' });
 
+  var inputDraggie = new Draggabilly('#got-inputs');
+  // inputDraggie.disable();
 };
 </script>
 
