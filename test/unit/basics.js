@@ -1,14 +1,6 @@
 QUnit.test( 'init', function( assert ) {
 
-  var transformProperty = ( function () {
-    var style = document.documentElement.style;
-    if ( typeof style.transform == 'string' ) {
-      return 'transform';
-    }
-    return 'WebkitTransform';
-  })();
-
-  assert.expect( 29 + ( transformProperty ? 1 : 0 ) );
+  assert.expect( 30 );
   var done = assert.async();
 
   var testElem = document.querySelector('.test--basics');
@@ -75,7 +67,7 @@ QUnit.test( 'init', function( assert ) {
 
     assert.ok( draggieElem.style.left, 'drag elem style left' );
     assert.ok( draggieElem.style.top, 'drag elem style left' );
-    assert.ok( !draggieElem.style[ transformProperty ], 'transform style removed' );
+    assert.ok( !draggieElem.style.transform, 'transform style removed' );
     // done
     h2.textContent = 'basics: done';
     testElem.classList.remove('running');

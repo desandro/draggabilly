@@ -58,29 +58,7 @@ function isElement( obj ) {
   return obj instanceof HTMLElement;
 }
 
-// -------------------------- requestAnimationFrame -------------------------- //
-
-// get rAF, prefixed, if present
-var requestAnimationFrame = window.requestAnimationFrame ||
-  window.webkitRequestAnimationFrame || window.mozRequestAnimationFrame;
-
-// fallback to setTimeout
-var lastTime = 0;
-if ( !requestAnimationFrame )  {
-  requestAnimationFrame = function( callback ) {
-    var currTime = new Date().getTime();
-    var timeToCall = Math.max( 0, 16 - ( currTime - lastTime ) );
-    var id = setTimeout( callback, timeToCall );
-    lastTime = currTime + timeToCall;
-    return id;
-  };
-}
-
 // -------------------------- support -------------------------- //
-
-var docElem = document.documentElement;
-var transformProperty = typeof docElem.style.transform == 'string' ?
-  'transform' : 'WebkitTransform';
 
 var jQuery = window.jQuery;
 
@@ -206,7 +184,7 @@ proto._getPositionCoord = function( styleSide, measure ) {
 
 // add transform: translate( x, y ) to position
 proto._addTransformPosition = function( style ) {
-  var transform = style[ transformProperty ];
+  var transform = style.transform;
   // bail out if value is 'none'
   if ( transform.indexOf('matrix') !== 0 ) {
     return;
@@ -396,10 +374,8 @@ proto.dragEnd = function( event, pointer ) {
     return;
   }
   // use top left position when complete
-  if ( transformProperty ) {
-    this.element.style[ transformProperty ] = '';
-    this.setLeftTop();
-  }
+  this.element.style.transform = '';
+  this.setLeftTop();
   this.element.classList.remove('is-dragging');
   this.dispatchEvent( 'dragEnd', event, [ pointer ] );
 };
@@ -428,7 +404,7 @@ proto.setLeftTop = function() {
 };
 
 proto.positionDrag = function() {
-  this.element.style[ transformProperty ] = 'translate3d( ' + this.dragPoint.x +
+  this.element.style.transform = 'translate3d( ' + this.dragPoint.x +
     'px, ' + this.dragPoint.y + 'px, 0)';
 };
 
@@ -454,7 +430,7 @@ proto.disable = function() {
 proto.destroy = function() {
   this.disable();
   // reset styles
-  this.element.style[ transformProperty ] = '';
+  this.element.style.transform = '';
   this.element.style.left = '';
   this.element.style.top = '';
   this.element.style.position = '';

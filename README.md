@@ -416,9 +416,11 @@ $('.draggable').draggabilly({...})
 
 ## Browser support
 
-IE10+, Android 4+, iOS 6+, and all modern browsers
+Draggabilly v2.2 supports Chrome 36+, Firefox 23+, Safari 9+ (mobile & desktop), IE10+, and Edge 12+.
 
-Use [Draggabilly v1 for IE8 & 9, and Android 2.3+ support](http://draggabilly.desandro.com/v1)
+Use Draggabilly v2.1 for Android 4+ and Safari 6+ support.
+
+Use [Draggabilly v1 for IE8 & 9, and Android 2.3+ support](https://draggabilly.desandro.com/v1)
 
 ## License
 
