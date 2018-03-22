@@ -417,6 +417,16 @@ proto.staticClick = function( event, pointer ) {
 
 // ----- methods ----- //
 
+/**
+ * @param {Number} x
+ * @param {Number} y
+ */
+proto.setPosition = function( x, y ) {
+  this.position.x = x;
+  this.position.y = y;
+  this.setLeftTop();
+};
+
 proto.enable = function() {
   this.isEnabled = true;
 };

@@ -280,6 +280,18 @@ $draggable.draggabilly('enable')
 draggie.enable()
 ```
 
+### setPosition
+
+``` js
+// jQuery
+$draggable.draggabilly( 'setPosition', x, y )
+// vanilla JS
+draggie.setPosition( x, y )
+```
+
++ `x` - **Type:** _Number_ - horizontal position
++ `y` - **Type:** _Number_ - vertical position
+
 ### destroy
 
 ``` js
