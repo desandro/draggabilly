@@ -118,6 +118,11 @@ proto._create = function() {
     this.element.style.position = 'relative';
   }
 
+  // events, bridge jQuery events from vanilla
+  this.on( 'pointerDown', this.onPointerDown );
+  this.on( 'pointerMove', this.onPointerMove );
+  this.on( 'pointerUp', this.onPointerUp );
+
   this.enable();
   this.setHandles();
 
@@ -142,19 +147,19 @@ proto.setHandles = function() {
 proto.dispatchEvent = function( type, event, args ) {
   var emitArgs = [ event ].concat( args );
   this.emitEvent( type, emitArgs );
+  this.dispatchJQueryEvent( type, event, args );
+};
+
+proto.dispatchJQueryEvent = function( type, event, args ) {
   var jQuery = window.jQuery;
   // trigger jQuery event
-  if ( jQuery && this.$element ) {
-    if ( event ) {
-      // create jQuery event
-      var $event = jQuery.Event( event );
-      $event.type = type;
-      this.$element.trigger( $event, args );
-    } else {
-      // just trigger with type if no event available
-      this.$element.trigger( type, args );
-    }
+  if ( !jQuery || !this.$element ) {
+    return;
   }
+  // create jQuery event
+  var $event = jQuery.Event( event );
+  $event.type = type;
+  this.$element.trigger( $event, args );
 };
 
 // -------------------------- position -------------------------- //
@@ -202,41 +207,9 @@ proto._addTransformPosition = function( style ) {
 
 // -------------------------- events -------------------------- //
 
-// preventDefault if enabled and not a <select>. #141
-proto.canPreventDefaultOnPointerDown = function( event ) {
-  // prevent default, unless touchstart or <select>
-  return this.isEnabled && event.target.nodeName != 'SELECT';
-};
-
-/**
- * pointer start
- * @param {Event} event
- * @param {Event or Touch} pointer
- */
-proto.pointerDown = function( event, pointer ) {
-  var isOkayTarget = this.getPointerDownOkayTarget( event.target );
-  if ( !isOkayTarget ) {
-    this.cancelPointerDown();
-    return;
-  }
-
-  this._dragPointerDown( event, pointer );
-  this.pointerDownBlur();
-  // bind move and end events
-  this._bindPostStartEvents( event );
+proto.onPointerDown = function( event, pointer ) {
   this.element.classList.add('is-pointer-down');
-  this.dispatchEvent( 'pointerDown', event, [ pointer ] );
-};
-
-/**
- * drag move
- * @param {Event} event
- * @param {Event or Touch} pointer
- */
-proto.pointerMove = function( event, pointer ) {
-  var moveVector = this._dragPointerMove( event, pointer );
-  this.dispatchEvent( 'pointerMove', event, [ pointer, moveVector ] );
-  this._dragMove( event, pointer, moveVector );
+  this.dispatchJQueryEvent( 'pointerDown', event, [ pointer ] );
 };
 
 /**
@@ -299,6 +272,10 @@ proto.measureContainment = function() {
 
 // ----- move event ----- //
 
+proto.onPointerMove = function( event, pointer, moveVector ) {
+  this.dispatchJQueryEvent( 'pointerMove', event, [ pointer, moveVector ] );
+};
+
 /**
  * drag move
  * @param {Event} event
@@ -359,10 +336,9 @@ proto.containDrag = function( axis, drag, grid ) {
  * @param {Event} event
  * @param {Event or Touch} pointer
  */
-proto.pointerUp = function( event, pointer ) {
+proto.onPointerUp = function( event, pointer ) {
   this.element.classList.remove('is-pointer-down');
-  this.dispatchEvent( 'pointerUp', event, [ pointer ] );
-  this._dragPointerUp( event, pointer );
+  this.dispatchJQueryEvent( 'pointerUp', event, [ pointer ] );
 };
 
 /**
