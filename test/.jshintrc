@@ -3,7 +3,7 @@
   "devel": true,
   "undef": true,
   "unused": true,
-  "predef": {   
+  "globals": {
     "Draggabilly": false,
     "QUnit": false
   }

@@ -1,7 +1,7 @@
 /*!
- * Draggabilly v2.1.1
+ * Draggabilly v2.2.0
  * Make that shiz draggable
- * http://draggabilly.desandro.com
+ * https://draggabilly.desandro.com
  * MIT license
  */
 

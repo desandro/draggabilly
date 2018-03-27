@@ -1,10 +1,10 @@
 {
   "name": "draggabilly",
-  "version": "2.1.1",
+  "version": "2.2.0",
   "description": "make that shiz draggable",
   "main": "draggabilly.js",
   "dependencies": {
-    "get-size": "~2.0.2",
+    "get-size": "^2.0.2",
     "unidragger": "^2.3.0"
   },
   "devDependencies": {

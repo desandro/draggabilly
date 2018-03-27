@@ -1,14 +1,14 @@
 {
   "name": "draggabilly",
-  "main": "draggabilly.js",
   "description": "make that shiz draggable",
+  "main": "draggabilly.js",
   "dependencies": {
-    "get-size": "~2.0.2",
+    "get-size": "^2.0.2",
     "unidragger": "^2.3.0"
   },
   "devDependencies": {
-    "qunit": "~1.20",
-    "jquery-bridget": "~2.0.0"
+    "qunit": "^2.5.1",
+    "jquery-bridget": "^2.0.0"
   },
   "homepage": "https://draggabilly.desandro.com",
   "authors": [
