@@ -134,10 +134,15 @@ gulp.task( 'default', [
 var highlightjs = require('highlight.js');
 var marked = require('marked');
 
-// alias XML syntax highlighting as HTML
-highlightjs.LANGUAGES.html = highlightjs.LANGUAGES.xml;
-// alias js as javascript
-highlightjs.LANGUAGES.js = highlightjs.LANGUAGES.javascript;
+// configure highlightjs
+highlightjs.configure({
+  classPrefix: ''
+});
+var hljsJavascript = highlightjs.getLanguage('javascript');
+// highlight keyword
+hljsJavascript.keywords.draggabilly_keyword = 'Draggabilly';
+// highlight variables
+hljsJavascript.keywords.draggie_var = 'draggie';
 
 marked.setOptions({
   highlight: function( code, lang ) {

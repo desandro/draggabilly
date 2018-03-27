@@ -3,28 +3,15 @@
 
 /* ---- base ---- */
 
-* {
-  -webkit-box-sizing: border-box;
-  -moz-box-sizing: border-box;
-  box-sizing: border-box;
-}
+* { box-sizing: border-box; }
 
 body {
-  font-family: 'Lucida Sans', 'Lucida Sans Regular', 'Lucida Grande', 'Lucida Sans Unicode', Arial, sans-serif;
-  font-size: 15px;
+  font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif;
+  font-size: 16px;
   line-height: 1.5;
   color: #444;
+  margin: 0;
 }
-
-/* type
-------------------------- */
-
-h1, h2, h3, h4, h5,
-.tagline,
-.draggable {
-  font-family: 'Montserrat', Gotham, 'Proxima Nova', 'Lucida Sans', 'Lucida Sans Regular', 'Lucida Grande', 'Lucida Sans Unicode', Arial, sans-serif;
-}
-
 
 /* base
 ------------------------- */
@@ -37,11 +24,11 @@ ul, ol, pre {
 }
 
 h1 {
-/*  color: #F90; */
   letter-spacing: -0.03em;
 }
 
-h2 {
+h2, hr {
+  border: none;
   border-top: 2px solid #DDD;
   padding-top: 0.5em;
   margin-top: 2.0em;
@@ -70,6 +57,7 @@ ul, ol {
 
 pre, code {
   font-family: Consolas, Menlo, monospace;
+  font-size: 15px;
   background: #EEE;
   color: #111;
 }
@@ -107,11 +95,7 @@ pre code {
   width: 100%;
   top: 50%;
   text-align: center;
-  -webkit-transform: translateY(-50%);
-     -moz-transform: translateY(-50%);
-      -ms-transform: translateY(-50%);
-       -o-transform: translateY(-50%);
-          transform: translateY(-50%);
+  transform: translateY(-50%);
 }
 
 /* demo
@@ -229,6 +213,9 @@ code .m  { color: #DE8E50; } /* CSS value */
 code .nd { color: #9FAD7E; } /* CSS pseudo selector */
 code .hexcolor { color: #F63; }
 code .at_rule { color: #088; }
+
+code .draggabilly_keyword, /* new Flickity() */
+code .draggie_var { color: #D0D; } /* flkty */
 
 
 /* tablet and desktop */
