@@ -8,18 +8,17 @@
     "unidragger": "^2.3.0"
   },
   "devDependencies": {
-    "chalk": "^1.1.1",
-    "gulp": "^3.8.11",
-    "gulp-jshint": "^1.9.2",
+    "chalk": "^2.3.2",
+    "gulp": "^3.9.1",
+    "gulp-jshint": "^2.1.0",
     "gulp-json-lint": "^0.1.0",
-    "gulp-rename": "^1.2.0",
-    "gulp-replace": "^0.5.3",
-    "gulp-uglify": "^1.1.0",
-    "gulp-util": "^3.0.4",
-    "jquery-bridget": "~2.0.0",
-    "minimist": "^1.2.0",
-    "requirejs": "^2.1.16",
-    "through2": "^0.6.3"
+    "gulp-rename": "^1.2.2",
+    "gulp-replace": "^0.6.1",
+    "gulp-requirejs-optimize": "github:metafizzy/gulp-requirejs-optimize",
+    "gulp-uglify": "^3.0.0",
+    "gulp-util": "^3.0.8",
+    "jshint": "^2.9.5",
+    "minimist": "^1.2.0"
   },
   "scripts": {},
   "repository": {
