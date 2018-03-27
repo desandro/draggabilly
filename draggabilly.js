@@ -39,12 +39,7 @@
 
 'use strict';
 
-// vars
-var document = window.document;
-
-function noop() {}
-
-// -------------------------- helpers -------------------------- //
+// -------------------------- helpers & variables -------------------------- //
 
 // extend objects
 function extend( a, b ) {
@@ -54,11 +49,7 @@ function extend( a, b ) {
   return a;
 }
 
-function isElement( obj ) {
-  return obj instanceof HTMLElement;
-}
-
-// -------------------------- support -------------------------- //
+function noop() {}
 
 var jQuery = window.jQuery;
 
@@ -102,7 +93,6 @@ var positionValues = {
 };
 
 proto._create = function() {
-
   // properties
   this.position = {};
   this._getPosition();
@@ -125,7 +115,6 @@ proto._create = function() {
 
   this.enable();
   this.setHandles();
-
 };
 
 /**
@@ -239,17 +228,10 @@ proto.dragStart = function( event, pointer ) {
 };
 
 proto.measureContainment = function() {
-  var containment = this.options.containment;
-  if ( !containment ) {
+  var container = this.getContainer();
+  if ( !container ) {
     return;
   }
-
-  // use element if element
-  var container = isElement( containment ) ? containment :
-    // fallback to querySelector if string
-    typeof containment == 'string' ? document.querySelector( containment ) :
-    // otherwise just `true`, use the parent
-    this.element.parentNode;
 
   var elemSize = getSize( this.element );
   var containerSize = getSize( container );
@@ -268,6 +250,24 @@ proto.measureContainment = function() {
     width: ( containerSize.width - borderSizeX ) - position.x - elemSize.width,
     height: ( containerSize.height - borderSizeY ) - position.y - elemSize.height
   };
+};
+
+proto.getContainer = function() {
+  var containment = this.options.containment;
+  if ( !containment ) {
+    return;
+  }
+  var isElement = containment instanceof HTMLElement;
+  // use as element
+  if ( isElement ) {
+    return containment;
+  }
+  // querySelector if string
+  if ( typeof containment == 'string' ) {
+    return document.querySelector( containment );
+  }
+  // fallback to parent element
+  return this.element.parentNode;
 };
 
 // ----- move event ----- //
