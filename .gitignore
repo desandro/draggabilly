@@ -1,5 +1,5 @@
-components/
 bower_components/
 node_modules/
 build/
 **/fonts/
+package-lock.json

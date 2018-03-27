@@ -16,11 +16,11 @@
 
 [github.com/desandro/draggabilly](http://github.com/desandro/draggabilly)
 
-Rad because it supports IE10+ and multi-touch.
+Rad because it supports IE10+ and touch devices.
 
 ## Install
 
-Grab a packaged source file:
+### Download
 
 + [draggabilly.pkgd.min.js](https://unpkg.com/draggabilly@2/dist/draggabilly.pkgd.min.js) minified
 + [draggabilly.pkgd.js](https://unpkg.com/draggabilly@2/dist/draggabilly.pkgd.js) un-minified
@@ -29,16 +29,14 @@ Grab a packaged source file:
 
 Install with [npm](https://www.npmjs.com/package/draggabilly): `npm install draggabilly`
 
-Install with [Bower](http://bower.io): `bower install draggabilly`
+Install with [Bower](https://bower.io): `bower install draggabilly`
 
 ### CDN
 
-Link directly to Draggabilly files on [unpkg.com](https://unpkg.com).
+Link directly to `draggabilly.pkgd.min.js` on [unpkg.com](https://unpkg.com).
 
 ``` html
 <script src="https://unpkg.com/draggabilly@2/dist/draggabilly.pkgd.min.js"></script>
-<!-- or -->
-<script src="https://unpkg.com/draggabilly@2/dist/draggabilly.pkgd.js"></script>
 ```
 
 ## Usage
@@ -70,7 +68,7 @@ var draggableElems = document.querySelectorAll('.draggable');
 // array of Draggabillies
 var draggies = []
 // init Draggabillies
-for ( var i=0, len = draggableElems.length; i < len; i++ ) {
+for ( var i=0; i < len = draggableElems.length; i++ ) {
   var draggableElem = draggableElems[i];
   var draggie = new Draggabilly( draggableElem, {
     // options...
@@ -180,7 +178,7 @@ handle: '.handle'
 
 Specifies on what element the drag interaction starts.
 
-`handle` is useful for when you do not want all inner elements to be used for dragging, like inputs and forms. See [back handle example on CodePen](http://codepen.io/desandro/pen/znAuH).
+`handle` is useful for when you do not want all inner elements to be used for dragging, like inputs and forms. See [back handle example on CodePen](https://codepen.io/desandro/pen/znAuH).
 
 ## Events
 
@@ -366,6 +364,18 @@ $draggable.draggabilly('enable')
 draggie.enable()
 ```
 
+### setPosition
+
+``` js
+// jQuery
+$draggable.draggabilly( 'setPosition', x, y )
+// vanilla JS
+draggie.setPosition( x, y )
+```
+
++ `x` - **Type:** _Number_ - horizontal position
++ `y` - **Type:** _Number_ - vertical position
+
 ### destroy
 
 ``` js
@@ -389,87 +399,20 @@ console.log( 'draggie at ' + draggie.position.x + ', ' + draggie.position.y )
 
 ### position
 
-`{ x: 20, y: -30 }`
-
-+ `x` _Integer_
-+ `y` _Integer_
-
-## RequireJS
-
-Draggabilly works with [RequireJS](http://requirejs.org).
-
-You can require `draggabilly.pkgd.js`..
-
 ``` js
-requirejs( [
-  'path/to/draggabilly.pkgd.js',
-], function( Draggabilly ) {
-  new Draggabilly( ... );
-});
+draggie.position
+// => { x: 20, y: -30 }
 ```
 
-To use Draggabilly as a jQuery plugin with RequireJS and draggabilly.pkgd.js, you need to call jQuery Bridget.
++ `position` - **Type:** _Object_
++ `x` - **Type:** _Number_
++ `y` - **Type:** _Number_
 
-``` js
-// require the require function
-requirejs( [ 'require', 'jquery', 'path/to/draggabilly.pkgd.js' ],
-  function( require, $, Draggabilly ) {
-    // require jquery-bridget, it's included in draggabilly.pkgd.js
-    require( [ 'jquery-bridget/jquery-bridget' ],
-    function() {
-      // make Draggabilly a jQuery plugin
-      $.bridget( 'draggabilly', Draggabilly );
-      // now you can use $().draggabilly()
-      $('.draggable').draggabilly({...})
-    }
-  );
-});
-```
+## Module loaders
 
-Or, you can manage dependencies with [Bower](http://bower.io). Set `baseUrl` to `bower_components` and set a path config for all your application code.
+### Webpack & Browserify
 
-``` js
-requirejs.config({
-  baseUrl: 'bower_components/',
-  paths: { // path your your app
-    app: '../'
-  }
-});
-
-requirejs( [
-  'draggabilly/draggabilly',
-  'app/my-component.js'
-], function( Draggabilly, myComp ) {
-  new Draggabilly( '.draggable', {...});
-});
-```
-
-You can require Bower dependencies and use Isotope as a jQuery plugin with jQuery Bridget.
-
-``` js
-requirejs.config({
-  baseUrl: '../bower_components',
-  paths: {
-    jquery: 'jquery/jquery'
-  }
-});
-
-requirejs( [
-    'jquery',
-    'draggabilly/draggabilly',
-    'jquery-bridget/jquery.bridget'
-  ],
-  function( $, Draggabilly ) {
-    // make Draggabilly a jQuery plugin
-    $.bridget( 'draggabilly', Draggabilly );
-    // now you can use $().draggabilly()
-    $('.draggable').draggabilly({...})
-});
-```
-
-## Browserify
-
-Draggabilly works with [Browserify](http://browserify.org/). Install [Draggabilly with npm](https://www.npmjs.com/package/draggabilly).
+Install [Draggabilly with npm](https://www.npmjs.com/package/draggabilly).
 
 ```
 npm install draggabilly
@@ -483,7 +426,7 @@ var draggie = new Draggabilly( '.draggable', {
 });
 ```
 
-To use Draggabilly as a jQuery plugin with Browserify, you need to call jQuery Bridget.
+To use Draggabilly as a jQuery plugin, you need to install and call [jQuery Bridget](https://github.com/desandro/jquery-bridget).
 
 ```
 npm install jquery-bridget
@@ -491,21 +434,101 @@ npm install jquery-bridget
 
 ``` js
 var $ = require('jquery');
-require('jquery-bridget');
+var jQueryBridget = require('jquery-bridget');
 var Draggabilly = require('draggabilly');
 
 // make Draggabilly a jQuery plugin
-$.bridget( 'draggabilly', Draggabilly );
+jQueryBridget( 'draggabilly', Draggabilly, $ );
 // now you can use $().draggabilly()
 $('.draggable').draggabilly({...})
 ```
 
+### RequireJS
+
+Draggabilly works with [RequireJS](http://requirejs.org).
+
+You can require `draggabilly.pkgd.js`..
+
+``` js
+requirejs( [
+  'path/to/draggabilly.pkgd.js',
+], function( Draggabilly ) {
+  new Draggabilly( '.draggable', {...});
+});
+```
+
+To use Draggabilly as a jQuery plugin with RequireJS and `draggabilly.pkgd.js`, you need to call jQuery Bridget.
+
+``` js
+// require the require function
+requirejs( [ 'require', 'jquery', 'path/to/draggabilly.pkgd.js' ],
+  function( require, $, Draggabilly ) {
+    // require jquery-bridget, it's included in draggabilly.pkgd.js
+    require( [ 'jquery-bridget/jquery-bridget' ],
+    function( jQueryBridget ) {
+      // make Draggabilly a jQuery plugin
+      jQueryBridget( 'draggabilly', Draggabilly, $ );
+      // now you can use $().draggabilly()
+      $('.draggable').draggabilly({...})
+    }
+  );
+});
+```
+
+Or, you can manage dependencies with a package manager like npm or Bower. Set `baseUrl` to the package directory and set a path config for all your application code.
+
+``` js
+requirejs.config({
+  baseUrl: 'node_modules/',
+  paths: {
+    // path your your app
+    app: '../'
+  }
+});
+
+requirejs( [
+  'draggabilly/draggabilly',
+  'app/my-component.js'
+], function( Draggabilly, myComp ) {
+  new Draggabilly( '.draggable', {...});
+});
+```
+
+To use Draggabilly as a jQuery plugin with a package manager, you need install and to call [jQuery Bridget](https://github.com/desandro/jquery-bridget).
+
+``` js
+requirejs.config({
+  baseUrl: 'node_modules/',
+  paths: {
+    jquery: 'jquery/dist/jquery'
+  }
+});
+
+requirejs( [
+    'jquery',
+    'draggabilly/draggabilly',
+    'jquery-bridget/jquery-bridget'
+  ],
+  function( $, Draggabilly, jQueryBridget ) {
+    // make Draggabilly a jQuery plugin
+    jQueryBridget( 'draggabilly', Draggabilly, $ );
+    // now you can use $().draggabilly()
+    $('.draggable').draggabilly({...})
+});
+```
+
 ## Browser support
 
-IE10+, Android 4+, iOS 6+, and all modern browsers
+Draggabilly v2.2 supports Chrome 36+, Firefox 23+, Safari 9+ (mobile & desktop), IE10+, and Edge 12+.
 
-Use [Draggabilly v1 for IE8 & 9, and Android 2.3+ support](http://draggabilly.desandro.com/v1)
+Use [Draggabilly v2.1](https://github.com/desandro/draggabilly/releases/tag/v2.1.1) for Android 4+ and Safari 6+ support.
+
+Use [Draggabilly v1](https://draggabilly.desandro.com/v1) for IE8 & 9, and Android 2.3+ support.
 
 ## License
 
-Draggabilly is released under the [MIT License](http://desandro.mit-license.org/). Have at it.
+Draggabilly is released under the [MIT License](https://desandro.mit-license.org/). Have at it.
+
+---
+
+Made by [David DeSandro](https://desandro.com) 😻

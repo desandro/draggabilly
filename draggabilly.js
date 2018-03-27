@@ -1,7 +1,7 @@
 /*!
- * Draggabilly v2.1.1
+ * Draggabilly v2.2.0
  * Make that shiz draggable
- * http://draggabilly.desandro.com
+ * https://draggabilly.desandro.com
  * MIT license
  */
 
@@ -39,12 +39,7 @@
 
 'use strict';
 
-// vars
-var document = window.document;
-
-function noop() {}
-
-// -------------------------- helpers -------------------------- //
+// -------------------------- helpers & variables -------------------------- //
 
 // extend objects
 function extend( a, b ) {
@@ -54,33 +49,7 @@ function extend( a, b ) {
   return a;
 }
 
-function isElement( obj ) {
-  return obj instanceof HTMLElement;
-}
-
-// -------------------------- requestAnimationFrame -------------------------- //
-
-// get rAF, prefixed, if present
-var requestAnimationFrame = window.requestAnimationFrame ||
-  window.webkitRequestAnimationFrame || window.mozRequestAnimationFrame;
-
-// fallback to setTimeout
-var lastTime = 0;
-if ( !requestAnimationFrame )  {
-  requestAnimationFrame = function( callback ) {
-    var currTime = new Date().getTime();
-    var timeToCall = Math.max( 0, 16 - ( currTime - lastTime ) );
-    var id = setTimeout( callback, timeToCall );
-    lastTime = currTime + timeToCall;
-    return id;
-  };
-}
-
-// -------------------------- support -------------------------- //
-
-var docElem = document.documentElement;
-var transformProperty = typeof docElem.style.transform == 'string' ?
-  'transform' : 'WebkitTransform';
+function noop() {}
 
 var jQuery = window.jQuery;
 
@@ -124,7 +93,6 @@ var positionValues = {
 };
 
 proto._create = function() {
-
   // properties
   this.position = {};
   this._getPosition();
@@ -140,9 +108,13 @@ proto._create = function() {
     this.element.style.position = 'relative';
   }
 
+  // events, bridge jQuery events from vanilla
+  this.on( 'pointerDown', this.onPointerDown );
+  this.on( 'pointerMove', this.onPointerMove );
+  this.on( 'pointerUp', this.onPointerUp );
+
   this.enable();
   this.setHandles();
-
 };
 
 /**
@@ -164,19 +136,19 @@ proto.setHandles = function() {
 proto.dispatchEvent = function( type, event, args ) {
   var emitArgs = [ event ].concat( args );
   this.emitEvent( type, emitArgs );
+  this.dispatchJQueryEvent( type, event, args );
+};
+
+proto.dispatchJQueryEvent = function( type, event, args ) {
   var jQuery = window.jQuery;
   // trigger jQuery event
-  if ( jQuery && this.$element ) {
-    if ( event ) {
-      // create jQuery event
-      var $event = jQuery.Event( event );
-      $event.type = type;
-      this.$element.trigger( $event, args );
-    } else {
-      // just trigger with type if no event available
-      this.$element.trigger( type, args );
-    }
+  if ( !jQuery || !this.$element ) {
+    return;
   }
+  // create jQuery event
+  var $event = jQuery.Event( event );
+  $event.type = type;
+  this.$element.trigger( $event, args );
 };
 
 // -------------------------- position -------------------------- //
@@ -206,7 +178,7 @@ proto._getPositionCoord = function( styleSide, measure ) {
 
 // add transform: translate( x, y ) to position
 proto._addTransformPosition = function( style ) {
-  var transform = style[ transformProperty ];
+  var transform = style.transform;
   // bail out if value is 'none'
   if ( transform.indexOf('matrix') !== 0 ) {
     return;
@@ -224,40 +196,9 @@ proto._addTransformPosition = function( style ) {
 
 // -------------------------- events -------------------------- //
 
-// preventDefault if enabled and not a <select>. #141
-proto.canPreventDefaultOnPointerDown = function( event ) {
-  // prevent default, unless touchstart or <select>
-  return this.isEnabled && event.target.nodeName != 'SELECT';
-};
-
-/**
- * pointer start
- * @param {Event} event
- * @param {Event or Touch} pointer
- */
-proto.pointerDown = function( event, pointer ) {
-  this._dragPointerDown( event, pointer );
-  // kludge to blur focused inputs in dragger
-  var focused = document.activeElement;
-  // do not blur body for IE10, metafizzy/flickity#117
-  if ( focused && focused.blur && focused != document.body ) {
-    focused.blur();
-  }
-  // bind move and end events
-  this._bindPostStartEvents( event );
+proto.onPointerDown = function( event, pointer ) {
   this.element.classList.add('is-pointer-down');
-  this.dispatchEvent( 'pointerDown', event, [ pointer ] );
-};
-
-/**
- * drag move
- * @param {Event} event
- * @param {Event or Touch} pointer
- */
-proto.pointerMove = function( event, pointer ) {
-  var moveVector = this._dragPointerMove( event, pointer );
-  this.dispatchEvent( 'pointerMove', event, [ pointer, moveVector ] );
-  this._dragMove( event, pointer, moveVector );
+  this.dispatchJQueryEvent( 'pointerDown', event, [ pointer ] );
 };
 
 /**
@@ -287,17 +228,10 @@ proto.dragStart = function( event, pointer ) {
 };
 
 proto.measureContainment = function() {
-  var containment = this.options.containment;
-  if ( !containment ) {
+  var container = this.getContainer();
+  if ( !container ) {
     return;
   }
-
-  // use element if element
-  var container = isElement( containment ) ? containment :
-    // fallback to querySelector if string
-    typeof containment == 'string' ? document.querySelector( containment ) :
-    // otherwise just `true`, use the parent
-    this.element.parentNode;
 
   var elemSize = getSize( this.element );
   var containerSize = getSize( container );
@@ -318,7 +252,29 @@ proto.measureContainment = function() {
   };
 };
 
+proto.getContainer = function() {
+  var containment = this.options.containment;
+  if ( !containment ) {
+    return;
+  }
+  var isElement = containment instanceof HTMLElement;
+  // use as element
+  if ( isElement ) {
+    return containment;
+  }
+  // querySelector if string
+  if ( typeof containment == 'string' ) {
+    return document.querySelector( containment );
+  }
+  // fallback to parent element
+  return this.element.parentNode;
+};
+
 // ----- move event ----- //
+
+proto.onPointerMove = function( event, pointer, moveVector ) {
+  this.dispatchJQueryEvent( 'pointerMove', event, [ pointer, moveVector ] );
+};
 
 /**
  * drag move
@@ -370,7 +326,7 @@ proto.containDrag = function( axis, drag, grid ) {
   var min = applyGrid( -rel, grid, 'ceil' );
   var max = this.containSize[ measure ];
   max = applyGrid( max, grid, 'floor' );
-  return  Math.min( max, Math.max( min, drag ) );
+  return  Math.max( min, Math.min( max, drag ) );
 };
 
 // ----- end event ----- //
@@ -380,10 +336,9 @@ proto.containDrag = function( axis, drag, grid ) {
  * @param {Event} event
  * @param {Event or Touch} pointer
  */
-proto.pointerUp = function( event, pointer ) {
+proto.onPointerUp = function( event, pointer ) {
   this.element.classList.remove('is-pointer-down');
-  this.dispatchEvent( 'pointerUp', event, [ pointer ] );
-  this._dragPointerUp( event, pointer );
+  this.dispatchJQueryEvent( 'pointerUp', event, [ pointer ] );
 };
 
 /**
@@ -396,10 +351,8 @@ proto.dragEnd = function( event, pointer ) {
     return;
   }
   // use top left position when complete
-  if ( transformProperty ) {
-    this.element.style[ transformProperty ] = '';
-    this.setLeftTop();
-  }
+  this.element.style.transform = '';
+  this.setLeftTop();
   this.element.classList.remove('is-dragging');
   this.dispatchEvent( 'dragEnd', event, [ pointer ] );
 };
@@ -428,7 +381,7 @@ proto.setLeftTop = function() {
 };
 
 proto.positionDrag = function() {
-  this.element.style[ transformProperty ] = 'translate3d( ' + this.dragPoint.x +
+  this.element.style.transform = 'translate3d( ' + this.dragPoint.x +
     'px, ' + this.dragPoint.y + 'px, 0)';
 };
 
@@ -439,6 +392,16 @@ proto.staticClick = function( event, pointer ) {
 };
 
 // ----- methods ----- //
+
+/**
+ * @param {Number} x
+ * @param {Number} y
+ */
+proto.setPosition = function( x, y ) {
+  this.position.x = x;
+  this.position.y = y;
+  this.setLeftTop();
+};
 
 proto.enable = function() {
   this.isEnabled = true;
@@ -454,7 +417,7 @@ proto.disable = function() {
 proto.destroy = function() {
   this.disable();
   // reset styles
-  this.element.style[ transformProperty ] = '';
+  this.element.style.transform = '';
   this.element.style.left = '';
   this.element.style.top = '';
   this.element.style.position = '';

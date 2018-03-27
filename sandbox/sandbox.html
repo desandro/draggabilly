@@ -45,8 +45,6 @@
 
     .is-dragging {
       opacity: 0.5;
-      /* hack for artifacts http://stackoverflow.com/a/12023155 */
-      -webkit-backface-visibility: hidden;
     }
 
     .container {
@@ -141,11 +139,11 @@
   </div>
 
 
-  <img id="kitten" src="http://placekitten.com/100/100" />
+  <img id="kitten" src="https://picsum.photos/100/100" />
 
   <div id="kitties">
-    <img src="http://placekitten.com/40/60" />
-    <img src="http://placekitten.com/60/40" />
+    <img src="https://picsum.photos/40/60" />
+    <img src="https://picsum.photos/60/40" />
   </div>
 
   <div id="grid-container">
@@ -154,6 +152,11 @@
 
   <div id="axis-x" class="axised">axis: x</div>
   <div id="axis-y" class="axised">axis: y</div>
+
+  <div id="got-inputs" class="box">
+    <input />
+    <input type="checkbox" />
+  </div>
 
 <script src="../bower_components/ev-emitter/ev-emitter.js"></script>
 <script src="../bower_components/get-size/get-size.js"></script>
@@ -240,6 +243,8 @@ window.onload = function() {
   new Draggabilly( '#axis-x', { axis: 'x' });
   new Draggabilly( '#axis-y', { axis: 'y' });
 
+  var inputDraggie = new Draggabilly('#got-inputs');
+  // inputDraggie.disable();
 };
 </script>
 

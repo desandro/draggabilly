@@ -3,14 +3,6 @@
 QUnit.test( 'init', function( assert ) {
   'use strict';
 
-  var transformProperty = ( function () {
-    var style = document.documentElement.style;
-    if ( typeof style.transform == 'string' ) {
-      return 'transform';
-    }
-    return 'WebkitTransform';
-  })();
-
   assert.expect( 30 );
   var done = assert.async();
 
@@ -48,7 +40,7 @@ QUnit.test( 'init', function( assert ) {
     assert.ok( !$draggie.hasClass('is-pointer-down'), 'is-pointer-down class removed' );
   });
 
-  $draggie.one( 'dragStart', function( evnet, pointer ) {
+  $draggie.one( 'dragStart', function( event, pointer ) {
     didDragStart = true;
     assert.equal( typeof event, 'object', 'didDragStart event argument' );
     assert.equal( typeof pointer.pageX, 'number', 'didDragStart pageX' );
@@ -78,7 +70,7 @@ QUnit.test( 'init', function( assert ) {
 
     assert.ok( draggieElem.style.left, 'drag elem style left' );
     assert.ok( draggieElem.style.top, 'drag elem style left' );
-    assert.ok( !draggieElem.style[ transformProperty ], 'transform style removed' );
+    assert.ok( !draggieElem.style.transform, 'transform style removed' );
     // done
     $h2.text('basics: done');
     $test.removeClass('running');

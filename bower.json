@@ -1,17 +1,17 @@
 {
   "name": "draggabilly",
-  "main": "draggabilly.js",
   "description": "make that shiz draggable",
+  "main": "draggabilly.js",
   "dependencies": {
-    "get-size": "~2.0.2",
-    "unidragger": "~2.1.0"
+    "get-size": "^2.0.2",
+    "unidragger": "^2.3.0"
   },
   "devDependencies": {
-    "qunit": "~1.20",
-    "jquery-bridget": "~2.0.0",
-    "normalize.css": "~3.0.2"
+    "qunit": "^2.5.1",
+    "jquery-bridget": "^2.0.0",
+    "normalize.css": "^8.0.0"
   },
-  "homepage": "http://draggabilly.desandro.com",
+  "homepage": "https://draggabilly.desandro.com",
   "authors": [
     "David DeSandro"
   ],
