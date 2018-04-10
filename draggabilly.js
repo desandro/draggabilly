@@ -109,7 +109,6 @@ proto._create = function() {
   }
 
   // events, bridge jQuery events from vanilla
-  this.on( 'pointerDown', this.onPointerDown );
   this.on( 'pointerMove', this.onPointerMove );
   this.on( 'pointerUp', this.onPointerUp );
 
@@ -199,6 +198,23 @@ proto._addTransformPosition = function( style ) {
 proto.onPointerDown = function( event, pointer ) {
   this.element.classList.add('is-pointer-down');
   this.dispatchJQueryEvent( 'pointerDown', event, [ pointer ] );
+};
+
+proto.pointerDown = function( event, pointer ) {
+  var isOkay = this.okayPointerDown( event );
+  if ( !isOkay || !this.isEnabled ) {
+    this._pointerReset();
+    return;
+  }
+  // track start event position
+  this.pointerDownPointer = pointer;
+
+  event.preventDefault();
+  this.pointerDownBlur();
+  // bind move and end events
+  this._bindPostStartEvents( event );
+  this.element.classList.add('is-pointer-down');
+  this.dispatchEvent( 'pointerDown', [ event, pointer ] );
 };
 
 /**
