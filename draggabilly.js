@@ -207,7 +207,11 @@ proto.pointerDown = function( event, pointer ) {
     return;
   }
   // track start event position
-  this.pointerDownPointer = pointer;
+  // Safari 9 overrides pageX and pageY. These values needs to be copied. flickity#842
+  this.pointerDownPointer = {
+    pageX: pointer.pageX,
+    pageY: pointer.pageY,
+  };
 
   event.preventDefault();
   this.pointerDownBlur();
