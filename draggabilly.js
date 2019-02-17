@@ -179,7 +179,7 @@ proto._getPositionCoord = function( styleSide, measure ) {
 proto._addTransformPosition = function( style ) {
   var transform = style.transform;
   // bail out if value is 'none'
-  if ( transform.indexOf('matrix') !== 0 ) {
+  if ( !transform || transform.indexOf('matrix') !== 0 ) {
     return;
   }
   // split matrix(1, 0, 0, 1, x, y)
