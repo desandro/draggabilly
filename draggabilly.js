@@ -1,5 +1,5 @@
 /*!
- * Draggabilly v2.2.0
+ * Draggabilly v2.2.1
  * Make that shiz draggable
  * https://draggabilly.desandro.com
  * MIT license
@@ -255,15 +255,19 @@ proto.measureContainment = function() {
 
   var elemSize = getSize( this.element );
   var containerSize = getSize( container );
-  var elemRect = this.element.getBoundingClientRect();
-  var containerRect = container.getBoundingClientRect();
+  this.elemRect = this.element.getBoundingClientRect();
+  this.containerRect = container.getBoundingClientRect();
+
+  this.containerCoord = {};
+  this.containerCoord.x = this.containerRect.left + containerSize.borderLeftWidth;
+  this.containerCoord.y = this.containerRect.top + containerSize.borderTopWidth;
 
   var borderSizeX = containerSize.borderLeftWidth + containerSize.borderRightWidth;
   var borderSizeY = containerSize.borderTopWidth + containerSize.borderBottomWidth;
 
   var position = this.relativeStartPosition = {
-    x: elemRect.left - ( containerRect.left + containerSize.borderLeftWidth ),
-    y: elemRect.top - ( containerRect.top + containerSize.borderTopWidth )
+    x: this.elemRect.left - ( this.containerRect.left + containerSize.borderLeftWidth ),
+    y: this.elemRect.top - ( this.containerRect.top + containerSize.borderTopWidth )
   };
 
   this.containSize = {
@@ -329,6 +333,16 @@ proto.dragMove = function( event, pointer, moveVector ) {
   this.dragPoint.y = dragY;
 
   this.dispatchEvent( 'dragMove', event, [ pointer, moveVector ] );
+
+  if ( this.dragPoint.x == this.containSize.width ||
+    this.containerCoord.x == this.elemRect.left + this.dragPoint.x ||
+    this.dragPoint.y == this.containSize.height ||
+    this.containerCoord.y == this.elemRect.top + this.dragPoint.y ) {
+      this.dispatchEvent( 'contained', event, [ pointer ] );
+      this.element.classList.add('is-contained');
+    } else {
+      this.element.classList.remove('is-contained');
+    }
 };
 
 function applyGrid( value, grid, method ) {
