@@ -1,39 +1,7 @@
-/*jshint node: true, unused: true, undef: true */
+/* globals process */
 
 var fs = require('fs');
 var gulp = require('gulp');
-
-// ----- lint ----- //
-
-var jshint = require('gulp-jshint');
-
-gulp.task( 'lint-js', function() {
-  return gulp.src('draggabilly.js')
-    .pipe( jshint() )
-    .pipe( jshint.reporter('default') );
-});
-
-gulp.task( 'lint-test', function() {
-  return gulp.src('test/unit/*.js')
-    .pipe( jshint() )
-    .pipe( jshint.reporter('default') );
-});
-
-gulp.task( 'lint-task', function() {
-  return gulp.src('gulpfile.js')
-    .pipe( jshint() )
-    .pipe( jshint.reporter('default') );
-});
-
-var jsonlint = require('gulp-json-lint');
-
-gulp.task( 'lint-json', function() {
-  return gulp.src( '*.json' )
-    .pipe( jsonlint() )
-    .pipe( jsonlint.report('verbose') );
-});
-
-gulp.task( 'lint', [ 'lint-js', 'lint-test', 'lint-task', 'lint-json' ] );
 
 // -------------------------- dist -------------------------- //
 // RequireJS makes pkgd
@@ -69,12 +37,12 @@ gulp.task( 'requirejs', function() {
       optimize: 'none',
       include: [
         'jquery-bridget/jquery-bridget',
-        'draggabilly/draggabilly'
+        'draggabilly/draggabilly',
       ],
       paths: {
         draggabilly: '../',
-        jquery: 'empty:'
-      }
+        jquery: 'empty:',
+      },
     }) )
     // add banner
     .pipe( addBanner( banner ) )
@@ -82,7 +50,7 @@ gulp.task( 'requirejs', function() {
     // remove named module
     .pipe( replace( "'draggabilly/draggabilly',", '' ) )
     .pipe( gulp.dest('dist') );
-});
+} );
 
 // ----- uglify ----- //
 
@@ -96,18 +64,17 @@ gulp.task( 'uglify', [ 'requirejs' ], function() {
     .pipe( addBanner( banner ) )
     .pipe( rename('draggabilly.pkgd.min.js') )
     .pipe( gulp.dest('dist') );
-});
+} );
 
 // ----- version ----- //
 
 var minimist = require('minimist');
-var chalk = require('chalk');
 
 // use gulp version -t 1.2.3
 gulp.task( 'version', function() {
-  var args = minimist( process.argv.slice(3) );
+  var args = minimist( process.argv.slice( 3 ) );
   var version = args.t;
-  if ( !version || !/^\d+\.\d+\.\d+/.test( version ) ) {
+  if ( !version || !( /^\d+\.\d+\.\d+/ ).test( version ) ) {
     gutil.log( 'invalid version: ' + chalk.red( version ) );
     return;
   }
@@ -120,11 +87,11 @@ gulp.task( 'version', function() {
   gulp.src('package.json')
     .pipe( replace( /"version": "\d+\.\d+\.\d+"/, '"version": "' + version + '"' ) )
     .pipe( gulp.dest('.') );
-});
+} );
 
 // ----- default ----- //
 
 gulp.task( 'default', [
   'lint',
   'uglify',
-]);
+] );

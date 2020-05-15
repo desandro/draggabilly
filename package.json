@@ -3,15 +3,19 @@
   "version": "2.2.0",
   "description": "make that shiz draggable",
   "main": "draggabilly.js",
+  "scripts": {
+    "lint": "npx eslint . && node bin/lint-json.js",
+    "lintFix": "npx eslint . --fix"
+  },
   "dependencies": {
     "get-size": "^2.0.2",
     "unidragger": "^2.3.0"
   },
   "devDependencies": {
     "chalk": "^2.3.2",
+    "eslint": "^7.0.0",
+    "eslint-plugin-metafizzy": "^1.0.0",
     "gulp": "^3.9.1",
-    "gulp-jshint": "^2.1.0",
-    "gulp-json-lint": "^0.1.0",
     "gulp-rename": "^1.2.2",
     "gulp-replace": "^0.6.1",
     "gulp-requirejs-optimize": "github:metafizzy/gulp-requirejs-optimize",
@@ -22,7 +26,6 @@
     "minimist": "^1.2.0",
     "qunit": "^2.10.0"
   },
-  "scripts": {},
   "repository": {
     "type": "git",
     "url": "git://github.com/desandro/draggabilly.git"

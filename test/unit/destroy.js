@@ -1,6 +1,4 @@
 QUnit.test( 'destroy', function( assert ) {
-  'use strict';
-
   var done = assert.async();
 
   var draggieElem = document.querySelector('.test--destroy .draggie');
@@ -13,5 +11,5 @@ QUnit.test( 'destroy', function( assert ) {
     assert.ok( !draggieElem.style.top, 'no style top' );
     assert.ok( !draggieElem.style.position, 'no style position' );
     done();
-  });
-});
+  } );
+} );

@@ -1,8 +1,6 @@
-/*jshint jquery: true */
+/* globals $ */
 
 QUnit.test( 'destroy', function( assert ) {
-  'use strict';
-
   var done = assert.async();
 
   var $draggie = $('.test--destroy .draggie').draggabilly();
@@ -15,5 +13,5 @@ QUnit.test( 'destroy', function( assert ) {
     assert.ok( !draggieElem.style.top, 'no style top' );
     assert.ok( !draggieElem.style.position, 'no style position' );
     done();
-  });
-});
+  } );
+} );
