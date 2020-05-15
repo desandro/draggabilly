@@ -17,8 +17,10 @@
     "gulp-requirejs-optimize": "github:metafizzy/gulp-requirejs-optimize",
     "gulp-uglify": "^3.0.0",
     "gulp-util": "^3.0.8",
+    "jquery-bridget": "^2.0.1",
     "jshint": "^2.9.5",
-    "minimist": "^1.2.0"
+    "minimist": "^1.2.0",
+    "qunit": "^2.10.0"
   },
   "scripts": {},
   "repository": {
