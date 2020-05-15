@@ -218,7 +218,7 @@ proto.pointerDown = function( event, pointer ) {
   // bind move and end events
   this._bindPostStartEvents( event );
   this.element.classList.add('is-pointer-down');
-  this.dispatchEvent( 'pointerDown', [ event, pointer ] );
+  this.dispatchEvent( 'pointerDown', event, [ pointer ] );
 };
 
 /**
