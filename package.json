@@ -9,6 +9,9 @@
     "dist": "npm run bundle && npm run uglify",
     "bundle": "node bin/bundle.js",
     "uglify": "npx uglifyjs dist/draggabilly.pkgd.js -o dist/draggabilly.pkgd.min.js --mangle --comments /^!/",
+    "docs": "mkdir -p build && node bin/docs.js && cp assets/styles.css assets/scripts.js dist/* build/",
+    "deploy": "netlify deploy --dir=build",
+    "deployProd": "netlify deploy --dir=build --prod",
     "version": "node bin/version.js && npm run dist && git add -A . dist"
   },
   "dependencies": {

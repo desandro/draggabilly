@@ -8,8 +8,7 @@
   },
   "devDependencies": {
     "qunit": "^2.5.1",
-    "jquery-bridget": "^2.0.0",
-    "normalize.css": "^8.0.0"
+    "jquery-bridget": "^2.0.0"
   },
   "homepage": "https://draggabilly.desandro.com",
   "authors": [
