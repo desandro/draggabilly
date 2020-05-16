@@ -1,5 +1,5 @@
 /*!
- * Draggabilly PACKAGED v2.2.0
+ * Draggabilly PACKAGED v2.3.0
  * Make that shiz draggable
  * https://draggabilly.desandro.com
  * MIT license
@@ -1055,45 +1055,43 @@ return Unidragger;
 }));
 
 /*!
- * Draggabilly v2.2.0
+ * Draggabilly v2.3.0
  * Make that shiz draggable
  * https://draggabilly.desandro.com
  * MIT license
  */
 
-/*jshint browser: true, strict: true, undef: true, unused: true */
+/* jshint browser: true, strict: true, undef: true, unused: true */
 
 ( function( window, factory ) {
   // universal module definition
-  /* jshint strict: false */ /*globals define, module, require */
+  /* jshint strict: false */ /* globals define */
   if ( typeof define == 'function' && define.amd ) {
     // AMD
     define( [
-        'get-size/get-size',
-        'unidragger/unidragger'
-      ],
-      function( getSize, Unidragger ) {
+      'get-size/get-size',
+      'unidragger/unidragger',
+    ],
+    function( getSize, Unidragger ) {
         return factory( window, getSize, Unidragger );
-      });
+      } );
   } else if ( typeof module == 'object' && module.exports ) {
     // CommonJS
     module.exports = factory(
-      window,
-      require('get-size'),
-      require('unidragger')
+        window,
+        require('get-size'),
+        require('unidragger')
     );
   } else {
     // browser global
     window.Draggabilly = factory(
-      window,
-      window.getSize,
-      window.Unidragger
+        window,
+        window.getSize,
+        window.Unidragger
     );
   }
 
 }( window, function factory( window, getSize, Unidragger ) {
-
-
 
 // -------------------------- helpers & variables -------------------------- //
 
@@ -1145,7 +1143,7 @@ proto.option = function( opts ) {
 var positionValues = {
   relative: true,
   absolute: true,
-  fixed: true
+  fixed: true,
 };
 
 proto._create = function() {
@@ -1165,7 +1163,6 @@ proto._create = function() {
   }
 
   // events, bridge jQuery events from vanilla
-  this.on( 'pointerDown', this.onPointerDown );
   this.on( 'pointerMove', this.onPointerMove );
   this.on( 'pointerUp', this.onPointerUp );
 
@@ -1196,13 +1193,14 @@ proto.dispatchEvent = function( type, event, args ) {
 };
 
 proto.dispatchJQueryEvent = function( type, event, args ) {
-  var jQuery = window.jQuery;
+  var jquery = window.jQuery;
   // trigger jQuery event
-  if ( !jQuery || !this.$element ) {
+  if ( !jquery || !this.$element ) {
     return;
   }
   // create jQuery event
-  var $event = jQuery.Event( event );
+  /* eslint-disable-next-line new-cap */
+  var $event = jquery.Event( event );
   $event.type = type;
   this.$element.trigger( $event, args );
 };
@@ -1257,10 +1255,31 @@ proto.onPointerDown = function( event, pointer ) {
   this.dispatchJQueryEvent( 'pointerDown', event, [ pointer ] );
 };
 
+proto.pointerDown = function( event, pointer ) {
+  var isOkay = this.okayPointerDown( event );
+  if ( !isOkay || !this.isEnabled ) {
+    this._pointerReset();
+    return;
+  }
+  // track start event position
+  // Safari 9 overrides pageX and pageY. These values needs to be copied. flickity#842
+  this.pointerDownPointer = {
+    pageX: pointer.pageX,
+    pageY: pointer.pageY,
+  };
+
+  event.preventDefault();
+  this.pointerDownBlur();
+  // bind move and end events
+  this._bindPostStartEvents( event );
+  this.element.classList.add('is-pointer-down');
+  this.dispatchEvent( 'pointerDown', event, [ pointer ] );
+};
+
 /**
  * drag start
  * @param {Event} event
- * @param {Event or Touch} pointer
+ * @param {[Event, Touch]} pointer
  */
 proto.dragStart = function( event, pointer ) {
   if ( !this.isEnabled ) {
@@ -1299,12 +1318,12 @@ proto.measureContainment = function() {
 
   var position = this.relativeStartPosition = {
     x: elemRect.left - ( containerRect.left + containerSize.borderLeftWidth ),
-    y: elemRect.top - ( containerRect.top + containerSize.borderTopWidth )
+    y: elemRect.top - ( containerRect.top + containerSize.borderTopWidth ),
   };
 
   this.containSize = {
     width: ( containerSize.width - borderSizeX ) - position.x - elemSize.width,
-    height: ( containerSize.height - borderSizeY ) - position.y - elemSize.height
+    height: ( containerSize.height - borderSizeY ) - position.y - elemSize.height,
   };
 };
 
@@ -1335,7 +1354,8 @@ proto.onPointerMove = function( event, pointer, moveVector ) {
 /**
  * drag move
  * @param {Event} event
- * @param {Event or Touch} pointer
+ * @param {[Event, Touch]} pointer
+ * @param {Object} moveVector - x and y coordinates
  */
 proto.dragMove = function( event, pointer, moveVector ) {
   if ( !this.isEnabled ) {
@@ -1369,7 +1389,7 @@ proto.dragMove = function( event, pointer, moveVector ) {
 
 function applyGrid( value, grid, method ) {
   method = method || 'round';
-  return grid ? Math[ method ]( value / grid ) * grid : value;
+  return grid ? Math[ method ]( value/grid ) * grid : value;
 }
 
 proto.containDrag = function( axis, drag, grid ) {
@@ -1382,7 +1402,7 @@ proto.containDrag = function( axis, drag, grid ) {
   var min = applyGrid( -rel, grid, 'ceil' );
   var max = this.containSize[ measure ];
   max = applyGrid( max, grid, 'floor' );
-  return  Math.max( min, Math.min( max, drag ) );
+  return Math.max( min, Math.min( max, drag ) );
 };
 
 // ----- end event ----- //
@@ -1390,7 +1410,7 @@ proto.containDrag = function( axis, drag, grid ) {
 /**
  * pointer up
  * @param {Event} event
- * @param {Event or Touch} pointer
+ * @param {[Event, Touch]} pointer
  */
 proto.onPointerUp = function( event, pointer ) {
   this.element.classList.remove('is-pointer-down');
@@ -1400,7 +1420,7 @@ proto.onPointerUp = function( event, pointer ) {
 /**
  * drag end
  * @param {Event} event
- * @param {Event or Touch} pointer
+ * @param {[Event, Touch]} pointer
  */
 proto.dragEnd = function( event, pointer ) {
   if ( !this.isEnabled ) {
@@ -1426,14 +1446,14 @@ proto.animate = function() {
   var _this = this;
   requestAnimationFrame( function animateFrame() {
     _this.animate();
-  });
+  } );
 
 };
 
 // left/top positioning
 proto.setLeftTop = function() {
   this.element.style.left = this.position.x + 'px';
-  this.element.style.top  = this.position.y + 'px';
+  this.element.style.top = this.position.y + 'px';
 };
 
 proto.positionDrag = function() {
@@ -1498,5 +1518,5 @@ if ( jQuery && jQuery.bridget ) {
 
 return Draggabilly;
 
-}));
+} ) );
 

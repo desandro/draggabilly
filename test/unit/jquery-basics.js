@@ -1,8 +1,6 @@
-/*jshint jquery: true */
+/* globals $ */
 
 QUnit.test( 'init', function( assert ) {
-  'use strict';
-
   assert.expect( 30 );
   var done = assert.async();
 
@@ -15,15 +13,14 @@ QUnit.test( 'init', function( assert ) {
   assert.equal( draggieElem.style.position, 'relative', 'position: relative set' );
 
   var didPointerDown, didPointerMove, didPointerUp, didDragStart, didDragMove,
-    didDragEnd;
-
+          didDragEnd;
 
   $draggie.one( 'pointerDown', function( event, pointer ) {
     didPointerDown = true;
     assert.equal( typeof event, 'object', 'pointerDown event argument' );
     assert.ok( pointer.pageX, 'pointerDown pageX' );
     assert.ok( $draggie.hasClass('is-pointer-down'), 'is-pointer-down class added' );
-  });
+  } );
 
   $draggie.one( 'pointerMove', function( event, pointer, moveVector ) {
     didPointerMove = true;
@@ -31,21 +28,21 @@ QUnit.test( 'init', function( assert ) {
     assert.equal( typeof pointer.pageX, 'number', 'pointerMove pageX' );
     assert.equal( typeof moveVector.x, 'number', 'pointerMove moveVector.x' );
     assert.equal( typeof moveVector.y, 'number', 'pointerMove moveVector.y' );
-  });
+  } );
 
   $draggie.one( 'pointerUp', function( event, pointer ) {
     didPointerUp = true;
     assert.equal( typeof event, 'object', 'pointerUp event argument' );
     assert.ok( pointer.pageX, 'pointerUp pageX' );
     assert.ok( !$draggie.hasClass('is-pointer-down'), 'is-pointer-down class removed' );
-  });
+  } );
 
   $draggie.one( 'dragStart', function( event, pointer ) {
     didDragStart = true;
     assert.equal( typeof event, 'object', 'didDragStart event argument' );
     assert.equal( typeof pointer.pageX, 'number', 'didDragStart pageX' );
     assert.ok( $draggie.hasClass('is-dragging'), 'is-dragging class added' );
-  });
+  } );
 
   $draggie.one( 'dragMove', function( event, pointer, moveVector ) {
     didDragMove = true;
@@ -53,7 +50,7 @@ QUnit.test( 'init', function( assert ) {
     assert.equal( typeof pointer.pageX, 'number', 'dragMove pageX' );
     assert.equal( typeof moveVector.x, 'number', 'dragMove moveVector.x' );
     assert.equal( typeof moveVector.y, 'number', 'dragMove moveVector.y' );
-  });
+  } );
 
   $draggie.one( 'dragEnd', function( event, pointer ) {
     didDragEnd = true;
@@ -75,6 +72,6 @@ QUnit.test( 'init', function( assert ) {
     $h2.text('basics: done');
     $test.removeClass('running');
     done();
-  });
+  } );
 
-});
+} );

@@ -18,6 +18,8 @@
 
 Rad because it supports IE10+ and touch devices.
 
+Draggabilly v2.3.0
+
 ## Install
 
 ### Download

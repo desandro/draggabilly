@@ -1,3 +1,4 @@
-requirejs([ '../../dist/draggabilly.pkgd'], function( Draggabilly ) {
+/* globals requirejs */
+requirejs( [ '../../dist/draggabilly.pkgd' ], function( Draggabilly ) {
   new Draggabilly('.draggie');
-});
+} );
