@@ -5,26 +5,23 @@
   "main": "draggabilly.js",
   "scripts": {
     "lint": "npx eslint . && node bin/lint-json.js",
-    "lintFix": "npx eslint . --fix"
+    "lintFix": "npx eslint . --fix",
+    "dist": "npm run bundle && npm run uglify",
+    "bundle": "node bin/bundle.js",
+    "uglify": "npx uglifyjs dist/draggabilly.pkgd.js -o dist/draggabilly.pkgd.min.js --mangle --comments /^!/",
+    "version": "node bin/version.js && npm run dist && git add -A css js dist"
   },
   "dependencies": {
     "get-size": "^2.0.2",
     "unidragger": "^2.3.0"
   },
   "devDependencies": {
-    "chalk": "^2.3.2",
     "eslint": "^7.0.0",
     "eslint-plugin-metafizzy": "^1.0.0",
-    "gulp": "^3.9.1",
-    "gulp-rename": "^1.2.2",
-    "gulp-replace": "^0.6.1",
-    "gulp-requirejs-optimize": "github:metafizzy/gulp-requirejs-optimize",
-    "gulp-uglify": "^3.0.0",
-    "gulp-util": "^3.0.8",
     "jquery-bridget": "^2.0.1",
-    "jshint": "^2.9.5",
-    "minimist": "^1.2.0",
-    "qunit": "^2.10.0"
+    "qunit": "^2.10.0",
+    "requirejs": "^2.3.6",
+    "uglifyjs": "^2.4.11"
   },
   "repository": {
     "type": "git",
