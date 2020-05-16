@@ -21,7 +21,7 @@
     "jquery-bridget": "^2.0.1",
     "qunit": "^2.10.0",
     "requirejs": "^2.3.6",
-    "uglifyjs": "^2.4.11"
+    "uglify-js": "^3.9.3"
   },
   "repository": {
     "type": "git",
