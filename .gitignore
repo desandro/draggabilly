@@ -2,4 +2,4 @@ bower_components/
 node_modules/
 build/
 **/fonts/
-.netlify/
+.netlify
