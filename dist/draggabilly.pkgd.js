@@ -1,5 +1,5 @@
 /*!
- * Draggabilly PACKAGED v2.3.0
+ * Draggabilly PACKAGED v2.4.0
  * Make that shiz draggable
  * https://draggabilly.desandro.com
  * MIT license
@@ -534,12 +534,13 @@ proto._bindStartEvent = function( elem, isAdd ) {
 
   // default to mouse events
   var startEvent = 'mousedown';
-  if ( window.PointerEvent ) {
+  if ( 'ontouchstart' in window ) {
+    // HACK prefer Touch Events as you can preventDefault on touchstart to
+    // disable scroll in iOS & mobile Chrome metafizzy/flickity#1177
+    startEvent = 'touchstart';
+  } else if ( window.PointerEvent ) {
     // Pointer Events
     startEvent = 'pointerdown';
-  } else if ( 'ontouchstart' in window ) {
-    // Touch Events. iOS Safari
-    startEvent = 'touchstart';
   }
   elem[ bindMethod ]( startEvent, this );
 };
@@ -1055,7 +1056,7 @@ return Unidragger;
 }));
 
 /*!
- * Draggabilly v2.3.0
+ * Draggabilly v2.4.0
  * Make that shiz draggable
  * https://draggabilly.desandro.com
  * MIT license
