@@ -1,6 +1,6 @@
 {
   "name": "draggabilly",
-  "version": "2.3.0",
+  "version": "2.4.1",
   "description": "make that shiz draggable",
   "main": "draggabilly.js",
   "scripts": {
@@ -16,7 +16,7 @@
   },
   "dependencies": {
     "get-size": "^2.0.2",
-    "unidragger": "^2.3.0"
+    "unidragger": "^2.4.0"
   },
   "devDependencies": {
     "eslint": "^7.0.0",
