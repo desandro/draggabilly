@@ -1,5 +1,5 @@
 /*!
- * Draggabilly PACKAGED v2.4.0
+ * Draggabilly PACKAGED v2.4.1
  * Make that shiz draggable
  * https://draggabilly.desandro.com
  * MIT license
@@ -473,7 +473,7 @@ return EvEmitter;
 }));
 
 /*!
- * Unipointer v2.3.0
+ * Unipointer v2.4.0
  * base class for doing one thing with pointer event
  * MIT license
  */
@@ -776,7 +776,7 @@ return Unipointer;
 }));
 
 /*!
- * Unidragger v2.3.0
+ * Unidragger v2.4.0
  * Draggable base class
  * MIT license
  */
@@ -866,7 +866,11 @@ proto.pointerDown = function( event, pointer ) {
     return;
   }
   // track start event position
-  this.pointerDownPointer = pointer;
+  // Safari 9 overrides pageX and pageY. These values needs to be copied. flickity#842
+  this.pointerDownPointer = {
+    pageX: pointer.pageX,
+    pageY: pointer.pageY,
+  };
 
   event.preventDefault();
   this.pointerDownBlur();
@@ -1056,7 +1060,7 @@ return Unidragger;
 }));
 
 /*!
- * Draggabilly v2.4.0
+ * Draggabilly v2.4.1
  * Make that shiz draggable
  * https://draggabilly.desandro.com
  * MIT license
