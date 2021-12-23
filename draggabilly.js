@@ -194,11 +194,6 @@ proto._addTransformPosition = function( style ) {
 
 // -------------------------- events -------------------------- //
 
-proto.onPointerDown = function( event, pointer ) {
-  this.element.classList.add('is-pointer-down');
-  this.dispatchJQueryEvent( 'pointerDown', event, [ pointer ] );
-};
-
 proto.pointerDown = function( event, pointer ) {
   var isOkay = this.okayPointerDown( event );
   if ( !isOkay || !this.isEnabled ) {
