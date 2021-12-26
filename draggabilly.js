@@ -5,21 +5,9 @@
  * MIT license
  */
 
-/* jshint browser: true, strict: true, undef: true, unused: true */
-
 ( function( window, factory ) {
   // universal module definition
-  /* jshint strict: false */ /* globals define */
-  if ( typeof define == 'function' && define.amd ) {
-    // AMD
-    define( [
-      'get-size/get-size',
-      'unidragger/unidragger',
-    ],
-    function( getSize, Unidragger ) {
-        return factory( window, getSize, Unidragger );
-      } );
-  } else if ( typeof module == 'object' && module.exports ) {
+  if ( typeof module == 'object' && module.exports ) {
     // CommonJS
     module.exports = factory(
         window,
@@ -39,19 +27,11 @@
 
 // -------------------------- helpers & variables -------------------------- //
 
-// extend objects
-function extend( a, b ) {
-  for ( let prop in b ) {
-    a[ prop ] = b[ prop ];
-  }
-  return a;
-}
-
 function noop() {}
 
 let jQuery = window.jQuery;
 
-// --------------------------  -------------------------- //
+// -------------------------- Draggabilly -------------------------- //
 
 function Draggabilly( element, options ) {
   // querySelector if string
@@ -63,7 +43,7 @@ function Draggabilly( element, options ) {
   }
 
   // options
-  this.options = extend( {}, this.constructor.defaults );
+  this.options = {};
   this.option( options );
 
   this._create();
@@ -72,23 +52,19 @@ function Draggabilly( element, options ) {
 // inherit Unidragger methods
 let proto = Draggabilly.prototype = Object.create( Unidragger.prototype );
 
-Draggabilly.defaults = {
-};
-
 /**
  * set options
  * @param {Object} opts
  */
 proto.option = function( opts ) {
-  extend( this.options, opts );
+  this.options = {
+    ...this.options,
+    ...opts,
+  };
 };
 
 // css position values that don't need to be set
-let positionValues = {
-  relative: true,
-  absolute: true,
-  fixed: true,
-};
+const positionValues = [ 'relative', 'absolute', 'fixed' ];
 
 proto._create = function() {
   // properties
@@ -98,11 +74,11 @@ proto._create = function() {
   this.startPoint = { x: 0, y: 0 };
   this.dragPoint = { x: 0, y: 0 };
 
-  this.startPosition = extend( {}, this.position );
+  this.startPosition = { ...this.position };
 
   // set relative positioning
   let style = getComputedStyle( this.element );
-  if ( !positionValues[ style.position ] ) {
+  if ( !positionValues.includes( style.position ) ) {
     this.element.style.position = 'relative';
   }
 
@@ -118,9 +94,7 @@ proto._create = function() {
   this.setHandles();
 };
 
-/**
- * set this.handles and bind start events to 'em
- */
+// set this.handles  and bind start events to 'em
 proto.setHandles = function() {
   this.handles = this.options.handle ?
     this.element.querySelectorAll( this.options.handle ) : [ this.element ];
@@ -161,7 +135,7 @@ proto._getPosition = function() {
 };
 
 proto._getPositionCoord = function( styleSide, measure ) {
-  if ( styleSide.indexOf('%') != -1 ) {
+  if ( styleSide.includes('%') ) {
     // convert percent into pixel for Safari, #75
     let parentSize = getSize( this.element.parentNode );
     // prevent not-in-DOM element throwing bug, #131
@@ -175,13 +149,12 @@ proto._getPositionCoord = function( styleSide, measure ) {
 proto._addTransformPosition = function( style ) {
   let transform = style.transform;
   // bail out if value is 'none'
-  if ( transform.indexOf('matrix') !== 0 ) {
-    return;
-  }
+  if ( !transform.startsWith('matrix') ) return;
+
   // split matrix(1, 0, 0, 1, x, y)
   let matrixValues = transform.split(',');
   // translate X value is in 12th or 4th position
-  let xIndex = transform.indexOf('matrix3d') === 0 ? 12 : 4;
+  let xIndex = transform.startsWith('matrix3d') ? 12 : 4;
   let translateX = parseInt( matrixValues[ xIndex ], 10 );
   // translate Y value is in 13th or 5th position
   let translateY = parseInt( matrixValues[ xIndex + 1 ], 10 );
@@ -302,14 +275,15 @@ proto.handleDragMove = function( event, pointer, moveVector ) {
 };
 
 function applyGrid( value, grid, method ) {
+  if ( !grid ) return value;
+
   method = method || 'round';
-  return grid ? Math[ method ]( value/grid ) * grid : value;
+  return Math[ method ]( value/grid ) * grid;
 }
 
 proto.containDrag = function( axis, drag, grid ) {
-  if ( !this.options.containment ) {
-    return drag;
-  }
+  if ( !this.options.containment ) return drag;
+
   let measure = axis == 'x' ? 'width' : 'height';
 
   let rel = this.relativeStartPosition[ axis ];
@@ -376,19 +350,18 @@ proto.disable = function() {
   if ( this.isDragging ) this.dragEnd();
 };
 
+const resetCssProperties = [ 'transform', 'left', 'top', 'position' ];
+
 proto.destroy = function() {
   this.disable();
   // reset styles
-  this.element.style.transform = '';
-  this.element.style.left = '';
-  this.element.style.top = '';
-  this.element.style.position = '';
+  resetCssProperties.forEach( ( prop ) => {
+    this.element.style[ prop ] = '';
+  } );
   // unbind handles
   this.unbindHandles();
   // remove jQuery data
-  if ( this.$element ) {
-    this.$element.removeData('draggabilly');
-  }
+  if ( this.$element ) this.$element.removeData('draggabilly');
 };
 
 // ----- jQuery bridget ----- //
