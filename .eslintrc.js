@@ -8,7 +8,7 @@ module.exports = {
     commonjs: true,
   },
   parserOptions: {
-    ecmaVersion: 5,
+    ecmaVersion: 2018,
   },
   globals: {
     Draggabilly: 'readonly',

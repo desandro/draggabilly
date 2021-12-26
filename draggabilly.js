@@ -24,14 +24,14 @@
     module.exports = factory(
         window,
         require('get-size'),
-        require('unidragger')
+        require('unidragger'),
     );
   } else {
     // browser global
     window.Draggabilly = factory(
         window,
         window.getSize,
-        window.Unidragger
+        window.Unidragger,
     );
   }
 
@@ -106,9 +106,13 @@ proto._create = function() {
     this.element.style.position = 'relative';
   }
 
-  // events, bridge jQuery events from vanilla
-  this.on( 'pointerMove', this.onPointerMove );
-  this.on( 'pointerUp', this.onPointerUp );
+  // events
+  this.on( 'pointerDown', this.handlePointerDown );
+  this.on( 'pointerMove', this.handlePointerMove );
+  this.on( 'pointerUp', this.handlePointerUp );
+  this.on( 'dragStart', this.handleDragStart );
+  this.on( 'dragMove', this.handleDragMove );
+  this.on( 'dragEnd', this.handleDragEnd );
 
   this.enable();
   this.setHandles();
@@ -125,17 +129,11 @@ proto.setHandles = function() {
 };
 
 /**
- * emits events via EvEmitter and jQuery events
+ * emits jQuery events
  * @param {String} type - name of event
  * @param {Event} event - original event
  * @param {Array} args - extra arguments
  */
-proto.dispatchEvent = function( type, event, args ) {
-  var emitArgs = [ event ].concat( args );
-  this.emitEvent( type, emitArgs );
-  this.dispatchJQueryEvent( type, event, args );
-};
-
 proto.dispatchJQueryEvent = function( type, event, args ) {
   var jquery = window.jQuery;
   // trigger jQuery event
@@ -194,12 +192,8 @@ proto._addTransformPosition = function( style ) {
 
 // -------------------------- events -------------------------- //
 
-proto.pointerDown = function( event, pointer ) {
-  var isOkay = this.okayPointerDown( event );
-  if ( !isOkay || !this.isEnabled ) {
-    this._pointerReset();
-    return;
-  }
+proto.handlePointerDown = function( event, pointer ) {
+  if ( !this.isEnabled ) return;
   // track start event position
   // Safari 9 overrides pageX and pageY. These values needs to be copied. flickity#842
   this.pointerDownPointer = {
@@ -208,11 +202,11 @@ proto.pointerDown = function( event, pointer ) {
   };
 
   event.preventDefault();
-  this.pointerDownBlur();
+  document.activeElement.blur();
   // bind move and end events
-  this._bindPostStartEvents( event );
+  this.bindActivePointerEvents( event );
   this.element.classList.add('is-pointer-down');
-  this.dispatchEvent( 'pointerDown', event, [ pointer ] );
+  this.dispatchJQueryEvent( 'pointerDown', event, [ pointer ] );
 };
 
 /**
@@ -220,10 +214,9 @@ proto.pointerDown = function( event, pointer ) {
  * @param {Event} event
  * @param {[Event, Touch]} pointer
  */
-proto.dragStart = function( event, pointer ) {
-  if ( !this.isEnabled ) {
-    return;
-  }
+proto.handleDragStart = function( event, pointer ) {
+  if ( !this.isEnabled ) return;
+
   this._getPosition();
   this.measureContainment();
   // position _when_ drag began
@@ -236,16 +229,14 @@ proto.dragStart = function( event, pointer ) {
   this.dragPoint.y = 0;
 
   this.element.classList.add('is-dragging');
-  this.dispatchEvent( 'dragStart', event, [ pointer ] );
+  this.dispatchJQueryEvent( 'dragStart', event, [ pointer ] );
   // start animation
   this.animate();
 };
 
 proto.measureContainment = function() {
   var container = this.getContainer();
-  if ( !container ) {
-    return;
-  }
+  if ( !container ) return;
 
   var elemSize = getSize( this.element );
   var containerSize = getSize( container );
@@ -268,14 +259,12 @@ proto.measureContainment = function() {
 
 proto.getContainer = function() {
   var containment = this.options.containment;
-  if ( !containment ) {
-    return;
-  }
+  if ( !containment ) return;
+
   var isElement = containment instanceof HTMLElement;
   // use as element
-  if ( isElement ) {
-    return containment;
-  }
+  if ( isElement ) return containment;
+
   // querySelector if string
   if ( typeof containment == 'string' ) {
     return document.querySelector( containment );
@@ -286,17 +275,17 @@ proto.getContainer = function() {
 
 // ----- move event ----- //
 
-proto.onPointerMove = function( event, pointer, moveVector ) {
+proto.handlePointerMove = function( event, pointer, moveVector ) {
   this.dispatchJQueryEvent( 'pointerMove', event, [ pointer, moveVector ] );
 };
 
 /**
  * drag move
  * @param {Event} event
- * @param {[Event, Touch]} pointer
+ * @param {Event | Touch} pointer
  * @param {Object} moveVector - x and y coordinates
  */
-proto.dragMove = function( event, pointer, moveVector ) {
+proto.handleDragMove = function( event, pointer, moveVector ) {
   if ( !this.isEnabled ) {
     return;
   }
@@ -323,7 +312,7 @@ proto.dragMove = function( event, pointer, moveVector ) {
   this.dragPoint.x = dragX;
   this.dragPoint.y = dragY;
 
-  this.dispatchEvent( 'dragMove', event, [ pointer, moveVector ] );
+  this.dispatchJQueryEvent( 'dragMove', event, [ pointer, moveVector ] );
 };
 
 function applyGrid( value, grid, method ) {
@@ -346,47 +335,29 @@ proto.containDrag = function( axis, drag, grid ) {
 
 // ----- end event ----- //
 
-/**
- * pointer up
- * @param {Event} event
- * @param {[Event, Touch]} pointer
- */
-proto.onPointerUp = function( event, pointer ) {
+proto.handlePointerUp = function( event, pointer ) {
   this.element.classList.remove('is-pointer-down');
   this.dispatchJQueryEvent( 'pointerUp', event, [ pointer ] );
 };
 
-/**
- * drag end
- * @param {Event} event
- * @param {[Event, Touch]} pointer
- */
-proto.dragEnd = function( event, pointer ) {
-  if ( !this.isEnabled ) {
-    return;
-  }
+proto.handleDragEnd = function( event, pointer ) {
+  if ( !this.isEnabled ) return;
+
   // use top left position when complete
   this.element.style.transform = '';
   this.setLeftTop();
   this.element.classList.remove('is-dragging');
-  this.dispatchEvent( 'dragEnd', event, [ pointer ] );
+  this.dispatchJQueryEvent( 'dragEnd', event, [ pointer ] );
 };
 
 // -------------------------- animation -------------------------- //
 
 proto.animate = function() {
   // only render and animate if dragging
-  if ( !this.isDragging ) {
-    return;
-  }
+  if ( !this.isDragging ) return;
 
   this.positionDrag();
-
-  var _this = this;
-  requestAnimationFrame( function animateFrame() {
-    _this.animate();
-  } );
-
+  requestAnimationFrame( () => this.animate() );
 };
 
 // left/top positioning
@@ -396,14 +367,14 @@ proto.setLeftTop = function() {
 };
 
 proto.positionDrag = function() {
-  this.element.style.transform = 'translate3d( ' + this.dragPoint.x +
-    'px, ' + this.dragPoint.y + 'px, 0)';
+  this.element.style.transform =
+      `translate3d(${this.dragPoint.x}px, ${this.dragPoint.y}px, 0)`;
 };
 
 // ----- staticClick ----- //
 
 proto.staticClick = function( event, pointer ) {
-  this.dispatchEvent( 'staticClick', event, [ pointer ] );
+  this.dispatchJQueryEvent( 'staticClick', event, [ pointer ] );
 };
 
 // ----- methods ----- //
@@ -424,9 +395,7 @@ proto.enable = function() {
 
 proto.disable = function() {
   this.isEnabled = false;
-  if ( this.isDragging ) {
-    this.dragEnd();
-  }
+  if ( this.isDragging ) this.dragEnd();
 };
 
 proto.destroy = function() {
