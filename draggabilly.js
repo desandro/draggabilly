@@ -41,7 +41,7 @@
 
 // extend objects
 function extend( a, b ) {
-  for ( var prop in b ) {
+  for ( let prop in b ) {
     a[ prop ] = b[ prop ];
   }
   return a;
@@ -49,7 +49,7 @@ function extend( a, b ) {
 
 function noop() {}
 
-var jQuery = window.jQuery;
+let jQuery = window.jQuery;
 
 // --------------------------  -------------------------- //
 
@@ -70,7 +70,7 @@ function Draggabilly( element, options ) {
 }
 
 // inherit Unidragger methods
-var proto = Draggabilly.prototype = Object.create( Unidragger.prototype );
+let proto = Draggabilly.prototype = Object.create( Unidragger.prototype );
 
 Draggabilly.defaults = {
 };
@@ -84,7 +84,7 @@ proto.option = function( opts ) {
 };
 
 // css position values that don't need to be set
-var positionValues = {
+let positionValues = {
   relative: true,
   absolute: true,
   fixed: true,
@@ -101,7 +101,7 @@ proto._create = function() {
   this.startPosition = extend( {}, this.position );
 
   // set relative positioning
-  var style = getComputedStyle( this.element );
+  let style = getComputedStyle( this.element );
   if ( !positionValues[ style.position ] ) {
     this.element.style.position = 'relative';
   }
@@ -133,7 +133,7 @@ let emitEvent = proto.emitEvent;
 proto.emitEvent = function( eventName, args ) {
   emitEvent.call( this, eventName, args );
   // trigger jQuery event
-  var jquery = window.jQuery;
+  let jquery = window.jQuery;
   if ( !jquery || !this.$element ) return;
   // create jQuery event
   let event;
@@ -141,7 +141,7 @@ proto.emitEvent = function( eventName, args ) {
   let isFirstArgEvent = args && args[0] instanceof Event;
   if ( isFirstArgEvent ) [ event, ...jqArgs ] = args;
   /* eslint-disable-next-line new-cap */
-  var $event = jquery.Event( event );
+  let $event = jquery.Event( event );
   $event.type = eventName;
   this.$element.trigger( $event, jqArgs );
 };
@@ -150,9 +150,9 @@ proto.emitEvent = function( eventName, args ) {
 
 // get x/y position from style
 proto._getPosition = function() {
-  var style = getComputedStyle( this.element );
-  var x = this._getPositionCoord( style.left, 'width' );
-  var y = this._getPositionCoord( style.top, 'height' );
+  let style = getComputedStyle( this.element );
+  let x = this._getPositionCoord( style.left, 'width' );
+  let y = this._getPositionCoord( style.top, 'height' );
   // clean up 'auto' or other non-integer values
   this.position.x = isNaN( x ) ? 0 : x;
   this.position.y = isNaN( y ) ? 0 : y;
@@ -163,7 +163,7 @@ proto._getPosition = function() {
 proto._getPositionCoord = function( styleSide, measure ) {
   if ( styleSide.indexOf('%') != -1 ) {
     // convert percent into pixel for Safari, #75
-    var parentSize = getSize( this.element.parentNode );
+    let parentSize = getSize( this.element.parentNode );
     // prevent not-in-DOM element throwing bug, #131
     return !parentSize ? 0 :
       ( parseFloat( styleSide ) / 100 ) * parentSize[ measure ];
@@ -173,18 +173,18 @@ proto._getPositionCoord = function( styleSide, measure ) {
 
 // add transform: translate( x, y ) to position
 proto._addTransformPosition = function( style ) {
-  var transform = style.transform;
+  let transform = style.transform;
   // bail out if value is 'none'
   if ( transform.indexOf('matrix') !== 0 ) {
     return;
   }
   // split matrix(1, 0, 0, 1, x, y)
-  var matrixValues = transform.split(',');
+  let matrixValues = transform.split(',');
   // translate X value is in 12th or 4th position
-  var xIndex = transform.indexOf('matrix3d') === 0 ? 12 : 4;
-  var translateX = parseInt( matrixValues[ xIndex ], 10 );
+  let xIndex = transform.indexOf('matrix3d') === 0 ? 12 : 4;
+  let translateX = parseInt( matrixValues[ xIndex ], 10 );
   // translate Y value is in 13th or 5th position
-  var translateY = parseInt( matrixValues[ xIndex + 1 ], 10 );
+  let translateY = parseInt( matrixValues[ xIndex + 1 ], 10 );
   this.position.x += translateX;
   this.position.y += translateY;
 };
@@ -227,18 +227,18 @@ proto.handleDragStart = function() {
 };
 
 proto.measureContainment = function() {
-  var container = this.getContainer();
+  let container = this.getContainer();
   if ( !container ) return;
 
-  var elemSize = getSize( this.element );
-  var containerSize = getSize( container );
-  var elemRect = this.element.getBoundingClientRect();
-  var containerRect = container.getBoundingClientRect();
+  let elemSize = getSize( this.element );
+  let containerSize = getSize( container );
+  let elemRect = this.element.getBoundingClientRect();
+  let containerRect = container.getBoundingClientRect();
 
-  var borderSizeX = containerSize.borderLeftWidth + containerSize.borderRightWidth;
-  var borderSizeY = containerSize.borderTopWidth + containerSize.borderBottomWidth;
+  let borderSizeX = containerSize.borderLeftWidth + containerSize.borderRightWidth;
+  let borderSizeY = containerSize.borderTopWidth + containerSize.borderBottomWidth;
 
-  var position = this.relativeStartPosition = {
+  let position = this.relativeStartPosition = {
     x: elemRect.left - ( containerRect.left + containerSize.borderLeftWidth ),
     y: elemRect.top - ( containerRect.top + containerSize.borderTopWidth ),
   };
@@ -250,10 +250,10 @@ proto.measureContainment = function() {
 };
 
 proto.getContainer = function() {
-  var containment = this.options.containment;
+  let containment = this.options.containment;
   if ( !containment ) return;
 
-  var isElement = containment instanceof HTMLElement;
+  let isElement = containment instanceof HTMLElement;
   // use as element
   if ( isElement ) return containment;
 
@@ -277,12 +277,12 @@ proto.handleDragMove = function( event, pointer, moveVector ) {
   if ( !this.isEnabled ) {
     return;
   }
-  var dragX = moveVector.x;
-  var dragY = moveVector.y;
+  let dragX = moveVector.x;
+  let dragY = moveVector.y;
 
-  var grid = this.options.grid;
-  var gridX = grid && grid[0];
-  var gridY = grid && grid[1];
+  let grid = this.options.grid;
+  let gridX = grid && grid[0];
+  let gridY = grid && grid[1];
 
   dragX = applyGrid( dragX, gridX );
   dragY = applyGrid( dragY, gridY );
@@ -310,11 +310,11 @@ proto.containDrag = function( axis, drag, grid ) {
   if ( !this.options.containment ) {
     return drag;
   }
-  var measure = axis == 'x' ? 'width' : 'height';
+  let measure = axis == 'x' ? 'width' : 'height';
 
-  var rel = this.relativeStartPosition[ axis ];
-  var min = applyGrid( -rel, grid, 'ceil' );
-  var max = this.containSize[ measure ];
+  let rel = this.relativeStartPosition[ axis ];
+  let min = applyGrid( -rel, grid, 'ceil' );
+  let max = this.containSize[ measure ];
   max = applyGrid( max, grid, 'floor' );
   return Math.max( min, Math.min( max, drag ) );
 };

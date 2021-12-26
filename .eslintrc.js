@@ -15,8 +15,6 @@ module.exports = {
     QUnit: 'readonly',
   },
   rules: {
-    'no-var': 'off',
-    'id-length': 'off',
   },
   ignorePatterns: [
     'bower_components/',
