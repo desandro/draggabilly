@@ -84,7 +84,6 @@ proto._create = function() {
 
   // events
   this.on( 'pointerDown', this.handlePointerDown );
-  this.on( 'pointerMove', this.handlePointerMove );
   this.on( 'pointerUp', this.handlePointerUp );
   this.on( 'dragStart', this.handleDragStart );
   this.on( 'dragMove', this.handleDragMove );
@@ -102,10 +101,17 @@ proto.setHandles = function() {
   this.bindHandles();
 };
 
+const cancelableEvents = [ 'dragStart', 'dragMove', 'dragEnd' ];
+
 // duck-punch emitEvent to dispatch jQuery events as well
 let emitEvent = proto.emitEvent;
 proto.emitEvent = function( eventName, args ) {
+  // do not emit cancelable events if dragging is disabled
+  let isCanceled = !this.isEnabled && cancelableEvents.includes( eventName );
+  if ( isCanceled ) return;
+
   emitEvent.call( this, eventName, args );
+
   // trigger jQuery event
   let jquery = window.jQuery;
   if ( !jquery || !this.$element ) return;
@@ -205,15 +211,21 @@ proto.measureContainment = function() {
 
   let elemSize = getSize( this.element );
   let containerSize = getSize( container );
+  let {
+    borderLeftWidth,
+    borderRightWidth,
+    borderTopWidth,
+    borderBottomWidth,
+  } = containerSize;
   let elemRect = this.element.getBoundingClientRect();
   let containerRect = container.getBoundingClientRect();
 
-  let borderSizeX = containerSize.borderLeftWidth + containerSize.borderRightWidth;
-  let borderSizeY = containerSize.borderTopWidth + containerSize.borderBottomWidth;
+  let borderSizeX = borderLeftWidth + borderRightWidth;
+  let borderSizeY = borderTopWidth + borderBottomWidth;
 
   let position = this.relativeStartPosition = {
-    x: elemRect.left - ( containerRect.left + containerSize.borderLeftWidth ),
-    y: elemRect.top - ( containerRect.top + containerSize.borderTopWidth ),
+    x: elemRect.left - ( containerRect.left + borderLeftWidth ),
+    y: elemRect.top - ( containerRect.top + borderTopWidth ),
   };
 
   this.containSize = {
@@ -247,9 +259,8 @@ proto.getContainer = function() {
  * @param {Object} moveVector - x and y coordinates
  */
 proto.handleDragMove = function( event, pointer, moveVector ) {
-  if ( !this.isEnabled ) {
-    return;
-  }
+  if ( !this.isEnabled ) return;
+
   let dragX = moveVector.x;
   let dragY = moveVector.y;
 
@@ -320,13 +331,14 @@ proto.animate = function() {
 
 // left/top positioning
 proto.setLeftTop = function() {
-  this.element.style.left = this.position.x + 'px';
-  this.element.style.top = this.position.y + 'px';
+  let { x, y } = this.position;
+  this.element.style.left = `${x}px`;
+  this.element.style.top = `${y}px`;
 };
 
 proto.positionDrag = function() {
-  this.element.style.transform =
-      `translate3d(${this.dragPoint.x}px, ${this.dragPoint.y}px, 0)`;
+  let { x, y } = this.dragPoint;
+  this.element.style.transform = `translate3d(${x}px, ${y}px, 0)`;
 };
 
 // ----- methods ----- //
