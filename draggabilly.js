@@ -128,23 +128,22 @@ proto.setHandles = function() {
   this.bindHandles();
 };
 
-/**
- * emits jQuery events
- * @param {String} type - name of event
- * @param {Event} event - original event
- * @param {Array} args - extra arguments
- */
-proto.dispatchJQueryEvent = function( type, event, args ) {
-  var jquery = window.jQuery;
+// duck-punch emitEvent to dispatch jQuery events as well
+let emitEvent = proto.emitEvent;
+proto.emitEvent = function( eventName, args ) {
+  emitEvent.call( this, eventName, args );
   // trigger jQuery event
-  if ( !jquery || !this.$element ) {
-    return;
-  }
+  var jquery = window.jQuery;
+  if ( !jquery || !this.$element ) return;
   // create jQuery event
+  let event;
+  let jqArgs = args;
+  let isFirstArgEvent = args && args[0] instanceof Event;
+  if ( isFirstArgEvent ) [ event, ...jqArgs ] = args;
   /* eslint-disable-next-line new-cap */
   var $event = jquery.Event( event );
-  $event.type = type;
-  this.$element.trigger( $event, args );
+  $event.type = eventName;
+  this.$element.trigger( $event, jqArgs );
 };
 
 // -------------------------- position -------------------------- //
@@ -206,15 +205,9 @@ proto.handlePointerDown = function( event, pointer ) {
   // bind move and end events
   this.bindActivePointerEvents( event );
   this.element.classList.add('is-pointer-down');
-  this.dispatchJQueryEvent( 'pointerDown', event, [ pointer ] );
 };
 
-/**
- * drag start
- * @param {Event} event
- * @param {[Event, Touch]} pointer
- */
-proto.handleDragStart = function( event, pointer ) {
+proto.handleDragStart = function() {
   if ( !this.isEnabled ) return;
 
   this._getPosition();
@@ -229,7 +222,6 @@ proto.handleDragStart = function( event, pointer ) {
   this.dragPoint.y = 0;
 
   this.element.classList.add('is-dragging');
-  this.dispatchJQueryEvent( 'dragStart', event, [ pointer ] );
   // start animation
   this.animate();
 };
@@ -275,10 +267,6 @@ proto.getContainer = function() {
 
 // ----- move event ----- //
 
-proto.handlePointerMove = function( event, pointer, moveVector ) {
-  this.dispatchJQueryEvent( 'pointerMove', event, [ pointer, moveVector ] );
-};
-
 /**
  * drag move
  * @param {Event} event
@@ -311,8 +299,6 @@ proto.handleDragMove = function( event, pointer, moveVector ) {
   // set dragPoint properties
   this.dragPoint.x = dragX;
   this.dragPoint.y = dragY;
-
-  this.dispatchJQueryEvent( 'dragMove', event, [ pointer, moveVector ] );
 };
 
 function applyGrid( value, grid, method ) {
@@ -335,19 +321,17 @@ proto.containDrag = function( axis, drag, grid ) {
 
 // ----- end event ----- //
 
-proto.handlePointerUp = function( event, pointer ) {
+proto.handlePointerUp = function() {
   this.element.classList.remove('is-pointer-down');
-  this.dispatchJQueryEvent( 'pointerUp', event, [ pointer ] );
 };
 
-proto.handleDragEnd = function( event, pointer ) {
+proto.handleDragEnd = function() {
   if ( !this.isEnabled ) return;
 
   // use top left position when complete
   this.element.style.transform = '';
   this.setLeftTop();
   this.element.classList.remove('is-dragging');
-  this.dispatchJQueryEvent( 'dragEnd', event, [ pointer ] );
 };
 
 // -------------------------- animation -------------------------- //
@@ -369,12 +353,6 @@ proto.setLeftTop = function() {
 proto.positionDrag = function() {
   this.element.style.transform =
       `translate3d(${this.dragPoint.x}px, ${this.dragPoint.y}px, 0)`;
-};
-
-// ----- staticClick ----- //
-
-proto.staticClick = function( event, pointer ) {
-  this.dispatchJQueryEvent( 'staticClick', event, [ pointer ] );
 };
 
 // ----- methods ----- //

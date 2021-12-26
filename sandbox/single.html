@@ -37,6 +37,10 @@ body {
 <script>
 var draggie = new Draggabilly( '.box', {
 });
+
+draggie.on('staticClick', function( event, pointer ) {
+  console.log('staticClick', event.type, pointer.pageX, pointer.pageY );
+});
 </script>
 
 </body>
