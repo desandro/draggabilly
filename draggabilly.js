@@ -95,8 +95,16 @@ proto._create = function() {
 
 // set this.handles  and bind start events to 'em
 proto.setHandles = function() {
-  this.handles = this.options.handle ?
-    this.element.querySelectorAll( this.options.handle ) : [ this.element ];
+  let { handle } = this.options;
+  if ( typeof handle == 'string' ) {
+    this.handles = this.element.querySelectorAll( handle );
+  } else if ( typeof handle == 'object' && handle.length ) {
+    this.handles = handle;
+  } else if ( handle instanceof HTMLElement ) {
+    this.handles = [ handle ];
+  } else {
+    this.handles = [ this.element ];
+  }
 
   this.bindHandles();
 };
