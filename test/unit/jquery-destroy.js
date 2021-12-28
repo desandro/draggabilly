@@ -1,10 +1,10 @@
 /* globals $ */
 
 QUnit.test( 'destroy', function( assert ) {
-  var done = assert.async();
+  let done = assert.async();
 
-  var $draggie = $('.test--destroy .draggie').draggabilly();
-  var draggieElem = $draggie[0];
+  let $draggie = $('.test--destroy .draggie').draggabilly();
+  let draggieElem = $draggie[0];
 
   setTimeout( function() {
     $draggie.draggabilly('destroy');

@@ -102,8 +102,8 @@ proto.withPointer = function( methodName, event ) {
 // trigger method with matching touch
 proto.withTouch = function( methodName, event ) {
   let touch;
-  for (let changedTouch of event.changedTouches) {
-    if (changedTouch.identifier == this.pointerIdentifier) {
+  for ( let changedTouch of event.changedTouches ) {
+    if ( changedTouch.identifier == this.pointerIdentifier ) {
       touch = changedTouch;
     }
   }

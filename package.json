@@ -9,7 +9,8 @@
     "dist": "npm run bundle && npm run uglify",
     "bundle": "node bin/bundle.js",
     "uglify": "npx uglifyjs dist/draggabilly.pkgd.js -o dist/draggabilly.pkgd.min.js --mangle --comments /^!/",
-    "version": "node bin/version.js && npm run dist && git add -A . dist"
+    "version": "node bin/version.js && npm run dist && git add -A . dist",
+    "test": "npm run lint"
   },
   "dependencies": {
     "get-size": "^2.0.2",

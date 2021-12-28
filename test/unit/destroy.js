@@ -1,8 +1,8 @@
 QUnit.test( 'destroy', function( assert ) {
-  var done = assert.async();
+  let done = assert.async();
 
-  var draggieElem = document.querySelector('.test--destroy .draggie');
-  var draggie = new Draggabilly( draggieElem );
+  let draggieElem = document.querySelector('.test--destroy .draggie');
+  let draggie = new Draggabilly( draggieElem );
 
   setTimeout( function() {
     draggie.destroy();
