@@ -6,8 +6,8 @@
       <div class="total-centered">Drag me</div>
     </div>
     <p class="demo__edit-link">
-      <a href="http://codepen.io/desandro/pen/yyRapr">Edit this demo</a> or
-      <a href="http://codepen.io/desandro/pen/EadgXx">vanilla JS demo</a> on CodePen
+      <a href="http://codepen.io/desandro/pen/BawYQeq">Edit this demo</a> or
+      <a href="http://codepen.io/desandro/pen/mdBXOZL">vanilla JS demo</a> on CodePen
     </p>
   </div>
 </div>
@@ -94,8 +94,8 @@ for ( var i=0; i < draggableElems.length; i++ ) {
       <div class="total-centered">axis: 'x'</div>
     </div>
     <p class="demo__edit-link">
-      <a href="http://codepen.io/desandro/pen/WbaGMa">Edit this demo </a> or
-      <a href="http://codepen.io/desandro/pen/myzrXB">vanilla JS demo</a> on CodePen
+      <a href="http://codepen.io/desandro/pen/ZEXrBgG">Edit this demo </a> or
+      <a href="http://codepen.io/desandro/pen/VwMQmor">vanilla JS demo</a> on CodePen
     </p>
   </div>
 </div>
@@ -120,8 +120,8 @@ Constrains movement to horizontal or vertical axis.
       <div class="draggable"></div>
     </div>
     <p class="demo__edit-link">
-      <a href="http://codepen.io/desandro/pen/azRmYv">Edit this demo</a> or
-      <a href="http://codepen.io/desandro/pen/dPgpev">vanilla JS demo</a> on CodePen
+      <a href="http://codepen.io/desandro/pen/YzreNKY">Edit this demo</a> or
+      <a href="http://codepen.io/desandro/pen/eYGVgYJ">vanilla JS demo</a> on CodePen
     </p>
   </div>
 </div>
@@ -142,8 +142,8 @@ Contains movement to the bounds of the element. If `true`, the container will be
       <div class="total-centered">grid: [ 20, 20 ]</div>
     </div>
     <p class="demo__edit-link">
-      <a href="http://codepen.io/desandro/pen/ZYqpRg">Edit this demo</a> or
-      <a href="http://codepen.io/desandro/pen/XJxjBJ">vanilla JS demo</a> on CodePen
+      <a href="http://codepen.io/desandro/pen/abLqpzp">Edit this demo</a> or
+      <a href="http://codepen.io/desandro/pen/MWEQJww">vanilla JS demo</a> on CodePen
     </p>
   </div>
 </div>
@@ -166,8 +166,8 @@ Snaps the element to a grid, every x and y pixels.
       <div class="handle"></div>
     </div>
     <p class="demo__edit-link">
-      <a href="http://codepen.io/desandro/pen/xbyEyO">Edit this demo</a> or
-      <a href="http://codepen.io/desandro/pen/NPOROE">vanilla JS demo</a> on CodePen
+      <a href="http://codepen.io/desandro/pen/wvrygaN">Edit this demo</a> or
+      <a href="http://codepen.io/desandro/pen/bGoLgVJ">vanilla JS demo</a> on CodePen
     </p>
   </div>
 </div>
@@ -251,7 +251,7 @@ draggie.on( 'dragStart', function( event, pointer ) {...})
 + `event` - **Type:** _Event_ - the original `mousedown` or `touchstart` event
 + `pointer` - **Type:** _MouseEvent_ or _Touch_ - the event object that has `.pageX` and `.pageY`
 
-[Edit demo](http://codepen.io/desandro/pen/KwGgGY) or [vanilla JS demo](http://codepen.io/desandro/pen/qEJaQq)  on CodePen. 
+[Edit demo](http://codepen.io/desandro/pen/dyVdNGJ) or [vanilla JS demo](http://codepen.io/desandro/pen/oNGEBxo)  on CodePen. 
 
 ### dragMove
 
@@ -268,7 +268,7 @@ draggie.on( 'dragMove', function( event, pointer, moveVector ) {...})
 + `pointer` - **Type:** _MouseEvent_ or _Touch_ - the event object that has `.pageX` and `.pageY`
 + `moveVector` **Type:** _Object_ - How far the pointer has moved from its start position `{ x: 20, y: -30 }`
 
-[Edit demo](http://codepen.io/desandro/pen/gbBwQe) or [vanilla JS demo](http://codepen.io/desandro/pen/QwZKJY) on CodePen.
+[Edit demo](http://codepen.io/desandro/pen/yLzvgJN) or [vanilla JS demo](http://codepen.io/desandro/pen/wvrygWZ) on CodePen.
 
 ### dragEnd
 
@@ -284,7 +284,7 @@ draggie.on( 'dragEnd', function( event, pointer ) {...})
 + `event` - **Type:** _Event_ - the original `mouseup` or `touchend` event
 + `pointer` - **Type:** _MouseEvent_ or _Touch_ - the event object that has `.pageX` and `.pageY`
 
-[Edit demo](http://codepen.io/desandro/pen/RNeGOQ) or [vanilla JS demo](http://codepen.io/desandro/pen/ByqLEq) on CodePen.
+[Edit demo](http://codepen.io/desandro/pen/oNGEBzp) or [vanilla JS demo](http://codepen.io/desandro/pen/VwMQPmX) on CodePen.
 
 ### pointerDown
 
@@ -300,7 +300,7 @@ draggie.on( 'pointerDown', function( event, pointer ) {...})
 + `event` - **Type:** _Event_ - the original `mousedown` or `touchstart` event
 + `pointer` - **Type:** _MouseEvent_ or _Touch_ - the event object that has `.pageX` and `.pageY`
 
-[Edit demo](http://codepen.io/desandro/pen/QwZKYo) or [vanilla JS demo](http://codepen.io/desandro/pen/NPORJe) on CodePen.
+[Edit demo](http://codepen.io/desandro/pen/dyVdNNm) or [vanilla JS demo](http://codepen.io/desandro/pen/LYzQxWe) on CodePen.
 
 ### pointerMove
 
@@ -317,7 +317,7 @@ draggie.on( 'pointerMove', function( event, pointer, moveVector ) {...})
 + `pointer` - **Type:** _MouseEvent_ or _Touch_ - the event object that has `.pageX` and `.pageY`
 + `moveVector` **Type:** _Object_ - How far the pointer has moved from its start position `{ x: 20, y: -30 }`
 
-[Edit demo](http://codepen.io/desandro/pen/dPgpaR) or [vanilla JS demo](http://codepen.io/desandro/pen/ZYqpwE) on CodePen.
+[Edit demo](http://codepen.io/desandro/pen/OJxQWmq) or [vanilla JS demo](http://codepen.io/desandro/pen/oNGEBwq) on CodePen.
 
 ### pointerUp
 
@@ -333,7 +333,7 @@ draggie.on( 'pointerUp', function( event, pointer ) {...})
 + `event` - **Type:** _Event_ - the original `mouseup` or `touchend` event
 + `pointer` - **Type:** _MouseEvent_ or _Touch_ - the event object that has `.pageX` and `.pageY`
 
-[Edit demo](http://codepen.io/desandro/pen/zxmKQq) or [vanilla JS demo](http://codepen.io/desandro/pen/QwZKPP) on CodePen.
+[Edit demo](http://codepen.io/desandro/pen/JjrpErO) or [vanilla JS demo](http://codepen.io/desandro/pen/eYGVgEB) on CodePen.
 
 ### staticClick
 
@@ -351,7 +351,7 @@ draggie.on( 'staticClick', function( event, pointer ) {...})
 + `event` - **Type:** _Event_ - the original `mouseup` or `touchend` event
 + `pointer` - **Type:** _MouseEvent_ or _Touch_ - the event object that has `.pageX` and `.pageY`
 
-[Edit demo](http://codepen.io/desandro/pen/YPJGbE) or [vanilla JS demo](http://codepen.io/desandro/pen/OPBRYo) on CodePen.
+[Edit demo](http://codepen.io/desandro/pen/eYGVgeg) or [vanilla JS demo](http://codepen.io/desandro/pen/vYedgWV) on CodePen.
 
 ## Methods
 
