@@ -6,9 +6,7 @@
   "scripts": {
     "lint": "npx eslint . && node bin/lint-json.js",
     "lintFix": "npx eslint . --fix",
-    "dist": "npm run bundle && npm run uglify",
-    "bundle": "node bin/bundle.js",
-    "uglify": "npx uglifyjs dist/draggabilly.pkgd.js -o dist/draggabilly.pkgd.min.js --mangle --comments /^!/",
+    "dist": "node bin/build-dist.js",
     "version": "node bin/version.js && npm run dist && git add -A . dist",
     "test": "npm run lint"
   },
@@ -21,8 +19,7 @@
     "eslint-plugin-metafizzy": "^1.0.0",
     "jquery-bridget": "^2.0.1",
     "qunit": "^2.10.0",
-    "requirejs": "^2.3.6",
-    "uglify-js": "^3.9.3"
+    "terser": "^5.10.0"
   },
   "repository": {
     "type": "git",
