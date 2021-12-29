@@ -23,7 +23,8 @@
     );
   }
 
-}( window, function factory( window, getSize, Unidragger ) {
+}( typeof window != 'undefined' ? window : this,
+    function factory( window, getSize, Unidragger ) {
 
 // -------------------------- helpers & variables -------------------------- //
 
