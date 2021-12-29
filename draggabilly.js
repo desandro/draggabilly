@@ -89,8 +89,8 @@ proto._create = function() {
   this.on( 'dragMove', this.handleDragMove );
   this.on( 'dragEnd', this.handleDragEnd );
 
-  this.enable();
   this.setHandles();
+  this.enable();
 };
 
 // set this.handles  and bind start events to 'em
@@ -105,8 +105,6 @@ proto.setHandles = function() {
   } else {
     this.handles = [ this.element ];
   }
-
-  this.bindHandles();
 };
 
 const cancelableEvents = [ 'dragStart', 'dragMove', 'dragEnd' ];
@@ -362,12 +360,16 @@ proto.setPosition = function( x, y ) {
 };
 
 proto.enable = function() {
+  if ( this.isEnabled ) return;
   this.isEnabled = true;
+  this.bindHandles();
 };
 
 proto.disable = function() {
+  if ( !this.isEnabled ) return;
   this.isEnabled = false;
   if ( this.isDragging ) this.dragEnd();
+  this.unbindHandles();
 };
 
 const resetCssProperties = [ 'transform', 'left', 'top', 'position' ];
