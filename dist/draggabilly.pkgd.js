@@ -1,5 +1,5 @@
 /*!
- * Draggabilly PACKAGED v2.4.1
+ * Draggabilly PACKAGED v3.0.0
  * Make that shiz draggable
  * https://draggabilly.desandro.com
  * MIT license
@@ -18,7 +18,7 @@
   /*jshint strict: false */ /* globals define, module, require */
   if ( typeof define == 'function' && define.amd ) {
     // AMD
-    define( 'jquery-bridget/jquery-bridget',[ 'jquery' ], function( jQuery ) {
+    define( [ 'jquery' ], function( jQuery ) {
       return factory( window, jQuery );
     });
   } else if ( typeof module == 'object' && module.exports ) {
@@ -148,25 +148,14 @@ updateJQuery( jQuery || window.jQuery );
 return jQueryBridget;
 
 }));
-
 /*!
- * getSize v2.0.2
+ * Infinite Scroll v2.0.4
  * measure size of elements
  * MIT license
  */
 
-/*jshint browser: true, strict: true, undef: true, unused: true */
-/*global define: false, module: false, console: false */
-
 ( function( window, factory ) {
-  'use strict';
-
-  if ( typeof define == 'function' && define.amd ) {
-    // AMD
-    define( 'get-size/get-size',[],function() {
-      return factory();
-    });
-  } else if ( typeof module == 'object' && module.exports ) {
+  if ( typeof module == 'object' && module.exports ) {
     // CommonJS
     module.exports = factory();
   } else {
@@ -174,29 +163,21 @@ return jQueryBridget;
     window.getSize = factory();
   }
 
-})( window, function factory() {
-'use strict';
+} )( window, function factory() {
 
 // -------------------------- helpers -------------------------- //
 
 // get a number from a string, not a percentage
 function getStyleSize( value ) {
-  var num = parseFloat( value );
+  let num = parseFloat( value );
   // not a percent like '100%', and a number
-  var isValid = value.indexOf('%') == -1 && !isNaN( num );
+  let isValid = value.indexOf('%') == -1 && !isNaN( num );
   return isValid && num;
 }
 
-function noop() {}
-
-var logError = typeof console == 'undefined' ? noop :
-  function( message ) {
-    console.error( message );
-  };
-
 // -------------------------- measurements -------------------------- //
 
-var measurements = [
+let measurements = [
   'paddingLeft',
   'paddingRight',
   'paddingTop',
@@ -208,142 +189,75 @@ var measurements = [
   'borderLeftWidth',
   'borderRightWidth',
   'borderTopWidth',
-  'borderBottomWidth'
+  'borderBottomWidth',
 ];
 
-var measurementsLength = measurements.length;
+let measurementsLength = measurements.length;
 
 function getZeroSize() {
-  var size = {
+  let size = {
     width: 0,
     height: 0,
     innerWidth: 0,
     innerHeight: 0,
     outerWidth: 0,
-    outerHeight: 0
+    outerHeight: 0,
   };
-  for ( var i=0; i < measurementsLength; i++ ) {
-    var measurement = measurements[i];
+  measurements.forEach( ( measurement ) => {
     size[ measurement ] = 0;
-  }
+  } );
   return size;
-}
-
-// -------------------------- getStyle -------------------------- //
-
-/**
- * getStyle, get style of element, check for Firefox bug
- * https://bugzilla.mozilla.org/show_bug.cgi?id=548397
- */
-function getStyle( elem ) {
-  var style = getComputedStyle( elem );
-  if ( !style ) {
-    logError( 'Style returned ' + style +
-      '. Are you running this code in a hidden iframe on Firefox? ' +
-      'See http://bit.ly/getsizebug1' );
-  }
-  return style;
-}
-
-// -------------------------- setup -------------------------- //
-
-var isSetup = false;
-
-var isBoxSizeOuter;
-
-/**
- * setup
- * check isBoxSizerOuter
- * do on first getSize() rather than on page load for Firefox bug
- */
-function setup() {
-  // setup once
-  if ( isSetup ) {
-    return;
-  }
-  isSetup = true;
-
-  // -------------------------- box sizing -------------------------- //
-
-  /**
-   * WebKit measures the outer-width on style.width on border-box elems
-   * IE & Firefox<29 measures the inner-width
-   */
-  var div = document.createElement('div');
-  div.style.width = '200px';
-  div.style.padding = '1px 2px 3px 4px';
-  div.style.borderStyle = 'solid';
-  div.style.borderWidth = '1px 2px 3px 4px';
-  div.style.boxSizing = 'border-box';
-
-  var body = document.body || document.documentElement;
-  body.appendChild( div );
-  var style = getStyle( div );
-
-  getSize.isBoxSizeOuter = isBoxSizeOuter = getStyleSize( style.width ) == 200;
-  body.removeChild( div );
-
 }
 
 // -------------------------- getSize -------------------------- //
 
 function getSize( elem ) {
-  setup();
-
   // use querySeletor if elem is string
-  if ( typeof elem == 'string' ) {
-    elem = document.querySelector( elem );
-  }
+  if ( typeof elem == 'string' ) elem = document.querySelector( elem );
 
   // do not proceed on non-objects
-  if ( !elem || typeof elem != 'object' || !elem.nodeType ) {
-    return;
-  }
+  let isElement = elem && typeof elem == 'object' && elem.nodeType;
+  if ( !isElement ) return;
 
-  var style = getStyle( elem );
+  let style = getComputedStyle( elem );
 
   // if hidden, everything is 0
-  if ( style.display == 'none' ) {
-    return getZeroSize();
-  }
+  if ( style.display == 'none' ) return getZeroSize();
 
-  var size = {};
+  let size = {};
   size.width = elem.offsetWidth;
   size.height = elem.offsetHeight;
 
-  var isBorderBox = size.isBorderBox = style.boxSizing == 'border-box';
+  let isBorderBox = size.isBorderBox = style.boxSizing == 'border-box';
 
   // get all measurements
-  for ( var i=0; i < measurementsLength; i++ ) {
-    var measurement = measurements[i];
-    var value = style[ measurement ];
-    var num = parseFloat( value );
+  measurements.forEach( ( measurement ) => {
+    let value = style[ measurement ];
+    let num = parseFloat( value );
     // any 'auto', 'medium' value will be 0
     size[ measurement ] = !isNaN( num ) ? num : 0;
-  }
+  } );
 
-  var paddingWidth = size.paddingLeft + size.paddingRight;
-  var paddingHeight = size.paddingTop + size.paddingBottom;
-  var marginWidth = size.marginLeft + size.marginRight;
-  var marginHeight = size.marginTop + size.marginBottom;
-  var borderWidth = size.borderLeftWidth + size.borderRightWidth;
-  var borderHeight = size.borderTopWidth + size.borderBottomWidth;
-
-  var isBorderBoxSizeOuter = isBorderBox && isBoxSizeOuter;
+  let paddingWidth = size.paddingLeft + size.paddingRight;
+  let paddingHeight = size.paddingTop + size.paddingBottom;
+  let marginWidth = size.marginLeft + size.marginRight;
+  let marginHeight = size.marginTop + size.marginBottom;
+  let borderWidth = size.borderLeftWidth + size.borderRightWidth;
+  let borderHeight = size.borderTopWidth + size.borderBottomWidth;
 
   // overwrite width and height if we can get it from style
-  var styleWidth = getStyleSize( style.width );
+  let styleWidth = getStyleSize( style.width );
   if ( styleWidth !== false ) {
     size.width = styleWidth +
       // add padding and border unless it's already including it
-      ( isBorderBoxSizeOuter ? 0 : paddingWidth + borderWidth );
+      ( isBorderBox ? 0 : paddingWidth + borderWidth );
   }
 
-  var styleHeight = getStyleSize( style.height );
+  let styleHeight = getStyleSize( style.height );
   if ( styleHeight !== false ) {
     size.height = styleHeight +
       // add padding and border unless it's already including it
-      ( isBorderBoxSizeOuter ? 0 : paddingHeight + borderHeight );
+      ( isBorderBox ? 0 : paddingHeight + borderHeight );
   }
 
   size.innerWidth = size.width - ( paddingWidth + borderWidth );
@@ -357,23 +271,16 @@ function getSize( elem ) {
 
 return getSize;
 
-});
-
+} );
 /**
- * EvEmitter v1.1.0
+ * EvEmitter v2.1.1
  * Lil' event emitter
  * MIT License
  */
 
-/* jshint unused: true, undef: true, strict: true */
-
 ( function( global, factory ) {
   // universal module definition
-  /* jshint strict: false */ /* globals define, module, window */
-  if ( typeof define == 'function' && define.amd ) {
-    // AMD - RequireJS
-    define( 'ev-emitter/ev-emitter',factory );
-  } else if ( typeof module == 'object' && module.exports ) {
+  if ( typeof module == 'object' && module.exports ) {
     // CommonJS - Browserify, Webpack
     module.exports = factory();
   } else {
@@ -383,22 +290,19 @@ return getSize;
 
 }( typeof window != 'undefined' ? window : this, function() {
 
-
-
 function EvEmitter() {}
 
-var proto = EvEmitter.prototype;
+let proto = EvEmitter.prototype;
 
 proto.on = function( eventName, listener ) {
-  if ( !eventName || !listener ) {
-    return;
-  }
+  if ( !eventName || !listener ) return this;
+
   // set events hash
-  var events = this._events = this._events || {};
+  let events = this._events = this._events || {};
   // set listeners array
-  var listeners = events[ eventName ] = events[ eventName ] || [];
+  let listeners = events[ eventName ] = events[ eventName ] || [];
   // only add once
-  if ( listeners.indexOf( listener ) == -1 ) {
+  if ( !listeners.includes( listener ) ) {
     listeners.push( listener );
   }
 
@@ -406,16 +310,15 @@ proto.on = function( eventName, listener ) {
 };
 
 proto.once = function( eventName, listener ) {
-  if ( !eventName || !listener ) {
-    return;
-  }
+  if ( !eventName || !listener ) return this;
+
   // add event
   this.on( eventName, listener );
   // set once flag
   // set onceEvents hash
-  var onceEvents = this._onceEvents = this._onceEvents || {};
+  let onceEvents = this._onceEvents = this._onceEvents || {};
   // set onceListeners object
-  var onceListeners = onceEvents[ eventName ] = onceEvents[ eventName ] || {};
+  let onceListeners = onceEvents[ eventName ] = onceEvents[ eventName ] || {};
   // set flag
   onceListeners[ listener ] = true;
 
@@ -423,11 +326,10 @@ proto.once = function( eventName, listener ) {
 };
 
 proto.off = function( eventName, listener ) {
-  var listeners = this._events && this._events[ eventName ];
-  if ( !listeners || !listeners.length ) {
-    return;
-  }
-  var index = listeners.indexOf( listener );
+  let listeners = this._events && this._events[ eventName ];
+  if ( !listeners || !listeners.length ) return this;
+
+  let index = listeners.indexOf( listener );
   if ( index != -1 ) {
     listeners.splice( index, 1 );
   }
@@ -436,19 +338,17 @@ proto.off = function( eventName, listener ) {
 };
 
 proto.emitEvent = function( eventName, args ) {
-  var listeners = this._events && this._events[ eventName ];
-  if ( !listeners || !listeners.length ) {
-    return;
-  }
+  let listeners = this._events && this._events[ eventName ];
+  if ( !listeners || !listeners.length ) return this;
+
   // copy over to avoid interference if .off() in listener
-  listeners = listeners.slice(0);
+  listeners = listeners.slice( 0 );
   args = args || [];
   // once stuff
-  var onceListeners = this._onceEvents && this._onceEvents[ eventName ];
+  let onceListeners = this._onceEvents && this._onceEvents[ eventName ];
 
-  for ( var i=0; i < listeners.length; i++ ) {
-    var listener = listeners[i]
-    var isOnce = onceListeners && onceListeners[ listener ];
+  for ( let listener of listeners ) {
+    let isOnce = onceListeners && onceListeners[ listener ];
     if ( isOnce ) {
       // remove listener
       // remove before trigger to prevent recursion
@@ -466,133 +366,155 @@ proto.emitEvent = function( eventName, args ) {
 proto.allOff = function() {
   delete this._events;
   delete this._onceEvents;
+  return this;
 };
 
 return EvEmitter;
 
-}));
-
+} ) );
 /*!
- * Unipointer v2.4.0
- * base class for doing one thing with pointer event
+ * Unidragger v3.0.0
+ * Draggable base class
  * MIT license
  */
 
-/*jshint browser: true, undef: true, unused: true, strict: true */
-
 ( function( window, factory ) {
   // universal module definition
-  /* jshint strict: false */ /*global define, module, require */
-  if ( typeof define == 'function' && define.amd ) {
-    // AMD
-    define( 'unipointer/unipointer',[
-      'ev-emitter/ev-emitter'
-    ], function( EvEmitter ) {
-      return factory( window, EvEmitter );
-    });
-  } else if ( typeof module == 'object' && module.exports ) {
+  if ( typeof module == 'object' && module.exports ) {
     // CommonJS
     module.exports = factory(
-      window,
-      require('ev-emitter')
+        window,
+        require('ev-emitter'),
     );
   } else {
     // browser global
-    window.Unipointer = factory(
-      window,
-      window.EvEmitter
+    window.Unidragger = factory(
+        window,
+        window.EvEmitter,
     );
   }
 
-}( window, function factory( window, EvEmitter ) {
+}( typeof window != 'undefined' ? window : this, function factory( window, EvEmitter ) {
 
-
-
-function noop() {}
-
-function Unipointer() {}
+function Unidragger() {}
 
 // inherit EvEmitter
-var proto = Unipointer.prototype = Object.create( EvEmitter.prototype );
+let proto = Unidragger.prototype = Object.create( EvEmitter.prototype );
 
-proto.bindStartEvent = function( elem ) {
-  this._bindStartEvent( elem, true );
-};
-
-proto.unbindStartEvent = function( elem ) {
-  this._bindStartEvent( elem, false );
-};
-
-/**
- * Add or remove start event
- * @param {Boolean} isAdd - remove if falsey
- */
-proto._bindStartEvent = function( elem, isAdd ) {
-  // munge isAdd, default to true
-  isAdd = isAdd === undefined ? true : isAdd;
-  var bindMethod = isAdd ? 'addEventListener' : 'removeEventListener';
-
-  // default to mouse events
-  var startEvent = 'mousedown';
-  if ( 'ontouchstart' in window ) {
-    // HACK prefer Touch Events as you can preventDefault on touchstart to
-    // disable scroll in iOS & mobile Chrome metafizzy/flickity#1177
-    startEvent = 'touchstart';
-  } else if ( window.PointerEvent ) {
-    // Pointer Events
-    startEvent = 'pointerdown';
-  }
-  elem[ bindMethod ]( startEvent, this );
-};
+// ----- bind start ----- //
 
 // trigger handler methods for events
 proto.handleEvent = function( event ) {
-  var method = 'on' + event.type;
+  let method = 'on' + event.type;
   if ( this[ method ] ) {
     this[ method ]( event );
   }
 };
 
-// returns the touch that we're keeping track of
-proto.getTouch = function( touches ) {
-  for ( var i=0; i < touches.length; i++ ) {
-    var touch = touches[i];
-    if ( touch.identifier == this.pointerIdentifier ) {
-      return touch;
+let startEvent, activeEvents;
+if ( 'ontouchstart' in window ) {
+  // HACK prefer Touch Events as you can preventDefault on touchstart to
+  // disable scroll in iOS & mobile Chrome metafizzy/flickity#1177
+  startEvent = 'touchstart';
+  activeEvents = [ 'touchmove', 'touchend', 'touchcancel' ];
+} else if ( window.PointerEvent ) {
+  // Pointer Events
+  startEvent = 'pointerdown';
+  activeEvents = [ 'pointermove', 'pointerup', 'pointercancel' ];
+} else {
+  // mouse events
+  startEvent = 'mousedown';
+  activeEvents = [ 'mousemove', 'mouseup' ];
+}
+
+// prototype so it can be overwriteable by Flickity
+proto.touchActionValue = 'none';
+
+proto.bindHandles = function() {
+  this._bindHandles( 'addEventListener', this.touchActionValue );
+};
+
+proto.unbindHandles = function() {
+  this._bindHandles( 'removeEventListener', '' );
+};
+
+/**
+ * Add or remove start event
+ * @param {String} bindMethod - addEventListener or removeEventListener
+ * @param {String} touchAction - value for touch-action CSS property
+ */
+proto._bindHandles = function( bindMethod, touchAction ) {
+  this.handles.forEach( ( handle ) => {
+    handle[ bindMethod ]( startEvent, this );
+    handle[ bindMethod ]( 'click', this );
+    // touch-action: none to override browser touch gestures. metafizzy/flickity#540
+    if ( window.PointerEvent ) handle.style.touchAction = touchAction;
+  } );
+};
+
+proto.bindActivePointerEvents = function() {
+  activeEvents.forEach( ( eventName ) => {
+    window.addEventListener( eventName, this );
+  } );
+};
+
+proto.unbindActivePointerEvents = function() {
+  activeEvents.forEach( ( eventName ) => {
+    window.removeEventListener( eventName, this );
+  } );
+};
+
+// ----- event handler helpers ----- //
+
+// trigger method with matching pointer
+proto.withPointer = function( methodName, event ) {
+  if ( event.pointerId == this.pointerIdentifier ) {
+    this[ methodName ]( event, event );
+  }
+};
+
+// trigger method with matching touch
+proto.withTouch = function( methodName, event ) {
+  let touch;
+  for ( let changedTouch of event.changedTouches ) {
+    if ( changedTouch.identifier == this.pointerIdentifier ) {
+      touch = changedTouch;
     }
   }
+  if ( touch ) this[ methodName ]( event, touch );
 };
 
 // ----- start event ----- //
 
 proto.onmousedown = function( event ) {
-  // dismiss clicks from right or middle buttons
-  var button = event.button;
-  if ( button && ( button !== 0 && button !== 1 ) ) {
-    return;
-  }
-  this._pointerDown( event, event );
+  this.pointerDown( event, event );
 };
 
 proto.ontouchstart = function( event ) {
-  this._pointerDown( event, event.changedTouches[0] );
+  this.pointerDown( event, event.changedTouches[0] );
 };
 
 proto.onpointerdown = function( event ) {
-  this._pointerDown( event, event );
+  this.pointerDown( event, event );
 };
 
+// nodes that have text fields
+const cursorNodes = [ 'TEXTAREA', 'INPUT', 'SELECT', 'OPTION' ];
+// input types that do not have text fields
+const clickTypes = [ 'radio', 'checkbox', 'button', 'submit', 'image', 'file' ];
+
 /**
- * pointer start
+ * any time you set `event, pointer` it refers to:
  * @param {Event} event
- * @param {Event or Touch} pointer
+ * @param {Event | Touch} pointer
  */
-proto._pointerDown = function( event, pointer ) {
-  // dismiss right click and other pointers
-  // button = 0 is okay, 1-4 not
-  if ( event.button || this.isPointerDown ) {
-    return;
-  }
+proto.pointerDown = function( event, pointer ) {
+  // dismiss multi-touch taps, right clicks, and clicks on text fields
+  let isCursorNode = cursorNodes.includes( event.target.nodeName );
+  let isClickType = clickTypes.includes( event.target.type );
+  let isOkayElement = !isCursorNode || isClickType;
+  let isOkay = !this.isPointerDown && !event.button && isOkayElement;
+  if ( !isOkay ) return;
 
   this.isPointerDown = true;
   // save pointer identifier to match up touch events
@@ -601,347 +523,34 @@ proto._pointerDown = function( event, pointer ) {
     pointer.pointerId : pointer.identifier;
 
   this.pointerDown( event, pointer );
-};
-
-proto.pointerDown = function( event, pointer ) {
-  this._bindPostStartEvents( event );
+  this.bindActivePointerEvents();
   this.emitEvent( 'pointerDown', [ event, pointer ] );
 };
 
-// hash of events to be bound after start event
-var postStartEvents = {
-  mousedown: [ 'mousemove', 'mouseup' ],
-  touchstart: [ 'touchmove', 'touchend', 'touchcancel' ],
-  pointerdown: [ 'pointermove', 'pointerup', 'pointercancel' ],
-};
-
-proto._bindPostStartEvents = function( event ) {
-  if ( !event ) {
-    return;
-  }
-  // get proper events to match start event
-  var events = postStartEvents[ event.type ];
-  // bind events to node
-  events.forEach( function( eventName ) {
-    window.addEventListener( eventName, this );
-  }, this );
-  // save these arguments
-  this._boundPointerEvents = events;
-};
-
-proto._unbindPostStartEvents = function() {
-  // check for _boundEvents, in case dragEnd triggered twice (old IE8 bug)
-  if ( !this._boundPointerEvents ) {
-    return;
-  }
-  this._boundPointerEvents.forEach( function( eventName ) {
-    window.removeEventListener( eventName, this );
-  }, this );
-
-  delete this._boundPointerEvents;
-};
-
-// ----- move event ----- //
+// ----- move ----- //
 
 proto.onmousemove = function( event ) {
-  this._pointerMove( event, event );
+  this.pointerMove( event, event );
 };
 
 proto.onpointermove = function( event ) {
-  if ( event.pointerId == this.pointerIdentifier ) {
-    this._pointerMove( event, event );
-  }
+  this.withPointer( 'pointerMove', event );
 };
 
 proto.ontouchmove = function( event ) {
-  var touch = this.getTouch( event.changedTouches );
-  if ( touch ) {
-    this._pointerMove( event, touch );
-  }
+  this.withTouch( 'pointerMove', event );
 };
 
-/**
- * pointer move
- * @param {Event} event
- * @param {Event or Touch} pointer
- * @private
- */
-proto._pointerMove = function( event, pointer ) {
-  this.pointerMove( event, pointer );
-};
-
-// public
 proto.pointerMove = function( event, pointer ) {
-  this.emitEvent( 'pointerMove', [ event, pointer ] );
-};
-
-// ----- end event ----- //
-
-
-proto.onmouseup = function( event ) {
-  this._pointerUp( event, event );
-};
-
-proto.onpointerup = function( event ) {
-  if ( event.pointerId == this.pointerIdentifier ) {
-    this._pointerUp( event, event );
-  }
-};
-
-proto.ontouchend = function( event ) {
-  var touch = this.getTouch( event.changedTouches );
-  if ( touch ) {
-    this._pointerUp( event, touch );
-  }
-};
-
-/**
- * pointer up
- * @param {Event} event
- * @param {Event or Touch} pointer
- * @private
- */
-proto._pointerUp = function( event, pointer ) {
-  this._pointerDone();
-  this.pointerUp( event, pointer );
-};
-
-// public
-proto.pointerUp = function( event, pointer ) {
-  this.emitEvent( 'pointerUp', [ event, pointer ] );
-};
-
-// ----- pointer done ----- //
-
-// triggered on pointer up & pointer cancel
-proto._pointerDone = function() {
-  this._pointerReset();
-  this._unbindPostStartEvents();
-  this.pointerDone();
-};
-
-proto._pointerReset = function() {
-  // reset properties
-  this.isPointerDown = false;
-  delete this.pointerIdentifier;
-};
-
-proto.pointerDone = noop;
-
-// ----- pointer cancel ----- //
-
-proto.onpointercancel = function( event ) {
-  if ( event.pointerId == this.pointerIdentifier ) {
-    this._pointerCancel( event, event );
-  }
-};
-
-proto.ontouchcancel = function( event ) {
-  var touch = this.getTouch( event.changedTouches );
-  if ( touch ) {
-    this._pointerCancel( event, touch );
-  }
-};
-
-/**
- * pointer cancel
- * @param {Event} event
- * @param {Event or Touch} pointer
- * @private
- */
-proto._pointerCancel = function( event, pointer ) {
-  this._pointerDone();
-  this.pointerCancel( event, pointer );
-};
-
-// public
-proto.pointerCancel = function( event, pointer ) {
-  this.emitEvent( 'pointerCancel', [ event, pointer ] );
-};
-
-// -----  ----- //
-
-// utility function for getting x/y coords from event
-Unipointer.getPointerPoint = function( pointer ) {
-  return {
-    x: pointer.pageX,
-    y: pointer.pageY
-  };
-};
-
-// -----  ----- //
-
-return Unipointer;
-
-}));
-
-/*!
- * Unidragger v2.4.0
- * Draggable base class
- * MIT license
- */
-
-/*jshint browser: true, unused: true, undef: true, strict: true */
-
-( function( window, factory ) {
-  // universal module definition
-  /*jshint strict: false */ /*globals define, module, require */
-
-  if ( typeof define == 'function' && define.amd ) {
-    // AMD
-    define( 'unidragger/unidragger',[
-      'unipointer/unipointer'
-    ], function( Unipointer ) {
-      return factory( window, Unipointer );
-    });
-  } else if ( typeof module == 'object' && module.exports ) {
-    // CommonJS
-    module.exports = factory(
-      window,
-      require('unipointer')
-    );
-  } else {
-    // browser global
-    window.Unidragger = factory(
-      window,
-      window.Unipointer
-    );
-  }
-
-}( window, function factory( window, Unipointer ) {
-
-
-
-// -------------------------- Unidragger -------------------------- //
-
-function Unidragger() {}
-
-// inherit Unipointer & EvEmitter
-var proto = Unidragger.prototype = Object.create( Unipointer.prototype );
-
-// ----- bind start ----- //
-
-proto.bindHandles = function() {
-  this._bindHandles( true );
-};
-
-proto.unbindHandles = function() {
-  this._bindHandles( false );
-};
-
-/**
- * Add or remove start event
- * @param {Boolean} isAdd
- */
-proto._bindHandles = function( isAdd ) {
-  // munge isAdd, default to true
-  isAdd = isAdd === undefined ? true : isAdd;
-  // bind each handle
-  var bindMethod = isAdd ? 'addEventListener' : 'removeEventListener';
-  var touchAction = isAdd ? this._touchActionValue : '';
-  for ( var i=0; i < this.handles.length; i++ ) {
-    var handle = this.handles[i];
-    this._bindStartEvent( handle, isAdd );
-    handle[ bindMethod ]( 'click', this );
-    // touch-action: none to override browser touch gestures. metafizzy/flickity#540
-    if ( window.PointerEvent ) {
-      handle.style.touchAction = touchAction;
-    }
-  }
-};
-
-// prototype so it can be overwriteable by Flickity
-proto._touchActionValue = 'none';
-
-// ----- start event ----- //
-
-/**
- * pointer start
- * @param {Event} event
- * @param {Event or Touch} pointer
- */
-proto.pointerDown = function( event, pointer ) {
-  var isOkay = this.okayPointerDown( event );
-  if ( !isOkay ) {
-    return;
-  }
-  // track start event position
-  // Safari 9 overrides pageX and pageY. These values needs to be copied. flickity#842
-  this.pointerDownPointer = {
-    pageX: pointer.pageX,
-    pageY: pointer.pageY,
-  };
-
-  event.preventDefault();
-  this.pointerDownBlur();
-  // bind move and end events
-  this._bindPostStartEvents( event );
-  this.emitEvent( 'pointerDown', [ event, pointer ] );
-};
-
-// nodes that have text fields
-var cursorNodes = {
-  TEXTAREA: true,
-  INPUT: true,
-  SELECT: true,
-  OPTION: true,
-};
-
-// input types that do not have text fields
-var clickTypes = {
-  radio: true,
-  checkbox: true,
-  button: true,
-  submit: true,
-  image: true,
-  file: true,
-};
-
-// dismiss inputs with text fields. flickity#403, flickity#404
-proto.okayPointerDown = function( event ) {
-  var isCursorNode = cursorNodes[ event.target.nodeName ];
-  var isClickType = clickTypes[ event.target.type ];
-  var isOkay = !isCursorNode || isClickType;
-  if ( !isOkay ) {
-    this._pointerReset();
-  }
-  return isOkay;
-};
-
-// kludge to blur previously focused input
-proto.pointerDownBlur = function() {
-  var focused = document.activeElement;
-  // do not blur body for IE10, metafizzy/flickity#117
-  var canBlur = focused && focused.blur && focused != document.body;
-  if ( canBlur ) {
-    focused.blur();
-  }
-};
-
-// ----- move event ----- //
-
-/**
- * drag move
- * @param {Event} event
- * @param {Event or Touch} pointer
- */
-proto.pointerMove = function( event, pointer ) {
-  var moveVector = this._dragPointerMove( event, pointer );
-  this.emitEvent( 'pointerMove', [ event, pointer, moveVector ] );
-  this._dragMove( event, pointer, moveVector );
-};
-
-// base pointer move logic
-proto._dragPointerMove = function( event, pointer ) {
-  var moveVector = {
+  let moveVector = {
     x: pointer.pageX - this.pointerDownPointer.pageX,
-    y: pointer.pageY - this.pointerDownPointer.pageY
+    y: pointer.pageY - this.pointerDownPointer.pageY,
   };
+  this.emitEvent( 'pointerMove', [ event, pointer, moveVector ] );
   // start drag if pointer has moved far enough to start drag
-  if ( !this.isDragging && this.hasDragStarted( moveVector ) ) {
-    this._dragStart( event, pointer );
-  }
-  return moveVector;
+  let isDragStarting = !this.isDragging && this.hasDragStarted( moveVector );
+  if ( isDragStarting ) this.dragStart( event, pointer );
+  if ( this.isDragging ) this.dragMove( event, pointer, moveVector );
 };
 
 // condition if pointer has moved far enough to start drag
@@ -949,170 +558,140 @@ proto.hasDragStarted = function( moveVector ) {
   return Math.abs( moveVector.x ) > 3 || Math.abs( moveVector.y ) > 3;
 };
 
-// ----- end event ----- //
-
-/**
- * pointer up
- * @param {Event} event
- * @param {Event or Touch} pointer
- */
-proto.pointerUp = function( event, pointer ) {
-  this.emitEvent( 'pointerUp', [ event, pointer ] );
-  this._dragPointerUp( event, pointer );
-};
-
-proto._dragPointerUp = function( event, pointer ) {
-  if ( this.isDragging ) {
-    this._dragEnd( event, pointer );
-  } else {
-    // pointer didn't move enough for drag to start
-    this._staticClick( event, pointer );
-  }
-};
-
-// -------------------------- drag -------------------------- //
-
-// dragStart
-proto._dragStart = function( event, pointer ) {
-  this.isDragging = true;
-  // prevent clicks
-  this.isPreventingClicks = true;
-  this.dragStart( event, pointer );
-};
+// ----- drag ----- //
 
 proto.dragStart = function( event, pointer ) {
+  this.isDragging = true;
+  this.isPreventingClicks = true; // set flag to prevent clicks
   this.emitEvent( 'dragStart', [ event, pointer ] );
 };
 
-// dragMove
-proto._dragMove = function( event, pointer, moveVector ) {
-  // do not drag if not dragging yet
-  if ( !this.isDragging ) {
-    return;
-  }
-
-  this.dragMove( event, pointer, moveVector );
-};
-
 proto.dragMove = function( event, pointer, moveVector ) {
-  event.preventDefault();
   this.emitEvent( 'dragMove', [ event, pointer, moveVector ] );
 };
 
-// dragEnd
-proto._dragEnd = function( event, pointer ) {
-  // set flags
-  this.isDragging = false;
-  // re-enable clicking async
-  setTimeout( function() {
-    delete this.isPreventingClicks;
-  }.bind( this ) );
+// ----- end ----- //
 
-  this.dragEnd( event, pointer );
+proto.onmouseup = function( event ) {
+  this.pointerUp( event, event );
+};
+
+proto.onpointerup = function( event ) {
+  this.withPointer( 'pointerUp', event );
+};
+
+proto.ontouchend = function( event ) {
+  this.withTouch( 'pointerUp', event );
+};
+
+proto.pointerUp = function( event, pointer ) {
+  this.pointerDone();
+  this.emitEvent( 'pointerUp', [ event, pointer ] );
+
+  if ( this.isDragging ) {
+    this.dragEnd( event, pointer );
+  } else {
+    // pointer didn't move enough for drag to start
+    this.staticClick( event, pointer );
+  }
 };
 
 proto.dragEnd = function( event, pointer ) {
+  this.isDragging = false; // reset flag
+  // re-enable clicking async
+  setTimeout( () => delete this.isPreventingClicks );
+
   this.emitEvent( 'dragEnd', [ event, pointer ] );
 };
 
-// ----- onclick ----- //
+// triggered on pointer up & pointer cancel
+proto.pointerDone = function() {
+  this.isPointerDown = false;
+  delete this.pointerIdentifier;
+  this.unbindActivePointerEvents();
+  this.emitEvent('pointerDone');
+};
+
+// ----- cancel ----- //
+
+proto.onpointercancel = function( event ) {
+  this.withPointer( 'pointerCancel', event );
+};
+
+proto.ontouchcancel = function( event ) {
+  this.withTouch( 'pointerCancel', event );
+};
+
+proto.pointerCancel = function( event, pointer ) {
+  this.pointerDone();
+  this.emitEvent( 'pointerCancel', [ event, pointer ] );
+};
+
+// ----- click ----- //
 
 // handle all clicks and prevent clicks when dragging
 proto.onclick = function( event ) {
-  if ( this.isPreventingClicks ) {
-    event.preventDefault();
-  }
+  if ( this.isPreventingClicks ) event.preventDefault();
 };
-
-// ----- staticClick ----- //
 
 // triggered after pointer down & up with no/tiny movement
-proto._staticClick = function( event, pointer ) {
+proto.staticClick = function( event, pointer ) {
   // ignore emulated mouse up clicks
-  if ( this.isIgnoringMouseUp && event.type == 'mouseup' ) {
-    return;
-  }
+  let isMouseup = event.type == 'mouseup';
+  if ( isMouseup && this.isIgnoringMouseUp ) return;
 
-  this.staticClick( event, pointer );
+  this.emitEvent( 'staticClick', [ event, pointer ] );
 
   // set flag for emulated clicks 300ms after touchend
-  if ( event.type != 'mouseup' ) {
+  if ( isMouseup ) {
     this.isIgnoringMouseUp = true;
-    // reset flag after 300ms
-    setTimeout( function() {
+    // reset flag after 400ms
+    setTimeout( () => {
       delete this.isIgnoringMouseUp;
-    }.bind( this ), 400 );
+    }, 400 );
   }
 };
-
-proto.staticClick = function( event, pointer ) {
-  this.emitEvent( 'staticClick', [ event, pointer ] );
-};
-
-// ----- utils ----- //
-
-Unidragger.getPointerPoint = Unipointer.getPointerPoint;
 
 // -----  ----- //
 
 return Unidragger;
 
-}));
-
+} ) );
 /*!
- * Draggabilly v2.4.1
+ * Draggabilly v3.0.0
  * Make that shiz draggable
  * https://draggabilly.desandro.com
  * MIT license
  */
 
-/* jshint browser: true, strict: true, undef: true, unused: true */
-
 ( function( window, factory ) {
   // universal module definition
-  /* jshint strict: false */ /* globals define */
-  if ( typeof define == 'function' && define.amd ) {
-    // AMD
-    define( [
-      'get-size/get-size',
-      'unidragger/unidragger',
-    ],
-    function( getSize, Unidragger ) {
-        return factory( window, getSize, Unidragger );
-      } );
-  } else if ( typeof module == 'object' && module.exports ) {
+  if ( typeof module == 'object' && module.exports ) {
     // CommonJS
     module.exports = factory(
         window,
         require('get-size'),
-        require('unidragger')
+        require('unidragger'),
     );
   } else {
     // browser global
     window.Draggabilly = factory(
         window,
         window.getSize,
-        window.Unidragger
+        window.Unidragger,
     );
   }
 
-}( window, function factory( window, getSize, Unidragger ) {
+}( typeof window != 'undefined' ? window : this,
+    function factory( window, getSize, Unidragger ) {
 
 // -------------------------- helpers & variables -------------------------- //
 
-// extend objects
-function extend( a, b ) {
-  for ( var prop in b ) {
-    a[ prop ] = b[ prop ];
-  }
-  return a;
-}
-
 function noop() {}
 
-var jQuery = window.jQuery;
+let jQuery = window.jQuery;
 
-// --------------------------  -------------------------- //
+// -------------------------- Draggabilly -------------------------- //
 
 function Draggabilly( element, options ) {
   // querySelector if string
@@ -1124,32 +703,28 @@ function Draggabilly( element, options ) {
   }
 
   // options
-  this.options = extend( {}, this.constructor.defaults );
+  this.options = {};
   this.option( options );
 
   this._create();
 }
 
 // inherit Unidragger methods
-var proto = Draggabilly.prototype = Object.create( Unidragger.prototype );
-
-Draggabilly.defaults = {
-};
+let proto = Draggabilly.prototype = Object.create( Unidragger.prototype );
 
 /**
  * set options
  * @param {Object} opts
  */
 proto.option = function( opts ) {
-  extend( this.options, opts );
+  this.options = {
+    ...this.options,
+    ...opts,
+  };
 };
 
 // css position values that don't need to be set
-var positionValues = {
-  relative: true,
-  absolute: true,
-  fixed: true,
-};
+const positionValues = [ 'relative', 'absolute', 'fixed' ];
 
 proto._create = function() {
   // properties
@@ -1159,64 +734,71 @@ proto._create = function() {
   this.startPoint = { x: 0, y: 0 };
   this.dragPoint = { x: 0, y: 0 };
 
-  this.startPosition = extend( {}, this.position );
+  this.startPosition = { ...this.position };
 
   // set relative positioning
-  var style = getComputedStyle( this.element );
-  if ( !positionValues[ style.position ] ) {
+  let style = getComputedStyle( this.element );
+  if ( !positionValues.includes( style.position ) ) {
     this.element.style.position = 'relative';
   }
 
-  // events, bridge jQuery events from vanilla
-  this.on( 'pointerMove', this.onPointerMove );
-  this.on( 'pointerUp', this.onPointerUp );
+  // events
+  this.on( 'pointerDown', this.handlePointerDown );
+  this.on( 'pointerUp', this.handlePointerUp );
+  this.on( 'dragStart', this.handleDragStart );
+  this.on( 'dragMove', this.handleDragMove );
+  this.on( 'dragEnd', this.handleDragEnd );
 
-  this.enable();
   this.setHandles();
+  this.enable();
 };
 
-/**
- * set this.handles and bind start events to 'em
- */
+// set this.handles  and bind start events to 'em
 proto.setHandles = function() {
-  this.handles = this.options.handle ?
-    this.element.querySelectorAll( this.options.handle ) : [ this.element ];
-
-  this.bindHandles();
-};
-
-/**
- * emits events via EvEmitter and jQuery events
- * @param {String} type - name of event
- * @param {Event} event - original event
- * @param {Array} args - extra arguments
- */
-proto.dispatchEvent = function( type, event, args ) {
-  var emitArgs = [ event ].concat( args );
-  this.emitEvent( type, emitArgs );
-  this.dispatchJQueryEvent( type, event, args );
-};
-
-proto.dispatchJQueryEvent = function( type, event, args ) {
-  var jquery = window.jQuery;
-  // trigger jQuery event
-  if ( !jquery || !this.$element ) {
-    return;
+  let { handle } = this.options;
+  if ( typeof handle == 'string' ) {
+    this.handles = this.element.querySelectorAll( handle );
+  } else if ( typeof handle == 'object' && handle.length ) {
+    this.handles = handle;
+  } else if ( handle instanceof HTMLElement ) {
+    this.handles = [ handle ];
+  } else {
+    this.handles = [ this.element ];
   }
+};
+
+const cancelableEvents = [ 'dragStart', 'dragMove', 'dragEnd' ];
+
+// duck-punch emitEvent to dispatch jQuery events as well
+let emitEvent = proto.emitEvent;
+proto.emitEvent = function( eventName, args ) {
+  // do not emit cancelable events if dragging is disabled
+  let isCanceled = !this.isEnabled && cancelableEvents.includes( eventName );
+  if ( isCanceled ) return;
+
+  emitEvent.call( this, eventName, args );
+
+  // trigger jQuery event
+  let jquery = window.jQuery;
+  if ( !jquery || !this.$element ) return;
   // create jQuery event
+  let event;
+  let jqArgs = args;
+  let isFirstArgEvent = args && args[0] instanceof Event;
+  if ( isFirstArgEvent ) [ event, ...jqArgs ] = args;
   /* eslint-disable-next-line new-cap */
-  var $event = jquery.Event( event );
-  $event.type = type;
-  this.$element.trigger( $event, args );
+  let $event = jquery.Event( event );
+  $event.type = eventName;
+  this.$element.trigger( $event, jqArgs );
 };
 
 // -------------------------- position -------------------------- //
 
 // get x/y position from style
 proto._getPosition = function() {
-  var style = getComputedStyle( this.element );
-  var x = this._getPositionCoord( style.left, 'width' );
-  var y = this._getPositionCoord( style.top, 'height' );
+  let style = getComputedStyle( this.element );
+  let x = this._getPositionCoord( style.left, 'width' );
+  let y = this._getPositionCoord( style.top, 'height' );
   // clean up 'auto' or other non-integer values
   this.position.x = isNaN( x ) ? 0 : x;
   this.position.y = isNaN( y ) ? 0 : y;
@@ -1225,9 +807,9 @@ proto._getPosition = function() {
 };
 
 proto._getPositionCoord = function( styleSide, measure ) {
-  if ( styleSide.indexOf('%') != -1 ) {
+  if ( styleSide.includes('%') ) {
     // convert percent into pixel for Safari, #75
-    var parentSize = getSize( this.element.parentNode );
+    let parentSize = getSize( this.element.parentNode );
     // prevent not-in-DOM element throwing bug, #131
     return !parentSize ? 0 :
       ( parseFloat( styleSide ) / 100 ) * parentSize[ measure ];
@@ -1237,35 +819,25 @@ proto._getPositionCoord = function( styleSide, measure ) {
 
 // add transform: translate( x, y ) to position
 proto._addTransformPosition = function( style ) {
-  var transform = style.transform;
+  let transform = style.transform;
   // bail out if value is 'none'
-  if ( transform.indexOf('matrix') !== 0 ) {
-    return;
-  }
+  if ( !transform.startsWith('matrix') ) return;
+
   // split matrix(1, 0, 0, 1, x, y)
-  var matrixValues = transform.split(',');
+  let matrixValues = transform.split(',');
   // translate X value is in 12th or 4th position
-  var xIndex = transform.indexOf('matrix3d') === 0 ? 12 : 4;
-  var translateX = parseInt( matrixValues[ xIndex ], 10 );
+  let xIndex = transform.startsWith('matrix3d') ? 12 : 4;
+  let translateX = parseInt( matrixValues[ xIndex ], 10 );
   // translate Y value is in 13th or 5th position
-  var translateY = parseInt( matrixValues[ xIndex + 1 ], 10 );
+  let translateY = parseInt( matrixValues[ xIndex + 1 ], 10 );
   this.position.x += translateX;
   this.position.y += translateY;
 };
 
 // -------------------------- events -------------------------- //
 
-proto.onPointerDown = function( event, pointer ) {
-  this.element.classList.add('is-pointer-down');
-  this.dispatchJQueryEvent( 'pointerDown', event, [ pointer ] );
-};
-
-proto.pointerDown = function( event, pointer ) {
-  var isOkay = this.okayPointerDown( event );
-  if ( !isOkay || !this.isEnabled ) {
-    this._pointerReset();
-    return;
-  }
+proto.handlePointerDown = function( event, pointer ) {
+  if ( !this.isEnabled ) return;
   // track start event position
   // Safari 9 overrides pageX and pageY. These values needs to be copied. flickity#842
   this.pointerDownPointer = {
@@ -1274,22 +846,15 @@ proto.pointerDown = function( event, pointer ) {
   };
 
   event.preventDefault();
-  this.pointerDownBlur();
+  document.activeElement.blur();
   // bind move and end events
-  this._bindPostStartEvents( event );
+  this.bindActivePointerEvents( event );
   this.element.classList.add('is-pointer-down');
-  this.dispatchEvent( 'pointerDown', event, [ pointer ] );
 };
 
-/**
- * drag start
- * @param {Event} event
- * @param {[Event, Touch]} pointer
- */
-proto.dragStart = function( event, pointer ) {
-  if ( !this.isEnabled ) {
-    return;
-  }
+proto.handleDragStart = function() {
+  if ( !this.isEnabled ) return;
+
   this._getPosition();
   this.measureContainment();
   // position _when_ drag began
@@ -1302,28 +867,31 @@ proto.dragStart = function( event, pointer ) {
   this.dragPoint.y = 0;
 
   this.element.classList.add('is-dragging');
-  this.dispatchEvent( 'dragStart', event, [ pointer ] );
   // start animation
   this.animate();
 };
 
 proto.measureContainment = function() {
-  var container = this.getContainer();
-  if ( !container ) {
-    return;
-  }
+  let container = this.getContainer();
+  if ( !container ) return;
 
-  var elemSize = getSize( this.element );
-  var containerSize = getSize( container );
-  var elemRect = this.element.getBoundingClientRect();
-  var containerRect = container.getBoundingClientRect();
+  let elemSize = getSize( this.element );
+  let containerSize = getSize( container );
+  let {
+    borderLeftWidth,
+    borderRightWidth,
+    borderTopWidth,
+    borderBottomWidth,
+  } = containerSize;
+  let elemRect = this.element.getBoundingClientRect();
+  let containerRect = container.getBoundingClientRect();
 
-  var borderSizeX = containerSize.borderLeftWidth + containerSize.borderRightWidth;
-  var borderSizeY = containerSize.borderTopWidth + containerSize.borderBottomWidth;
+  let borderSizeX = borderLeftWidth + borderRightWidth;
+  let borderSizeY = borderTopWidth + borderBottomWidth;
 
-  var position = this.relativeStartPosition = {
-    x: elemRect.left - ( containerRect.left + containerSize.borderLeftWidth ),
-    y: elemRect.top - ( containerRect.top + containerSize.borderTopWidth ),
+  let position = this.relativeStartPosition = {
+    x: elemRect.left - ( containerRect.left + borderLeftWidth ),
+    y: elemRect.top - ( containerRect.top + borderTopWidth ),
   };
 
   this.containSize = {
@@ -1333,15 +901,13 @@ proto.measureContainment = function() {
 };
 
 proto.getContainer = function() {
-  var containment = this.options.containment;
-  if ( !containment ) {
-    return;
-  }
-  var isElement = containment instanceof HTMLElement;
+  let containment = this.options.containment;
+  if ( !containment ) return;
+
+  let isElement = containment instanceof HTMLElement;
   // use as element
-  if ( isElement ) {
-    return containment;
-  }
+  if ( isElement ) return containment;
+
   // querySelector if string
   if ( typeof containment == 'string' ) {
     return document.querySelector( containment );
@@ -1352,26 +918,21 @@ proto.getContainer = function() {
 
 // ----- move event ----- //
 
-proto.onPointerMove = function( event, pointer, moveVector ) {
-  this.dispatchJQueryEvent( 'pointerMove', event, [ pointer, moveVector ] );
-};
-
 /**
  * drag move
  * @param {Event} event
- * @param {[Event, Touch]} pointer
+ * @param {Event | Touch} pointer
  * @param {Object} moveVector - x and y coordinates
  */
-proto.dragMove = function( event, pointer, moveVector ) {
-  if ( !this.isEnabled ) {
-    return;
-  }
-  var dragX = moveVector.x;
-  var dragY = moveVector.y;
+proto.handleDragMove = function( event, pointer, moveVector ) {
+  if ( !this.isEnabled ) return;
 
-  var grid = this.options.grid;
-  var gridX = grid && grid[0];
-  var gridY = grid && grid[1];
+  let dragX = moveVector.x;
+  let dragY = moveVector.y;
+
+  let grid = this.options.grid;
+  let gridX = grid && grid[0];
+  let gridY = grid && grid[1];
 
   dragX = applyGrid( dragX, gridX );
   dragY = applyGrid( dragY, gridY );
@@ -1388,88 +949,62 @@ proto.dragMove = function( event, pointer, moveVector ) {
   // set dragPoint properties
   this.dragPoint.x = dragX;
   this.dragPoint.y = dragY;
-
-  this.dispatchEvent( 'dragMove', event, [ pointer, moveVector ] );
 };
 
 function applyGrid( value, grid, method ) {
+  if ( !grid ) return value;
+
   method = method || 'round';
-  return grid ? Math[ method ]( value/grid ) * grid : value;
+  return Math[ method ]( value/grid ) * grid;
 }
 
 proto.containDrag = function( axis, drag, grid ) {
-  if ( !this.options.containment ) {
-    return drag;
-  }
-  var measure = axis == 'x' ? 'width' : 'height';
+  if ( !this.options.containment ) return drag;
 
-  var rel = this.relativeStartPosition[ axis ];
-  var min = applyGrid( -rel, grid, 'ceil' );
-  var max = this.containSize[ measure ];
+  let measure = axis == 'x' ? 'width' : 'height';
+
+  let rel = this.relativeStartPosition[ axis ];
+  let min = applyGrid( -rel, grid, 'ceil' );
+  let max = this.containSize[ measure ];
   max = applyGrid( max, grid, 'floor' );
   return Math.max( min, Math.min( max, drag ) );
 };
 
 // ----- end event ----- //
 
-/**
- * pointer up
- * @param {Event} event
- * @param {[Event, Touch]} pointer
- */
-proto.onPointerUp = function( event, pointer ) {
+proto.handlePointerUp = function() {
   this.element.classList.remove('is-pointer-down');
-  this.dispatchJQueryEvent( 'pointerUp', event, [ pointer ] );
 };
 
-/**
- * drag end
- * @param {Event} event
- * @param {[Event, Touch]} pointer
- */
-proto.dragEnd = function( event, pointer ) {
-  if ( !this.isEnabled ) {
-    return;
-  }
+proto.handleDragEnd = function() {
+  if ( !this.isEnabled ) return;
+
   // use top left position when complete
   this.element.style.transform = '';
   this.setLeftTop();
   this.element.classList.remove('is-dragging');
-  this.dispatchEvent( 'dragEnd', event, [ pointer ] );
 };
 
 // -------------------------- animation -------------------------- //
 
 proto.animate = function() {
   // only render and animate if dragging
-  if ( !this.isDragging ) {
-    return;
-  }
+  if ( !this.isDragging ) return;
 
   this.positionDrag();
-
-  var _this = this;
-  requestAnimationFrame( function animateFrame() {
-    _this.animate();
-  } );
-
+  requestAnimationFrame( () => this.animate() );
 };
 
 // left/top positioning
 proto.setLeftTop = function() {
-  this.element.style.left = this.position.x + 'px';
-  this.element.style.top = this.position.y + 'px';
+  let { x, y } = this.position;
+  this.element.style.left = `${x}px`;
+  this.element.style.top = `${y}px`;
 };
 
 proto.positionDrag = function() {
-  this.element.style.transform = 'translate3d( ' + this.dragPoint.x +
-    'px, ' + this.dragPoint.y + 'px, 0)';
-};
-
-// ----- staticClick ----- //
-
-proto.staticClick = function( event, pointer ) {
-  this.dispatchEvent( 'staticClick', event, [ pointer ] );
+  let { x, y } = this.dragPoint;
+  this.element.style.transform = `translate3d(${x}px, ${y}px, 0)`;
 };
 
 // ----- methods ----- //
@@ -1485,29 +1020,30 @@ proto.setPosition = function( x, y ) {
 };
 
 proto.enable = function() {
+  if ( this.isEnabled ) return;
   this.isEnabled = true;
+  this.bindHandles();
 };
 
 proto.disable = function() {
+  if ( !this.isEnabled ) return;
   this.isEnabled = false;
-  if ( this.isDragging ) {
-    this.dragEnd();
-  }
+  if ( this.isDragging ) this.dragEnd();
+  this.unbindHandles();
 };
+
+const resetCssProperties = [ 'transform', 'left', 'top', 'position' ];
 
 proto.destroy = function() {
   this.disable();
   // reset styles
-  this.element.style.transform = '';
-  this.element.style.left = '';
-  this.element.style.top = '';
-  this.element.style.position = '';
+  resetCssProperties.forEach( ( prop ) => {
+    this.element.style[ prop ] = '';
+  } );
   // unbind handles
   this.unbindHandles();
   // remove jQuery data
-  if ( this.$element ) {
-    this.$element.removeData('draggabilly');
-  }
+  if ( this.$element ) this.$element.removeData('draggabilly');
 };
 
 // ----- jQuery bridget ----- //
@@ -1524,4 +1060,3 @@ if ( jQuery && jQuery.bridget ) {
 return Draggabilly;
 
 } ) );
-

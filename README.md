@@ -6,7 +6,7 @@
 
 Rad because it supports IE10+ and touch devices.
 
-Draggabilly v2.4.1
+Draggabilly v3.0.0
 
 ## Install
 
