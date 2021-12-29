@@ -299,6 +299,17 @@ draggie.setPosition( x, y )
 + `x` - **Type:** _Number_ - horizontal position
 + `y` - **Type:** _Number_ - vertical position
 
+### dragEnd
+
+Stop dragging.
+
+``` js
+// jQuery
+$draggable.draggabilly('dragEnd')
+// vanilla JS
+draggie.dragEnd()
+```
+
 ### destroy
 
 ``` js
