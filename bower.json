@@ -3,12 +3,10 @@
   "description": "make that shiz draggable",
   "main": "draggabilly.js",
   "dependencies": {
-    "get-size": "^2.0.2",
-    "unidragger": "^2.4.0"
+    "get-size": "^0.0.0",
+    "unidragger": "^3.0.0"
   },
   "devDependencies": {
-    "qunit": "^2.5.1",
-    "jquery-bridget": "^2.0.0"
   },
   "homepage": "https://draggabilly.desandro.com",
   "authors": [

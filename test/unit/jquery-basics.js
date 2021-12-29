@@ -2,17 +2,17 @@
 
 QUnit.test( 'init', function( assert ) {
   assert.expect( 30 );
-  var done = assert.async();
+  let done = assert.async();
 
-  var $test = $('.test--basics').addClass('running');
-  var $h2 = $test.find('h2').text('Drag this element');
+  let $test = $('.test--basics').addClass('running');
+  let $h2 = $test.find('h2').text('Drag this element');
 
-  var $draggie = $('.draggie').draggabilly();
-  var draggieElem = $draggie[0];
+  let $draggie = $('.draggie').draggabilly();
+  let draggieElem = $draggie[0];
 
   assert.equal( draggieElem.style.position, 'relative', 'position: relative set' );
 
-  var didPointerDown, didPointerMove, didPointerUp, didDragStart, didDragMove,
+  let didPointerDown, didPointerMove, didPointerUp, didDragStart, didDragMove,
           didDragEnd;
 
   $draggie.one( 'pointerDown', function( event, pointer ) {

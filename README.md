@@ -18,27 +18,27 @@
 
 Rad because it supports IE10+ and touch devices.
 
-Draggabilly v2.4.1
+Draggabilly v3.0.0
 
 ## Install
 
 ### Download
 
-+ [draggabilly.pkgd.min.js](https://unpkg.com/draggabilly@2/dist/draggabilly.pkgd.min.js) minified
-+ [draggabilly.pkgd.js](https://unpkg.com/draggabilly@2/dist/draggabilly.pkgd.js) un-minified
++ [draggabilly.pkgd.min.js](https://unpkg.com/draggabilly@3/dist/draggabilly.pkgd.min.js) minified
++ [draggabilly.pkgd.js](https://unpkg.com/draggabilly@3/dist/draggabilly.pkgd.js) un-minified
 
 ### Package managers
 
-Install with [npm](https://www.npmjs.com/package/draggabilly): `npm install draggabilly`
+Install with npm: `npm install draggabilly`
 
-Install with [Bower](https://bower.io): `bower install draggabilly`
+Install with Yarn: `yarn add draggabilly`
 
 ### CDN
 
 Link directly to `draggabilly.pkgd.min.js` on [unpkg.com](https://unpkg.com).
 
 ``` html
-<script src="https://unpkg.com/draggabilly@2/dist/draggabilly.pkgd.min.js"></script>
+<script src="https://unpkg.com/draggabilly@3/dist/draggabilly.pkgd.min.js"></script>
 ```
 
 ## Usage
@@ -172,10 +172,17 @@ Snaps the element to a grid, every x and y pixels.
   </div>
 </div>
 
-**Type:** Selector _String_
+**Type:** Selector _String_, _Array_, _HTMLElement_
 
 ``` js
+// select all .handle children with selector string
 handle: '.handle'
+
+// set as element
+handle: element.querySelector('.handle')
+
+// set as array or NodeList
+handle: [ element.querySelector('.handle1'), element.querySelector('.handle2') ]
 ```
 
 Specifies on what element the drag interaction starts.
@@ -378,6 +385,17 @@ draggie.setPosition( x, y )
 + `x` - **Type:** _Number_ - horizontal position
 + `y` - **Type:** _Number_ - vertical position
 
+### dragEnd
+
+Stop dragging.
+
+``` js
+// jQuery
+$draggable.draggabilly('dragEnd')
+// vanilla JS
+draggie.dragEnd()
+```
+
 ### destroy
 
 ``` js
@@ -445,87 +463,13 @@ jQueryBridget( 'draggabilly', Draggabilly, $ );
 $('.draggable').draggabilly({...})
 ```
 
-### RequireJS
-
-Draggabilly works with [RequireJS](http://requirejs.org).
-
-You can require `draggabilly.pkgd.js`..
-
-``` js
-requirejs( [
-  'path/to/draggabilly.pkgd.js',
-], function( Draggabilly ) {
-  new Draggabilly( '.draggable', {...});
-});
-```
-
-To use Draggabilly as a jQuery plugin with RequireJS and `draggabilly.pkgd.js`, you need to call jQuery Bridget.
-
-``` js
-// require the require function
-requirejs( [ 'require', 'jquery', 'path/to/draggabilly.pkgd.js' ],
-  function( require, $, Draggabilly ) {
-    // require jquery-bridget, it's included in draggabilly.pkgd.js
-    require( [ 'jquery-bridget/jquery-bridget' ],
-    function( jQueryBridget ) {
-      // make Draggabilly a jQuery plugin
-      jQueryBridget( 'draggabilly', Draggabilly, $ );
-      // now you can use $().draggabilly()
-      $('.draggable').draggabilly({...})
-    }
-  );
-});
-```
-
-Or, you can manage dependencies with a package manager like npm or Bower. Set `baseUrl` to the package directory and set a path config for all your application code.
-
-``` js
-requirejs.config({
-  baseUrl: 'node_modules/',
-  paths: {
-    // path your your app
-    app: '../'
-  }
-});
-
-requirejs( [
-  'draggabilly/draggabilly',
-  'app/my-component.js'
-], function( Draggabilly, myComp ) {
-  new Draggabilly( '.draggable', {...});
-});
-```
-
-To use Draggabilly as a jQuery plugin with a package manager, you need install and to call [jQuery Bridget](https://github.com/desandro/jquery-bridget).
-
-``` js
-requirejs.config({
-  baseUrl: 'node_modules/',
-  paths: {
-    jquery: 'jquery/dist/jquery'
-  }
-});
-
-requirejs( [
-    'jquery',
-    'draggabilly/draggabilly',
-    'jquery-bridget/jquery-bridget'
-  ],
-  function( $, Draggabilly, jQueryBridget ) {
-    // make Draggabilly a jQuery plugin
-    jQueryBridget( 'draggabilly', Draggabilly, $ );
-    // now you can use $().draggabilly()
-    $('.draggable').draggabilly({...})
-});
-```
-
 ## Browser support
 
-Draggabilly v2.2 supports Chrome 36+, Firefox 23+, Safari 9+ (mobile & desktop), IE10+, and Edge 12+.
+Draggabilly v3 supports Chrome 49+, Firefox 41+, Safari 14+ (mobile & desktop), and Edge 12+.
 
-Use [Draggabilly v2.1](https://github.com/desandro/draggabilly/releases/tag/v2.1.1) for Android 4+ and Safari 6+ support.
-
-Use [Draggabilly v1](https://draggabilly.desandro.com/v1) for IE8 & 9, and Android 2.3+ support.
+- Use [Draggabilly v2](https://github.com/desandro/draggabilly/releases/tag/v2.3.0) for IE10 support and Safari 8 support.
+- Use [Draggabilly v2.1](https://github.com/desandro/draggabilly/releases/tag/v2.1.1) for Android 4+ and Safari 6+ support.
+- Use [Draggabilly v1](https://draggabilly.desandro.com/v1) for IE8 & 9, and Android 2.3+ support.
 
 ## License
 

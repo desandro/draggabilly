@@ -31,12 +31,15 @@ body {
 
 <script src="../node_modules/ev-emitter/ev-emitter.js"></script>
 <script src="../node_modules/get-size/get-size.js"></script>
-<script src="../node_modules/unipointer/unipointer.js"></script>
 <script src="../node_modules/unidragger/unidragger.js"></script>
 <script src="../draggabilly.js"></script>
 
 <script>
 var draggie = new Draggabilly( '.box', {
+});
+
+draggie.on('staticClick', function( event, pointer ) {
+  console.log('staticClick', event.type, pointer.pageX, pointer.pageY );
 });
 </script>
 

@@ -1,22 +1,20 @@
 {
   "name": "draggabilly",
-  "version": "2.4.1",
+  "version": "3.0.0",
   "description": "make that shiz draggable",
   "main": "draggabilly.js",
   "scripts": {
     "lint": "npx eslint . && node bin/lint-json.js",
     "lintFix": "npx eslint . --fix",
-    "dist": "npm run bundle && npm run uglify",
-    "bundle": "node bin/bundle.js",
-    "uglify": "npx uglifyjs dist/draggabilly.pkgd.js -o dist/draggabilly.pkgd.min.js --mangle --comments /^!/",
     "docs": "mkdir -p build && node bin/docs.js && cp assets/styles.css assets/scripts.js dist/* build/",
     "deploy": "netlify deploy --dir=build",
-    "deployProd": "netlify deploy --dir=build --prod",
-    "version": "node bin/version.js && npm run dist && git add -A . dist"
+    "dist": "node bin/build-dist.js",
+    "version": "node bin/version.js && npm run dist && git add -A . dist",
+    "test": "npm run lint"
   },
   "dependencies": {
-    "get-size": "^2.0.2",
-    "unidragger": "^2.4.0"
+    "get-size": "^3.0.0",
+    "unidragger": "^3.0.0"
   },
   "devDependencies": {
     "eslint": "^7.0.0",
@@ -25,8 +23,7 @@
     "jquery-bridget": "^2.0.1",
     "marked": "^1.0.0",
     "qunit": "^2.10.0",
-    "requirejs": "^2.3.6",
-    "uglify-js": "^3.9.3"
+    "terser": "^5.10.0"
   },
   "repository": {
     "type": "git",

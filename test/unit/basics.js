@@ -1,18 +1,18 @@
 QUnit.test( 'init', function( assert ) {
 
   assert.expect( 30 );
-  var done = assert.async();
+  let done = assert.async();
 
-  var testElem = document.querySelector('.test--basics');
-  var h2 = testElem.querySelector('h2');
+  let testElem = document.querySelector('.test--basics');
+  let h2 = testElem.querySelector('h2');
   h2.textContent = 'Drag this element';
   testElem.classList.add('running');
-  var draggieElem = testElem.querySelector('.draggie');
-  var draggie = new Draggabilly( draggieElem );
+  let draggieElem = testElem.querySelector('.draggie');
+  let draggie = new Draggabilly( draggieElem );
 
   assert.equal( draggieElem.style.position, 'relative', 'position: relative set' );
 
-  var didPointerDown, didPointerMove, didPointerUp, didDragStart, didDragMove,
+  let didPointerDown, didPointerMove, didPointerUp, didDragStart, didDragMove,
           didDragEnd;
 
   draggie.once( 'pointerDown', function( event, pointer ) {
