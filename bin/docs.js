@@ -3,7 +3,7 @@
 const fs = require('fs');
 const highlightjs = require('highlight.js');
 const path = require('path');
-const marked = require('marked');
+const { marked } = require('marked');
 
 // ----- site content ----- //
 
@@ -20,12 +20,12 @@ hljsJavascript.keywords.draggabilly_keyword = 'Draggabilly'; // highlight keywor
 hljsJavascript.keywords.draggie_var = 'draggie'; // highlight variables
 
 marked.setOptions({
-  highlight: function( code, lang ) {
-    return lang ? highlightjs.highlight( lang, code ).value : code;
+  highlight: function( code, language ) {
+    return language ? highlightjs.highlight( code, { language } ).value : code;
   },
 });
 
-let readmeHtml = marked( fs.readFileSync( dir('../README.md'), 'utf8' ) );
+let readmeHtml = marked.parse( fs.readFileSync( dir('../README.md'), 'utf8' ) );
 let content = fs.readFileSync( dir('../assets/page.html'), 'utf8' )
   .replace( '{{{ content }}}', readmeHtml );
 fs.writeFileSync( dir('../build/index.html'), content );

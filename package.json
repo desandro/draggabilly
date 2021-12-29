@@ -19,9 +19,9 @@
   "devDependencies": {
     "eslint": "^7.0.0",
     "eslint-plugin-metafizzy": "^1.0.0",
-    "highlight.js": "^10.0.3",
+    "highlight.js": "^11.3.1",
     "jquery-bridget": "^2.0.1",
-    "marked": "^1.0.0",
+    "marked": "^4.0.8",
     "qunit": "^2.10.0",
     "terser": "^5.10.0"
   },
