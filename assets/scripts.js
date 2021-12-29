@@ -2,29 +2,27 @@
  * Draggabilly demo page
  */
 
-/* jshint browser: true, unused: true, undef: true */
-
 ( function() {
 
   // ----- getRandom ----- //
 
   function getRandom( ary ) {
-    var index = Math.floor( Math.random() * ary.length );
+    let index = Math.floor( Math.random() * ary.length );
     return ary[ index ];
   }
 
   // -----  ----- //
 
-  var Draggabilly = window.Draggabilly;
+  const Draggabilly = window.Draggabilly;
 
   // ----- basic ----- //
 
   ( function() {
-    var demo = document.querySelector('.demo--basic');
-    var draggie = new Draggabilly('.demo--basic .draggable');
-    var textElem = demo.querySelector('.total-centered');
+    let demo = document.querySelector('.demo--basic');
+    let draggie = new Draggabilly('.demo--basic .draggable');
+    let textElem = demo.querySelector('.total-centered');
     // set cute phrase on drag
-    var movePhrases = [
+    let movePhrases = [
       'Weeeeee!',
       'Yay!',
       'You’re doing it!',
@@ -47,10 +45,9 @@
   // ----- containment ----- //
 
   ( function() {
-    var container = document.querySelector('.demo--containment__container');
-    var elems = container.querySelectorAll('.draggable');
-    for ( var i = 0; i < elems.length; i++ ) {
-      var elem = elems[i];
+    let container = document.querySelector('.demo--containment__container');
+    let elems = container.querySelectorAll('.draggable');
+    for ( let elem of elems ) {
       new Draggabilly( elem, {
         containment: true,
       } );
@@ -74,14 +71,14 @@
   // ----- events ----- //
 
   ( function() {
-    var demo = document.querySelector('.demo--events');
-    var elem = demo.querySelector('.draggable');
-    var draggie = new Draggabilly( elem );
-    var output = demo.querySelector('code');
+    let demo = document.querySelector('.demo--events');
+    let elem = demo.querySelector('.draggable');
+    let draggie = new Draggabilly( elem );
+    let output = demo.querySelector('code');
 
     function notify( dragEvent, draggieInstance, event, pointer ) {
-      var position = draggieInstance.position;
-      var message = dragEvent + '\n' +
+      let position = draggieInstance.position;
+      let message = dragEvent + '\n' +
         event.type + ' at ' + pointer.pageX + ', ' + pointer.pageY + '\n' +
         'draggie position at ' + position.x + ', ' + position.y;
       output.textContent = message;
