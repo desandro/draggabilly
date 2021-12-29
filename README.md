@@ -16,7 +16,7 @@
 
 [github.com/desandro/draggabilly](http://github.com/desandro/draggabilly)
 
-Rad because it supports IE10+ and touch devices.
+Rad because it supports mouse and touch devices.
 
 Draggabilly v3.0.0
 
@@ -428,9 +428,7 @@ draggie.position
 + `x` - **Type:** _Number_
 + `y` - **Type:** _Number_
 
-## Module loaders
-
-### Webpack & Browserify
+## Webpack & Browserify
 
 Install [Draggabilly with npm](https://www.npmjs.com/package/draggabilly).
 
@@ -467,9 +465,9 @@ $('.draggable').draggabilly({...})
 
 Draggabilly v3 supports Chrome 49+, Firefox 41+, Safari 14+ (mobile & desktop), and Edge 12+.
 
-- Use [Draggabilly v2](https://github.com/desandro/draggabilly/releases/tag/v2.3.0) for IE10 support and Safari 8 support.
+- Use [Draggabilly v2](https://github.com/desandro/draggabilly/releases/tag/v2.4.1) for IE10 support and Safari 8 support.
 - Use [Draggabilly v2.1](https://github.com/desandro/draggabilly/releases/tag/v2.1.1) for Android 4+ and Safari 6+ support.
-- Use [Draggabilly v1](https://draggabilly.desandro.com/v1) for IE8 & 9, and Android 2.3+ support.
+- Use [Draggabilly v1](https://github.com/desandro/draggabilly/releases/tag/v1.2.4) for IE8 & 9, and Android 2.3+ support.
 
 ## License
 

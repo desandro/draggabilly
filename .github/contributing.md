@@ -2,12 +2,12 @@
 
 ### Reduced test case required
 
-All bug reports and problem issues require a [**reduced test case**](https://css-tricks.com/reduced-test-cases/). Create one by forking any one of the [CodePen demos](https://codepen.io/desandro/pens/tags/?grid_type=list&selected_tag=draggabilly-docs&sort_order=asc) from [the docs](https://draggabilly.desandro.com). Try forking these CodePens:
+All bug reports and problem issues require a [**reduced test case**](https://css-tricks.com/reduced-test-cases/). Create one by forking any one of the [CodePen demos](https://codepen.io/collection/aMeRBE?grid_type=list&sort_by=item_created_at) from [the docs](https://draggabilly.desandro.com). Try forking these CodePens:
 
 **CodePens**
 
-+ [basic jQuery demo](https://codepen.io/desandro/pen/yyRapr)
-+ [basic vanilla JS demo](https://codepen.io/desandro/pen/EadgXx)
++ [basic jQuery demo](https://codepen.io/desandro/pen/BawYQeq)
++ [basic vanilla JS demo](https://codepen.io/desandro/pen/mdBXOZL)
 
 **Test cases**
 
