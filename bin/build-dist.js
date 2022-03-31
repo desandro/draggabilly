@@ -1,8 +1,11 @@
 const fs = require('fs');
+const path = require('path');
+const process = require('process');
 const { execSync } = require('child_process');
 const { minify } = require('terser');
 const pkg = require('../package.json');
 
+const isWindowsOs = process.platform === 'win32';
 const distPath = 'dist/draggabilly.pkgd.js';
 const distMinPath = 'dist/draggabilly.pkgd.min.js';
 
@@ -14,10 +17,11 @@ let paths = [
   'node_modules/ev-emitter/ev-emitter.js',
   'node_modules/unidragger/unidragger.js',
   'draggabilly.js',
-];
+  // Resolve paths for the Windows command `type`.
+].map( ( value ) => path.resolve( value ) );
 
-// concatenate files
-execSync(`cat ${paths.join(' ')} > ${distPath}`);
+// Concatenate files. The Windows equivalent of the Unix command `cat` is `type`.
+execSync(`${isWindowsOs ? 'type' : 'cat'} ${paths.join(' ')} > ${distPath}`);
 
 // add banner
 let banner = indexContent.split(' */')[0] + ' */\n\n';
