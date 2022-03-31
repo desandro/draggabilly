@@ -186,7 +186,7 @@ proto.handlePointerDown = function( event, pointer ) {
     pageY: pointer.pageY,
   };
 
-  event.preventDefault();
+  if ( event.cancelable ) event.preventDefault();
   document.activeElement.blur();
   // bind move and end events
   this.bindActivePointerEvents( event );
